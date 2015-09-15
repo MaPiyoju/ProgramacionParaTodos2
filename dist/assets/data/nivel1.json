@@ -1,0 +1,56 @@
+{
+	"dataSitua":[
+		{
+			"situaImg": "",
+			"situaTxt": "Situacion de prueba numero 1",
+			"nPasos": 3,
+			"accion": [
+				{
+					"txt": "Paso 1",
+					"ok": true,
+					"n": 0
+				},
+				{
+					"txt": "Paso 2",
+					"ok": true,
+					"n": 0
+				},
+				{
+					"txt": "Paso 3",
+					"ok": true,
+					"n": 0
+				},
+				{
+					"txt": "Paso false",
+					"ok": false
+				}
+			]
+		},
+		{
+			"situaImg": "",
+			"situaTxt": "Situacion de prueba numero 2",
+			"nPasos": 3,
+			"accion": [
+				{
+					"txt": "Paso 1",
+					"ok": true,
+					"n": 0
+				},
+				{
+					"txt": "Paso 2",
+					"ok": true,
+					"n": 0
+				},
+				{
+					"txt": "Paso 3",
+					"ok": true,
+					"n": 0
+				},
+				{
+					"txt": "Paso false",
+					"ok": false
+				}
+			]
+		}
+	]
+}
