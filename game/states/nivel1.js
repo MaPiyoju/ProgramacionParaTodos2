@@ -68,46 +68,91 @@
 
     update: function() {
       if(!this.intro){
-        
+        //Se obtienen las posiciones del cursor en el juego
+        var mouseX = this.game.input.x;
+        var mouseY = this.game.input.y;
+        this.accionGroup.forEach(function(accion) {          
+          if(accion.movimiento == true){//Se verifican los items para realizar su movimiento en caso de click
+            accion.x = mouseX
+            accion.y = mouseY;
+          }
+        });
+        //Se realiza el movimiento del texto en conjunto con el item
+        if(this.itemSelec == true){
+          this.textoItem.x =  mouseX;
+          this.textoItem.y =  mouseY;
+        }
       }
     },
 
     crearSitua: function(nSitua){
+      if(this.levelData.dataSitua[nSitua].situaImg){//En caso de contar con imagen para la situacion
+        var keySitua = 'situa' + (nSitua+1);//Generacion nombre llave de imagen de acuerdo a situacion
+        this.game.add.sprite(70,70,keySitua);//Creacion imagen situacion
+      }
       this.game.add.bitmapText(60, 80, 'font', this.levelData.dataSitua[nSitua].situaTxt);//Se agrega texto de situacion
       this.accionGroup = this.game.add.group();//Se realiza creacion de grupo de acciones
       this.slotGroup = this.game.add.group();//Se realiza creacion de grupo de slots
 
       //Se realiza creación de slots de acuerdo a numero de pasos de situacion
       var col = Math.ceil(this.levelData.dataSitua[nSitua].nPasos/2);//Se define el numero de columnas
+      var par = (this.levelData.dataSitua[nSitua].nPasos % 2 == 0)?true:false;
       var xIniSl = 500;//Definicion posicion x Inicial para slot
       for(var i=0;i<2;i++){
         var yIniSl = 60;//Definicion posicion y Inicial para slot
         for(var j=0;j<col;j++){
-          var slot = this.game.add.sprite(xIniSl,yIniSl,'slot');
+          if(!par && i == 1 && (j == (col-1))){//En caso de ser numero impar de pasos, no se realiza la creacion del ultimo slot
+            break;
+          }
+          var slot = this.game.add.sprite(xIniSl,yIniSl,'slot');//Creacion slot
           yIniSl += 100;//Aumento y para siguiente slot
         }
         xIniSl += 100;//Aumento x para siguiente slot
       }
 
       //Se realiza creación de acciones o pasos de acuerdo a la situacion
-      var xIniAcc = 60;
-      var yIniAcc = 400;
+      var xIniAcc = 100;//Definicion posicion X inicial para acciones
+      var yIniAcc = 400;//Definicion posicion Y inicial para acciones
       var thisTemp = this;
       this.levelData.dataSitua[nSitua].accion.forEach(function(data){
         var accion = thisTemp.game.add.sprite(xIniAcc,yIniAcc,'fondoAcc');//Creacion objeto de accion
         accion.texto = thisTemp.game.add.bitmapText(accion.x, accion.y, 'font', data.txt);//Se agrega el texto de la accion
+        accion.texto.anchor.setTo(0.5,0.5);
+        accion.xPos = accion.x;//Variable para control de retorno de posicion en X
+        accion.yPos = accion.y;//Variable para control de retorno de situacion en Y
+        accion.anchor.setTo(0.5,0.5);
 
-        thisTemp.accionGroup.add(accion);//Se inclutye ele elemento creado en el grupo de acciones
+        if(data.ok){//La accion es correcta para la situacion?
+          accion.nPaso = data.n;//Se asigna el numero de paso correspondiente a la accion
+        }
+        accion.inputEnabled = true;//Se habilitan eventos para input
+        accion.events.onInputDown.add(thisTemp.clickItem, thisTemp);//Se agrega evento de presionar click
+        accion.events.onInputUp.add(thisTemp.releaseItem, thisTemp);//Se agrega evento de soltar click
+
+        thisTemp.accionGroup.add(accion);//Se incluye el elemento creado en el grupo de acciones
         xIniAcc += accion.width;//Aumento de posicion en X para proximos elementos
       });
     },
 
-    crearItem: function(){
-      
+    clickItem: function(item){
+      this.itemSelec = true;//Se habilita la seleccion de item para movimiento
+      this.textoItem = item.texto;//Se establece el texto del item seleccionado para movimiento
+      item.movimiento = true;//Se habilita el movimiento del item
+      //Se actualizan las posiciones en Z del grupo de acciones para posicionar el seleccionado sobre todo
+      item.bringToTop();
+      //item.texto.bringToTop();
+      this.accionGroup.updateZ();
     },
 
-    recogerItem: function (jugador, item) {
-        
+    releaseItem: function(item){
+      this.itemSelec = false;
+      this.textoItem = null;
+      item.movimiento = false;
+
+      item.x = item.xPos;//Se retorna la posicion inicial X del elemento
+      item.y = item.yPos;//Se retorna la posicion inicial Y del elemento
+      item.texto.x = item.xPos;//Se retorna la posicion inicial X del texto
+      item.texto.y = item.yPos;//Se retorna la posicion inicial Y del elemento
     },
 
     updateTimer: function() {

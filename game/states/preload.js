@@ -3,6 +3,7 @@
 function Preload() {
   this.asset = null;
   this.ready = false;
+  this.ready2 = false;
 }
 
 Preload.prototype = {
@@ -35,16 +36,40 @@ Preload.prototype = {
     this.load.image('fondoSit', 'assets/images/Nivel1/fondosituacion.png');//Fondo situacion
     this.load.image('fondoAcc', 'assets/images/Nivel1/accion.png');//Fondo accion
     this.load.image('slot', 'assets/images/Nivel1/slot.png');
+    
+    this.load.text('data','assets/data/nivel1.json');//Datos nivel 1
+
+    
 
   },
+
   create: function() {
     this.asset.cropEnabled = false;
   },
+  
   update: function() {
     if(!!this.ready) {
-      this.game.state.start('menu');
+
+      /*Carga de imagenes para situaciones de acuerdo a documento JSON con datos del nivel 1*/
+      this.level1Data = JSON.parse(this.game.cache.getText('data'));//Parseo de datos
+      this.cont = 1;//Contador para nombrar imagenes
+      var thisTemp = this;
+      this.level1Data.dataSitua.forEach(function(data){
+        if(data.situaImg){
+          var key = 'situa'+thisTemp.cont;
+          thisTemp.load.image(key, data.situaImg);
+          thisTemp.cont++;
+        }
+      });
+      this.ready2 = true;
+      this.game.load.start();//Carga nuevas imagenes
+
+      if(!!this.ready2) {
+        this.game.state.start('menu');
+      }
     }
   },
+  
   onLoadComplete: function() {
     this.ready = true;
   }

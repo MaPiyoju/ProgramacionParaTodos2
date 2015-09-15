@@ -1,7 +1,7 @@
 {
 	"dataSitua":[
 		{
-			"situaImg": "",
+			"situaImg": "assets/images/Nivel1/situacion1.png",
 			"situaTxt": "Situacion de prueba numero 1",
 			"nPasos": 3,
 			"accion": [
@@ -27,7 +27,6 @@
 			]
 		},
 		{
-			"situaImg": "",
 			"situaTxt": "Situacion de prueba numero 2",
 			"nPasos": 3,
 			"accion": [
