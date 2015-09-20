@@ -22,6 +22,8 @@ Preload.prototype = {
 
     /*Botones generales*/
     this.load.image('btnContinuar','assets/images/Botones/btnContinuar.png');
+    this.load.image('alert','assets/images/Botones/alert.png');
+    this.load.image('time','assets/images/Botones/time.png');
 
     /*Imagenes Menu e intro*/
     this.load.image('intro', 'assets/images/Menu/intro.jpg');

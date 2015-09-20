@@ -11,6 +11,11 @@
     flagpause: false,
     intro:true,
 
+    //Contadores para stats de nivel
+    nSituaciones: 0,
+    nCorrectas: 0,
+    nIntentos: 0,
+
     init: function(){
       this.maxtime= 60;
       this.flagpause= false; 
@@ -25,7 +30,7 @@
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
       this.game.input.onDown.add(this.iniciarJuego,this);
-      this.game.add.bitmapText(60, 150, 'font', 'Bienvenido, a lo largo\nde este nivel aprenderás\ncuales son los tipo de\ndato básicos en \nJavascript; estos tipos\nson realmente utiles,\nnos permitirán definir\nel tipo de información\nmanejada y la cual se\nquiere almacenar y\nmanipular (números,\ntextos, etc.)\n\nVamos!', 24);
+      this.game.add.bitmapText(60, 150, 'font', 'Bienvenido,', 24);
     },
 
     iniciarJuego : function(game){
@@ -45,7 +50,9 @@
       this.introImg.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel1');//Fondo de juego
-      this.game.add.sprite(15,50,'fondoSit');//Fondo de situacion
+      this.situaGroup = this.game.add.group();//GRupo para control de fondo situacion e img situacion
+      this.marcoSitua = this.game.add.sprite(15,50,'fondoSit');//Fondo de situacion
+      this.situaGroup.add(this.marcoSitua);
       this.game.add.sprite(345,55,'fondoSlot');//Fondo de slots
       this.random = Math.floor(Math.random() * this.situaLength);//Se realiza la carga de una situación de forma aleatoria
       this.slotGroup = this.game.add.group();//Se realiza creacion de grupo de slots
@@ -54,6 +61,19 @@
       this.btnValidar = this.game.add.button(540,320,'btnConfirmar',this.ejecutar,this);
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
+
+      //Se define el timer de nivel
+      this.tiempo = this.game.time.create(false);
+      this.tiempo.loop(1000, this.updateTimer, this);//Contador de juego
+      this.tiempo.start();
+
+      //Imagen de fondo para el tiempo
+      this.cuadroTime = this.game.add.sprite(((this.game.width)/2), 2,'time');
+      this.cuadroTime.anchor.setTo(0.5, 0);
+      this.cuadroTime.fixedToCamera = true;
+      //Se setea el texto para el cronometro
+      this.timer = this.game.add.bitmapText((this.game.width/2), 20, 'font', '00:00', 28);//this.game.add.text(((this.game.width)/2), 15 , '00:00', { font: '32px calibri', fill: '#000',align:'center' });
+      this.timer.anchor.setTo(0.5, 0);
     },
 
     update: function() {
@@ -77,13 +97,19 @@
     },
 
     crearSitua: function(nSitua){
+      this.nSituaciones++;//Aumento de conteo situaciones stats
+
       if(this.levelData.dataSitua[nSitua].situaImg){//En caso de contar con imagen para la situacion
         var keySitua = 'situa' + (nSitua+1);//Generacion nombre llave de imagen de acuerdo a situacion
-        this.game.add.sprite(70,70,keySitua);//Creacion imagen situacion
+        this.imgSitua = this.game.add.sprite(35,70,keySitua);
+        this.situaGroup.add(this.imgSitua);//Creacion imagen situacion
+        this.marcoSitua.bringToTop();
+        this.situaGroup.updateZ();
       }
-      this.txtSitua = this.game.add.bitmapText(35, 80, 'font', this.levelData.dataSitua[nSitua].situaTxt,24);//Se agrega texto de situacion
+      this.txtSitua = this.game.add.bitmapText(35, 330, 'font', this.levelData.dataSitua[nSitua].situaTxt,24);//Se agrega texto de situacion
       this.txtSitua.maxWidth = 280;
       this.txtSitua.align = "center";
+      this.situaGroup.add(this.txtSitua);
 
       //Se realiza creación de slots de acuerdo a numero de pasos de situacion
       var col = Math.ceil(this.levelData.dataSitua[nSitua].nPasos/2);//Se define el numero de columnas
@@ -92,7 +118,7 @@
       var xIniSl = 350;//Definicion posicion x Inicial para slot
       
       for(var i=0;i<2;i++){
-        var yIniSl = 60;//Definicion posicion y Inicial para slot
+        var yIniSl = 80;//Definicion posicion y Inicial para slot
         for(var j=0;j<col;j++){
           if(!par && i == 1 && (j == (col-1))){//En caso de ser numero impar de pasos, no se realiza la creacion del ultimo slot
             break;
@@ -142,6 +168,9 @@
     },
 
     limpiarSitua: function(){
+      if(this.imgSitua){
+        this.imgSitua.destroy();
+      }
       this.txtSitua.text = '';
       this.slotGroup.removeAll();
       this.accionGroup.removeAll();
@@ -162,8 +191,8 @@
             if(!posiciones[posRandom]){
               i = posRandom % 3;
               j = Math.floor(posRandom / 3);
-              item.newX = 100 + (item.width + 15) * i + 15;
-              item.newY = 400 + (item.height + 5) * j;
+              item.newX = 150 + (item.width + 15) * i + 15;
+              item.newY = 420 + (item.height + 5) * j;
               posiciones[posRandom] = true;
               continuar = false;
             }else{
@@ -182,140 +211,156 @@
       });
     },
 
+    retirarItems: function(){
+      var thisTemp = this;
+      this.accionGroup.forEach(function(item){
+        if(item.hasOwnProperty('texto')){
+          item.x = item.xPos;
+          item.y = item.yPos;
+          thisTemp.releaseItem(item);
+        }
+      });
+    },
+
     clickItem: function(item){
-      this.itemSelec = true;//Se habilita la seleccion de item para movimiento
-      this.textoItem = item.texto;//Se establece el texto del item seleccionado para movimiento
-      item.movimiento = true;//Se habilita el movimiento del item
-      //Se actualizan las posiciones en Z del grupo de acciones para posicionar el seleccionado sobre todo
-      item.anchor.setTo(0.5,0.5);
-      item.texto.anchor.setTo(0.5,0.5);
-      item.bringToTop(); 
-      item.texto.parent.bringToTop(item.texto);           
-      this.accionGroup.updateZ();
+      if(!this.alert.visible){
+        this.itemSelec = true;//Se habilita la seleccion de item para movimiento
+        this.textoItem = item.texto;//Se establece el texto del item seleccionado para movimiento
+        item.movimiento = true;//Se habilita el movimiento del item
+        //Se actualizan las posiciones en Z del grupo de acciones para posicionar el seleccionado sobre todo
+        item.anchor.setTo(0.5,0.5);
+        item.texto.anchor.setTo(0.5,0.5);
+        item.bringToTop(); 
+        item.texto.parent.bringToTop(item.texto);
+        this.accionGroup.updateZ();
+      }
     },
 
     releaseItem: function(item){
-      this.itemSelec = false;
-      this.textoItem = null;
-      item.movimiento = false;
+      if(!this.alert.visible){
+        this.itemSelec = false;
+        this.textoItem = null;
+        item.movimiento = false;
 
-      //En caso de retirar elemento de algun slot
-      if(item.hasOwnProperty('slot')){
-        var oldSlot = this.slotGroup.getAt(item.slot);//Se obtiene el objeto de slot 
-        //Se realiza limpieza de variable
-        delete oldSlot.valido;
-        delete oldSlot.accion;
-        delete item.slot;
-      }
-
-      var sobreSlot = false;//Variable de control posicion sobre slot
-      //Se valida el elemento contra cada slot validando posiciones correctas
-      this.slotGroup.forEach(function(slot){
-        if(item.x > slot.x && item.x < (slot.x + slot.width)){
-          if(item.y > slot.y && item.y < (slot.y + slot.height)){
-            sobreSlot = true;
-            item.slot = slot.nPaso;
-            item.anchor.setTo(0,0);
-            item.x = slot.x;//Se establece la posicion X del elemento sobre el slot
-            item.y = slot.y;//Se establece la posicion Y del elemento sobre el slot
-            item.texto.anchor.setTo(-0.5,-0.5);
-            item.texto.x = slot.x;//Se establece la posicion en X para el texto sobre el slot
-            item.texto.y = slot.y;//Se establece la posicoin en Y para el texto sobre el slot
-
-            slot.valido = item.ok?true:false;//Se establece el slot como valido o no de acuerdo a la accion relacionada
-            slot.accion = item.ok?item.nPaso:0;//Se designa el numero de paso sobre el slot de acuerdo a la accion
-          }
+        //En caso de retirar elemento de algun slot
+        if(item.hasOwnProperty('slot')){
+          var oldSlot = this.slotGroup.getAt(item.slot);//Se obtiene el objeto de slot 
+          //Se realiza limpieza de variable
+          delete oldSlot.valido;
+          delete oldSlot.accion;
+          delete item.slot;
         }
-      });
 
-      if(!sobreSlot){//En caso de liberar el item sin posicionarlo sobre ningun slot
-        item.anchor.setTo(0.5,0.5);//Eje de objeto retorna al centro
-        item.x = item.xPos;//Se retorna la posicion inicial X del elemento
-        item.y = item.yPos;//Se retorna la posicion inicial Y del elemento
-        item.texto.anchor.setTo(0.5,0.5);
-        item.texto.x = item.xPos;//Se retorna la posicion inicial X del texto
-        item.texto.y = item.yPos;//Se retorna la posicion inicial Y del elemento
+        var sobreSlot = false;//Variable de control posicion sobre slot
+        //Se valida el elemento contra cada slot validando posiciones correctas
+        this.slotGroup.forEach(function(slot){
+          if(item.x > slot.x && item.x < (slot.x + slot.width)){
+            if(item.y > slot.y && item.y < (slot.y + slot.height)){
+              sobreSlot = true;
+              item.slot = slot.nPaso;
+              item.anchor.setTo(0,0);
+              item.x = slot.x;//Se establece la posicion X del elemento sobre el slot
+              item.y = slot.y;//Se establece la posicion Y del elemento sobre el slot
+              item.texto.anchor.setTo(-0.5,-0.5);
+              item.texto.x = slot.x;//Se establece la posicion en X para el texto sobre el slot
+              item.texto.y = slot.y;//Se establece la posicoin en Y para el texto sobre el slot
+
+              slot.valido = item.ok?true:false;//Se establece el slot como valido o no de acuerdo a la accion relacionada
+              slot.accion = item.ok?item.nPaso:0;//Se designa el numero de paso sobre el slot de acuerdo a la accion
+            }
+          }
+        });
+
+        if(!sobreSlot){//En caso de liberar el item sin posicionarlo sobre ningun slot
+          item.anchor.setTo(0.5,0.5);//Eje de objeto retorna al centro
+          item.x = item.xPos;//Se retorna la posicion inicial X del elemento
+          item.y = item.yPos;//Se retorna la posicion inicial Y del elemento
+          item.texto.anchor.setTo(0.5,0.5);
+          item.texto.x = item.xPos;//Se retorna la posicion inicial X del texto
+          item.texto.y = item.yPos;//Se retorna la posicion inicial Y del elemento
+        }
       }
     },
 
     ejecutar: function () {
-      //Se realiza validacion de acciones sobre slots
-      var cont = 0;//Conteo de acciones sobre slots
-      var thisTemp = this;
-      var control = true;//Control para etapas de validacion
-      this.slotGroup.forEach(function(slot){//Conteo y control de slots llenos
-        if(!slot.hasOwnProperty('accion')){
-          control = false;
-          thisTemp.alert.show('Creo que aun faltan pasos por completar, sigue intentando!');
-          return;
-        }
-      });
-      if(control){//Habilitacion para nueva validacion
-        this.slotGroup.forEach(function(slot){//Control de slots con elementos invalidos
-          if(!slot.valido){
-            control = false;
-            thisTemp.alert.show('Ups, algo no anda bien. Intentalo de nuevo!');
-            return;
-          }
-        });
-      }
-      if(control){//Habilitacion para nueva validacion
-        this.slotGroup.forEach(function(slot){//Control de slots con elementos en orden correcto
-          if(slot.nPaso != slot.accion){
-            control = false;
-            thisTemp.alert.show('Estas cerca, comprueba tus opciones. Intentalo de nuevo!');
-            return;
-          }
-        });
-      }
+      if(!this.alert.visible){
+        this.nIntentos++;//Aumento conteo numero de intentos
 
-      //En caso de superar cada validacion, acciones de situacion correcta
-      if(control){
-        this.limpiarSitua();
-        this.random = Math.floor(Math.random() * this.situaLength);//Se realiza la carga de una situación de forma aleatoria
-        this.crearSitua(this.random);
+        //Se realiza validacion de acciones sobre slots
+        var cont = 0;//Conteo de acciones sobre slots
+        var thisTemp = this;
+        var control = true;//Control para etapas de validacion
+        this.slotGroup.forEach(function(slot){//Conteo y control de slots llenos
+          if(!slot.hasOwnProperty('accion')){
+            control = false;
+            thisTemp.alert.show('Creo que aun faltan pasos por completar, sigue intentando!');
+            return;
+          }
+        });
+        if(control){//Habilitacion para nueva validacion
+          this.slotGroup.forEach(function(slot){//Control de slots con elementos invalidos
+            if(!slot.valido){
+              control = false;
+              thisTemp.retirarItems();
+              thisTemp.revolverItems();
+              thisTemp.alert.show('Ups, algo no anda bien. Intentalo de nuevo!');
+              return;
+            }
+          });
+        }
+        if(control){//Habilitacion para nueva validacion
+          this.slotGroup.forEach(function(slot){//Control de slots con elementos en orden correcto
+            if(slot.nPaso != slot.accion){
+              control = false;
+              thisTemp.alert.show('Estas cerca, comprueba tus opciones.');
+              return;
+            }
+          });
+        }
+
+        //En caso de superar cada validacion, acciones de situacion correcta
+        if(control){
+          this.nCorrectas++;//Aumento conteo situacion superada
+
+          this.limpiarSitua();
+          this.random = Math.floor(Math.random() * this.situaLength);//Se realiza la carga de una situación de forma aleatoria
+          this.crearSitua(this.random);
+        }
       }
     },
 
     updateTimer: function() {
       //Se comprueba que el tiempo de juego haya terminado
       if(this.maxtime == 0){
-        this.siguiente = this.game.add.sprite(this.game.width/2, this.game.height/2,'btnContinuar');
-        this.siguiente.anchor.setTo(0.5,0.5);
-        this.siguiente.inputEnabled = true;
-        this.siguiente.events.onInputDown.add(this.clickListener, this);
-        this.siguiente.fixedToCamera = true; 
-
+        this.showStats();
         //Detener metodo de update
         this.tiempo.stop();
-        //Eliminar items restantes en el campo
-        this.items.forEach(function(item) {
-            item.kill();
-        });
-        this.btnPausa.kill();
+        //this.btnPausa.kill();
       }
 
       var minutos = 0;
       var segundos = 0;
-        
       if(this.maxtime/60 > 0){
         minutos = Math.floor(this.maxtime/60);
         segundos = this.maxtime%60;
       }else{
         minutos = 0;
         segundos = this.maxtime; 
-      }
-      
-      this.maxtime--;
-        
+      }      
+      this.maxtime--;        
       //Se agrega cero a la izquierda en caso de ser de un solo digito   
-      if (segundos < 10)
+      if (segundos < 10){
         segundos = '0' + segundos;
-   
-      if (minutos < 10)
+      }
+      if (minutos < 10){
         minutos = '0' + minutos;
-   
+      }
       this.timer.setText(minutos + ':' +segundos);
+    },
+
+    showStats: function(){
+      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY, 'font', 'Número de situaciones: '+this.nSituaciones.toString()+'\nNúmero de intentos: '+this.nIntentos.toString()+'\nNúmero de aciertos: '+this.nCorrectas.toString(), 28);
+      this.txtStats.anchor.setTo(0.5,0.5);
     },
 
     clickListener: function() {
