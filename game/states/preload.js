@@ -20,6 +20,9 @@ Preload.prototype = {
     this.load.bitmapFont('font1', 'assets/fonts/font1/font1.png', 'assets/fonts/font1/font1.fnt');
     this.load.bitmapFont('font', 'assets/fonts/font/font.png', 'assets/fonts/font/font.fnt');
 
+    /*Botones generales*/
+    this.load.image('btnContinuar','assets/images/Botones/btnContinuar.png');
+
     /*Imagenes Menu e intro*/
     this.load.image('intro', 'assets/images/Menu/intro.jpg');
     this.load.spritesheet('nivel1', 'assets/images/Menu/nivel1.jpg',800,100);
@@ -36,6 +39,8 @@ Preload.prototype = {
     this.load.image('fondoSit', 'assets/images/Nivel1/fondosituacion.png');//Fondo situacion
     this.load.image('fondoAcc', 'assets/images/Nivel1/accion.png');//Fondo accion
     this.load.image('slot', 'assets/images/Nivel1/slot.png');
+    this.load.image('fondoSlot', 'assets/images/Nivel1/fondoSlots.png');
+    this.load.image('btnConfirmar', 'assets/images/Nivel1/btnConfirmar.png');
     
     this.load.text('data','assets/data/nivel1.json');//Datos nivel 1
 

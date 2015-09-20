@@ -1,8 +1,8 @@
 {
 	"dataSitua":[
 		{
-			"situaImg": "assets/images/Nivel1/situacion1.png",
-			"situaTxt": "Situacion de prueba numero 1",
+			"situaImg": "",
+			"situaTxt": "Cómo preparar un huevo? ",
 			"nPasos": 3,
 			"accion": [
 				{
@@ -13,12 +13,28 @@
 				{
 					"txt": "Paso 2",
 					"ok": true,
-					"n": 0
+					"n": 1
 				},
 				{
 					"txt": "Paso 3",
 					"ok": true,
-					"n": 0
+					"n": 2
+				},
+				{
+					"txt": "Paso false",
+					"ok": false
+				},
+				{
+					"txt": "Paso false",
+					"ok": false
+				},
+				{
+					"txt": "Paso false",
+					"ok": false
+				},
+				{
+					"txt": "Paso false",
+					"ok": false
 				},
 				{
 					"txt": "Paso false",
@@ -27,7 +43,7 @@
 			]
 		},
 		{
-			"situaTxt": "Situacion de prueba numero 2",
+			"situaTxt": "Cómo cambiar una llanta? ",
 			"nPasos": 3,
 			"accion": [
 				{
@@ -38,12 +54,64 @@
 				{
 					"txt": "Paso 2",
 					"ok": true,
-					"n": 0
+					"n": 1
 				},
 				{
 					"txt": "Paso 3",
 					"ok": true,
+					"n": 2
+				},
+				{
+					"txt": "Paso false",
+					"ok": false
+				}
+			]
+		},
+		{
+			"situaImg": "",
+			"situaTxt": "Cómo contruir un avión de papel?",
+			"nPasos": 3,
+			"accion": [
+				{
+					"txt": "Paso 1",
+					"ok": true,
 					"n": 0
+				},
+				{
+					"txt": "Paso 2",
+					"ok": true,
+					"n": 1
+				},
+				{
+					"txt": "Paso 3",
+					"ok": true,
+					"n": 2
+				},
+				{
+					"txt": "Paso false",
+					"ok": false
+				}
+			]
+		},
+		{
+			"situaImg": "",
+			"situaTxt": "Cómo pedir prestado un libro en biblioteca?",
+			"nPasos": 3,
+			"accion": [
+				{
+					"txt": "Paso 1",
+					"ok": true,
+					"n": 0
+				},
+				{
+					"txt": "Paso 2",
+					"ok": true,
+					"n": 1
+				},
+				{
+					"txt": "Paso 3",
+					"ok": true,
+					"n": 2
 				},
 				{
 					"txt": "Paso false",
