@@ -74,6 +74,16 @@
       //Se setea el texto para el cronometro
       this.timer = this.game.add.bitmapText((this.game.width/2), 20, 'font', '00:00', 28);//this.game.add.text(((this.game.width)/2), 15 , '00:00', { font: '32px calibri', fill: '#000',align:'center' });
       this.timer.anchor.setTo(0.5, 0);
+
+      //Se agrega el boton de pausa
+      this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
+      this.btnPausa.frame = 1;
+      this.btnPausa.fixedToCamera = true;
+
+      //Se incluye el panel de pausa al nivel
+      this.pnlPausa = new Pausa(this.game);
+      this.game.add.existing(this.pnlPausa);
+      this.game.input.onDown.add(this.pausaJuego,this);
     },
 
     update: function() {
@@ -112,15 +122,15 @@
       this.situaGroup.add(this.txtSitua);
 
       //Se realiza creación de slots de acuerdo a numero de pasos de situacion
-      var col = Math.ceil(this.levelData.dataSitua[nSitua].nPasos/2);//Se define el numero de columnas
+      var fila = Math.ceil(this.levelData.dataSitua[nSitua].nPasos/2);//Se define el numero de columnas
       var par = (this.levelData.dataSitua[nSitua].nPasos % 2 == 0)?true:false;//Numero par de slots?
       var contSlot = 0;
-      var xIniSl = 350;//Definicion posicion x Inicial para slot
+      var yIniSl = 80;//Definicion posicion y Inicial para slot
       
-      for(var i=0;i<2;i++){
-        var yIniSl = 80;//Definicion posicion y Inicial para slot
-        for(var j=0;j<col;j++){
-          if(!par && i == 1 && (j == (col-1))){//En caso de ser numero impar de pasos, no se realiza la creacion del ultimo slot
+      for(var i=0;i<fila;i++){
+        var xIniSl = 350;//Definicion posicion x Inicial para slot
+        for(var j=0;j<2;j++){
+          if(!par && i == 1 && (j == (fila-1))){//En caso de ser numero impar de pasos, no se realiza la creacion del ultimo slot
             break;
           }
           var slot = this.game.add.sprite(xIniSl,yIniSl,'slot');//Creacion slot
@@ -129,9 +139,9 @@
           contSlot++;//Incremento de paso para siguiente slot
           this.slotGroup.add(slot);//Se incluye el elemento creado en el grupo de slots
           //this.slotGroup.add(slot.txtPaso);
-          yIniSl += 100;//Aumento y para siguiente slot
+          xIniSl += 220;//Aumento x para siguiente slot          
         }
-        xIniSl += 210;//Aumento x para siguiente slot
+        yIniSl += 100;//Aumento y para siguiente slot
       }
 
       //Se realiza creación de acciones o pasos de acuerdo a la situacion

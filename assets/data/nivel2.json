@@ -1,0 +1,28 @@
+{
+	"dataTipo":[
+		{
+			"tipo": "boolean",
+			"exp": [
+				"true",
+				"false",
+				"5>3",
+				"a!=b"
+			]
+		},
+		{
+			"tipo": "enteros",
+			"exp": [
+				"0",
+				"1",
+				"5+3"
+			]
+		},
+		{
+			"tipo": "reales",
+			"exp": [
+				"0.5",
+				"6/9"
+			]
+		}
+	]
+}

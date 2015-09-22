@@ -346,6 +346,16 @@ module.exports = Menu;
       //Se setea el texto para el cronometro
       this.timer = this.game.add.bitmapText((this.game.width/2), 20, 'font', '00:00', 28);//this.game.add.text(((this.game.width)/2), 15 , '00:00', { font: '32px calibri', fill: '#000',align:'center' });
       this.timer.anchor.setTo(0.5, 0);
+
+      //Se agrega el boton de pausa
+      this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
+      this.btnPausa.frame = 1;
+      this.btnPausa.fixedToCamera = true;
+
+      //Se incluye el panel de pausa al nivel
+      this.pnlPausa = new Pausa(this.game);
+      this.game.add.existing(this.pnlPausa);
+      this.game.input.onDown.add(this.pausaJuego,this);
     },
 
     update: function() {
@@ -384,15 +394,15 @@ module.exports = Menu;
       this.situaGroup.add(this.txtSitua);
 
       //Se realiza creación de slots de acuerdo a numero de pasos de situacion
-      var col = Math.ceil(this.levelData.dataSitua[nSitua].nPasos/2);//Se define el numero de columnas
+      var fila = Math.ceil(this.levelData.dataSitua[nSitua].nPasos/2);//Se define el numero de columnas
       var par = (this.levelData.dataSitua[nSitua].nPasos % 2 == 0)?true:false;//Numero par de slots?
       var contSlot = 0;
-      var xIniSl = 350;//Definicion posicion x Inicial para slot
+      var yIniSl = 80;//Definicion posicion y Inicial para slot
       
-      for(var i=0;i<2;i++){
-        var yIniSl = 80;//Definicion posicion y Inicial para slot
-        for(var j=0;j<col;j++){
-          if(!par && i == 1 && (j == (col-1))){//En caso de ser numero impar de pasos, no se realiza la creacion del ultimo slot
+      for(var i=0;i<fila;i++){
+        var xIniSl = 350;//Definicion posicion x Inicial para slot
+        for(var j=0;j<2;j++){
+          if(!par && i == 1 && (j == (fila-1))){//En caso de ser numero impar de pasos, no se realiza la creacion del ultimo slot
             break;
           }
           var slot = this.game.add.sprite(xIniSl,yIniSl,'slot');//Creacion slot
@@ -401,9 +411,9 @@ module.exports = Menu;
           contSlot++;//Incremento de paso para siguiente slot
           this.slotGroup.add(slot);//Se incluye el elemento creado en el grupo de slots
           //this.slotGroup.add(slot.txtPaso);
-          yIniSl += 100;//Aumento y para siguiente slot
+          xIniSl += 220;//Aumento x para siguiente slot          
         }
-        xIniSl += 210;//Aumento x para siguiente slot
+        yIniSl += 100;//Aumento y para siguiente slot
       }
 
       //Se realiza creación de acciones o pasos de acuerdo a la situacion
@@ -710,7 +720,7 @@ module.exports = Menu;
       //Habilitacion de fisicas
       this.physics = this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      this.game.world.setBounds(0, 0, 800, 1920);
+      this.game.world.setBounds(0, 0, 800, 600);
 
       //Se define el contador de controlde nivel
       this.tiempo = this.game.time.create(false);
@@ -719,44 +729,23 @@ module.exports = Menu;
       this.tiempo.start();
 
       //Fondo de juego
-      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel1');      
-
-      //Se definen los audios del nivel
-      this.jump_sound = this.game.add.audio('jump_sound');
-
-      //Grupo de plataformas
-      this.plataformas = this.game.add.group();
-
-      //Plataformas son afectadas por fisicas
-      this.plataformas.enableBody = true;
-
-      var nPisos = (1920/150);//Se determina el numero de plataformas con base el alto total y la diferencia entre una y otra
-      for (var i = 0; i < nPisos; i++){
-        var ancho = Math.floor((Math.random() * 250) + 100);//Se determina ancho aleatorio para cada plataforma
-        var posX = Math.floor((Math.random() * (this.game.width-ancho)));//Se determina posicion X aleatoria
-          var plataforma = this.game.add.tileSprite(posX, (i * 150), ancho, 32, 'plataforma');
-          if(i%2 != 0){
-            plataforma.desplazamiento = 1;
-          }else{
-            plataforma.desplazamiento = 2;
-          }
-          this.plataformas.add(plataforma);
-          plataforma.body.immovable = true;
-      }
+      this.game.add.tileSprite(0, 0,800,600, 'tile_nivel2');      
 
       //Creacion del piso
+      this.platafGroup = this.game.add.group();
+      this.platafGroup.enableBody = true;
       var ground = this.game.add.tileSprite(0, this.game.world.height - 40, 800, 40, 'piso');
-      this.plataformas.add(ground);
       //Piso objeto de colision
+      this.platafGroup.add(ground);
       ground.body.immovable = true;
       ground.desplazamiento = 0;
 
       //Se realiza creacion del jugador
-      this.jugador = this.game.add.sprite(32, this.game.world.height - 750, 'personaje');
+      this.jugador = this.game.add.sprite(32, 490, 'personaje',15);
       //Habilitacion de fisicas sobre el jugador
       this.game.physics.arcade.enable(this.jugador);
       //Propiedades fisicas del jugador (Se agrega un pequeño rebote)
-      this.jugador.body.bounce.y = 0.2;
+      //this.jugador.body.bounce.y = 0.2;
       this.jugador.body.gravity.y = 550;
       this.jugador.body.collideWorldBounds = true;
 
@@ -776,7 +765,7 @@ module.exports = Menu;
       this.items.enableBody = true;
 
       //Control de score
-      this.cuadroScore = this.game.add.sprite((this.game.width - 130),(this.game.height - 200),'score1');
+      this.cuadroScore = this.game.add.sprite((this.game.width - 130),(this.game.height - 200),'');
       this.cuadroScore.fixedToCamera = true;
       this.scoreText[0] = this.game.add.bitmapText(this.cuadroScore.x + 90 , this.cuadroScore.y + 28, 'font', '0', 24);
       this.scoreText[0].fixedToCamera = true;
@@ -800,9 +789,6 @@ module.exports = Menu;
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
 
-      //Seguimiento de camara
-      this.game.camera.follow(this.jugador);
-
       //Se agrega el boton de pausa
       this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
       this.btnPausa.frame = 1;
@@ -818,62 +804,20 @@ module.exports = Menu;
 
     update: function() {
       if(!this.intro){
-        this.game.physics.arcade.collide(this.jugador, this.plataformas);
-        this.game.physics.arcade.collide(this.items, this.plataformas);
-
-        //Se define el metodo de colision entre jugador y estrellas
-        this.game.physics.arcade.overlap(this.jugador, this.items, this.recogerItem, null, this);
+        this.game.physics.arcade.collide(this.jugador, this.platafGroup);
 
         this.jugador.body.velocity.x = 0;//Reseteo de velocidad horizontal si no se presentan acciones sobre el jugador
-
+        //Movimiento de jugador
         if (this.cursors.left.isDown){//Movimiento a la izquierda
           this.jugador.body.velocity.x = -150;
-          if(this.jugador.esSalto){//En caso de encontrarse en el aire
-            this.jugador.animations.play('jump_left');//Se muestra animacion de salto
-          }else{
-            this.jugador.animations.play('left');//Se muestra animacion de caminado
-          }
+          this.jugador.animations.play('jump_left');//Se muestra animacion de salto
         }else if (this.cursors.right.isDown){//Movimiento a la derecha
           this.jugador.body.velocity.x = 150;
-          if(this.jugador.esSalto){//En caso de encontrarse en el aire
-            this.jugador.animations.play('jump_right');//Se muestra animacion de salto
-          }else{
-            this.jugador.animations.play('right');//Se muestra animacino de caminado
-          }
-        }else{//Idle
-          if(this.jugador.esSalto){//En caso de encontrarse en el aire
-            this.jugador.animations.play('jump');//Se muestra animacion de salto
-          }else{
-            this.jugador.animations.stop();
-            this.jugador.frame = 15;
-          }
+          this.jugador.animations.play('jump_right');//Se muestra animacion de salto
+        }else{//Idle          
+          this.jugador.animations.stop();
+          this.jugador.frame = 15;
         }
-        
-        if(this.jugador.body.touching.down){//En caso de tocar suelo
-          this.jugador.esSalto = false;
-        }
-
-        //Habilitar salto si el jugador toca alguna plataforma
-        if (this.cursors.up.isDown && this.jugador.body.touching.down){
-          this.jugador.esSalto = true;
-          this.jugador.body.velocity.y = -450;
-          //this.jump_sound.play();
-        }
-
-        //Acciones de movimiento para las plataformas de juego
-        this.plataformas.forEach(function(plat) {
-          if(plat.desplazamiento == 1){//En caso de ser tipo 1, el desplazamiento sera hacia la derecha
-            if(plat.body.x > this.game.width){
-              plat.body.x = (0 - plat.body.width);
-            }
-            plat.body.velocity.x = 250;
-          }else if(plat.desplazamiento == 2){//En caso de ser tipo 2, el desplazamiento sera hacia la izquierda
-            if((plat.body.x + plat.body.width) < 0){
-              plat.body.x = this.game.width;
-            }
-            plat.body.velocity.x = -150;
-          }
-        }, this);
       }
     },
 
@@ -881,10 +825,10 @@ module.exports = Menu;
       for (var i = 0; i < 5; i++){
         var tipo = Math.floor(Math.random() * 4);//Numero aleatorio entre 0 y 3
         var xItem = Math.floor(Math.random() * (this.game.width - 32)) + 32;
-        var yItem = Math.floor(Math.random() * (this.game.world.bounds.height - 150)) + 50;
+        var yItem = -40;
         var item = this.items.create(xItem, yItem, 'item', tipo);
         item.tipo = tipo;
-        //item.body.gravity.y = 300;//Se agrega gravedad al objeto
+        item.body.gravity.y = 300;//Se agrega gravedad al objeto
         //item.body.bounce.y = 0.7 + Math.random() * 0.2;//Se agrega rebote al objeto
       }
     },
@@ -1058,10 +1002,13 @@ Preload.prototype = {
     this.load.bitmapFont('font1', 'assets/fonts/font1/font1.png', 'assets/fonts/font1/font1.fnt');
     this.load.bitmapFont('font', 'assets/fonts/font/font.png', 'assets/fonts/font/font.fnt');
 
-    /*Botones generales*/
+    /*Botones e imagenes generales*/
     this.load.image('btnContinuar','assets/images/Botones/btnContinuar.png');
     this.load.image('alert','assets/images/Botones/alert.png');
     this.load.image('time','assets/images/Botones/time.png');
+    this.load.spritesheet('btnPausa', 'assets/images/Botones/btnPausa.png',45,45);
+    this.load.image('fondoPausa', 'assets/images/Botones/fondoPausa.png');
+    this.load.spritesheet('OpcPausa', 'assets/images/Botones/opcPausa.png',54,49);
 
     /*Imagenes Menu e intro*/
     this.load.image('intro', 'assets/images/Menu/intro.jpg');
@@ -1084,7 +1031,12 @@ Preload.prototype = {
     
     this.load.text('data','assets/data/nivel1.json');//Datos nivel 1
 
-    
+    /*Imagenes nivel 2*/
+    this.load.image('introN2','assets/images/Nivel2/intro.jpg');
+    this.load.image('tile_nivel2','assets/images/Nivel2/tile.jpg');
+    this.load.image('piso','assets/images/Nivel2/piso.jpg');
+    this.load.spritesheet('personaje','assets/images/Nivel2/personaje.png',48,68);
+    this.load.spritesheet('item','assets/images/Nivel2/item.png',32,31);
 
   },
 

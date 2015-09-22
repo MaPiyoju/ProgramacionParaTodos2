@@ -44,7 +44,7 @@
       //Habilitacion de fisicas
       this.physics = this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      this.game.world.setBounds(0, 0, 800, 1920);
+      this.game.world.setBounds(0, 0, 800, 600);
 
       //Se define el contador de controlde nivel
       this.tiempo = this.game.time.create(false);
@@ -53,44 +53,23 @@
       this.tiempo.start();
 
       //Fondo de juego
-      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel1');      
-
-      //Se definen los audios del nivel
-      this.jump_sound = this.game.add.audio('jump_sound');
-
-      //Grupo de plataformas
-      this.plataformas = this.game.add.group();
-
-      //Plataformas son afectadas por fisicas
-      this.plataformas.enableBody = true;
-
-      var nPisos = (1920/150);//Se determina el numero de plataformas con base el alto total y la diferencia entre una y otra
-      for (var i = 0; i < nPisos; i++){
-        var ancho = Math.floor((Math.random() * 250) + 100);//Se determina ancho aleatorio para cada plataforma
-        var posX = Math.floor((Math.random() * (this.game.width-ancho)));//Se determina posicion X aleatoria
-          var plataforma = this.game.add.tileSprite(posX, (i * 150), ancho, 32, 'plataforma');
-          if(i%2 != 0){
-            plataforma.desplazamiento = 1;
-          }else{
-            plataforma.desplazamiento = 2;
-          }
-          this.plataformas.add(plataforma);
-          plataforma.body.immovable = true;
-      }
+      this.game.add.tileSprite(0, 0,800,600, 'tile_nivel2');      
 
       //Creacion del piso
+      this.platafGroup = this.game.add.group();
+      this.platafGroup.enableBody = true;
       var ground = this.game.add.tileSprite(0, this.game.world.height - 40, 800, 40, 'piso');
-      this.plataformas.add(ground);
       //Piso objeto de colision
+      this.platafGroup.add(ground);
       ground.body.immovable = true;
       ground.desplazamiento = 0;
 
       //Se realiza creacion del jugador
-      this.jugador = this.game.add.sprite(32, this.game.world.height - 750, 'personaje');
+      this.jugador = this.game.add.sprite(32, 490, 'personaje',15);
       //Habilitacion de fisicas sobre el jugador
       this.game.physics.arcade.enable(this.jugador);
       //Propiedades fisicas del jugador (Se agrega un pequeño rebote)
-      this.jugador.body.bounce.y = 0.2;
+      //this.jugador.body.bounce.y = 0.2;
       this.jugador.body.gravity.y = 550;
       this.jugador.body.collideWorldBounds = true;
 
@@ -110,7 +89,7 @@
       this.items.enableBody = true;
 
       //Control de score
-      this.cuadroScore = this.game.add.sprite((this.game.width - 130),(this.game.height - 200),'score1');
+      this.cuadroScore = this.game.add.sprite((this.game.width - 130),(this.game.height - 200),'');
       this.cuadroScore.fixedToCamera = true;
       this.scoreText[0] = this.game.add.bitmapText(this.cuadroScore.x + 90 , this.cuadroScore.y + 28, 'font', '0', 24);
       this.scoreText[0].fixedToCamera = true;
@@ -134,9 +113,6 @@
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
 
-      //Seguimiento de camara
-      this.game.camera.follow(this.jugador);
-
       //Se agrega el boton de pausa
       this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
       this.btnPausa.frame = 1;
@@ -152,62 +128,20 @@
 
     update: function() {
       if(!this.intro){
-        this.game.physics.arcade.collide(this.jugador, this.plataformas);
-        this.game.physics.arcade.collide(this.items, this.plataformas);
-
-        //Se define el metodo de colision entre jugador y estrellas
-        this.game.physics.arcade.overlap(this.jugador, this.items, this.recogerItem, null, this);
+        this.game.physics.arcade.collide(this.jugador, this.platafGroup);
 
         this.jugador.body.velocity.x = 0;//Reseteo de velocidad horizontal si no se presentan acciones sobre el jugador
-
+        //Movimiento de jugador
         if (this.cursors.left.isDown){//Movimiento a la izquierda
           this.jugador.body.velocity.x = -150;
-          if(this.jugador.esSalto){//En caso de encontrarse en el aire
-            this.jugador.animations.play('jump_left');//Se muestra animacion de salto
-          }else{
-            this.jugador.animations.play('left');//Se muestra animacion de caminado
-          }
+          this.jugador.animations.play('jump_left');//Se muestra animacion de salto
         }else if (this.cursors.right.isDown){//Movimiento a la derecha
           this.jugador.body.velocity.x = 150;
-          if(this.jugador.esSalto){//En caso de encontrarse en el aire
-            this.jugador.animations.play('jump_right');//Se muestra animacion de salto
-          }else{
-            this.jugador.animations.play('right');//Se muestra animacino de caminado
-          }
-        }else{//Idle
-          if(this.jugador.esSalto){//En caso de encontrarse en el aire
-            this.jugador.animations.play('jump');//Se muestra animacion de salto
-          }else{
-            this.jugador.animations.stop();
-            this.jugador.frame = 15;
-          }
+          this.jugador.animations.play('jump_right');//Se muestra animacion de salto
+        }else{//Idle          
+          this.jugador.animations.stop();
+          this.jugador.frame = 15;
         }
-        
-        if(this.jugador.body.touching.down){//En caso de tocar suelo
-          this.jugador.esSalto = false;
-        }
-
-        //Habilitar salto si el jugador toca alguna plataforma
-        if (this.cursors.up.isDown && this.jugador.body.touching.down){
-          this.jugador.esSalto = true;
-          this.jugador.body.velocity.y = -450;
-          //this.jump_sound.play();
-        }
-
-        //Acciones de movimiento para las plataformas de juego
-        this.plataformas.forEach(function(plat) {
-          if(plat.desplazamiento == 1){//En caso de ser tipo 1, el desplazamiento sera hacia la derecha
-            if(plat.body.x > this.game.width){
-              plat.body.x = (0 - plat.body.width);
-            }
-            plat.body.velocity.x = 250;
-          }else if(plat.desplazamiento == 2){//En caso de ser tipo 2, el desplazamiento sera hacia la izquierda
-            if((plat.body.x + plat.body.width) < 0){
-              plat.body.x = this.game.width;
-            }
-            plat.body.velocity.x = -150;
-          }
-        }, this);
       }
     },
 
@@ -215,10 +149,10 @@
       for (var i = 0; i < 5; i++){
         var tipo = Math.floor(Math.random() * 4);//Numero aleatorio entre 0 y 3
         var xItem = Math.floor(Math.random() * (this.game.width - 32)) + 32;
-        var yItem = Math.floor(Math.random() * (this.game.world.bounds.height - 150)) + 50;
+        var yItem = -40;
         var item = this.items.create(xItem, yItem, 'item', tipo);
         item.tipo = tipo;
-        //item.body.gravity.y = 300;//Se agrega gravedad al objeto
+        item.body.gravity.y = 300;//Se agrega gravedad al objeto
         //item.body.bounce.y = 0.7 + Math.random() * 0.2;//Se agrega rebote al objeto
       }
     },
