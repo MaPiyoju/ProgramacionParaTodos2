@@ -17,9 +17,12 @@
     nIntentos: 0,
 
     init: function(){
-      this.maxtime= 60;
+      this.maxtime= 30;
       this.flagpause= false; 
       this.intro = true;  
+      this.nSituaciones=0;
+      this.nCorrectas=0;
+      this.nIntentos=0;
     },
 
     create: function(){
@@ -108,14 +111,17 @@
 
     crearSitua: function(nSitua){
       this.nSituaciones++;//Aumento de conteo situaciones stats
-
+      var keySitua = '';
       if(this.levelData.dataSitua[nSitua].situaImg){//En caso de contar con imagen para la situacion
-        var keySitua = 'situa' + (nSitua+1);//Generacion nombre llave de imagen de acuerdo a situacion
-        this.imgSitua = this.game.add.sprite(35,70,keySitua);
-        this.situaGroup.add(this.imgSitua);//Creacion imagen situacion
-        this.marcoSitua.bringToTop();
-        this.situaGroup.updateZ();
+        keySitua = 'situa' + (nSitua+1);//Generacion nombre llave de imagen de acuerdo a situacion
+      }else{
+        keySitua = 'situacion0';//Situacion generica en caso de no contar con imagen
       }
+      this.imgSitua = this.game.add.sprite(35,70,keySitua);
+      this.situaGroup.add(this.imgSitua);//Creacion imagen situacion
+      this.marcoSitua.bringToTop();
+      this.situaGroup.updateZ();
+
       this.txtSitua = this.game.add.bitmapText(35, 330, 'font', this.levelData.dataSitua[nSitua].situaTxt,24);//Se agrega texto de situacion
       this.txtSitua.maxWidth = 280;
       this.txtSitua.align = "center";
@@ -233,7 +239,7 @@
     },
 
     clickItem: function(item){
-      if(!this.alert.visible){
+      if(!this.alert.visible && this.maxtime > 0){
         this.itemSelec = true;//Se habilita la seleccion de item para movimiento
         this.textoItem = item.texto;//Se establece el texto del item seleccionado para movimiento
         item.movimiento = true;//Se habilita el movimiento del item
@@ -271,9 +277,9 @@
               item.anchor.setTo(0,0);
               item.x = slot.x;//Se establece la posicion X del elemento sobre el slot
               item.y = slot.y;//Se establece la posicion Y del elemento sobre el slot
-              item.texto.anchor.setTo(-0.5,-0.5);
-              item.texto.x = slot.x;//Se establece la posicion en X para el texto sobre el slot
-              item.texto.y = slot.y;//Se establece la posicoin en Y para el texto sobre el slot
+              item.texto.anchor.setTo(0.5,0.5);
+              item.texto.x = slot.x + (item.width/2);//Se establece la posicion en X para el texto sobre el slot
+              item.texto.y = slot.y + (item.height/2);//Se establece la posicoin en Y para el texto sobre el slot
 
               slot.valido = item.ok?true:false;//Se establece el slot como valido o no de acuerdo a la accion relacionada
               slot.accion = item.ok?item.nPaso:0;//Se designa el numero de paso sobre el slot de acuerdo a la accion
@@ -293,7 +299,7 @@
     },
 
     ejecutar: function () {
-      if(!this.alert.visible){
+      if(!this.alert.visible && this.maxtime > 0){
         this.nIntentos++;//Aumento conteo numero de intentos
 
         //Se realiza validacion de acciones sobre slots
@@ -369,14 +375,44 @@
     },
 
     showStats: function(){
-      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY, 'font', 'Número de situaciones: '+this.nSituaciones.toString()+'\nNúmero de intentos: '+this.nIntentos.toString()+'\nNúmero de aciertos: '+this.nCorrectas.toString(), 28);
-      this.txtStats.anchor.setTo(0.5,0.5);
-    },
+      this.btnPausa.kill();//Se retira el boton de pausa
+      this.retirarItems();//Retirar elementos de juego
+      this.alert.hide();//REtirar alerta de retroalimentacion
+      //Creacion cuadro retroalimentación final
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal.anchor.setTo(0.5,0.5);
+      this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
+      this.btnMenu.frame = 2;
+      this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
+      this.btnRepetir.frame = 0;
 
-    clickListener: function() {
-      //Se da paso al seiguiente nivel de juego (Segunda parte del nivel 1)
-      this.game.state.start('nivel1_1',true,false,this.score);
-    },
+      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', 'Número de situaciones: '+this.nSituaciones.toString()+'\nNúmero de intentos: '+this.nIntentos.toString()+'\nNúmero de aciertos: '+this.nCorrectas.toString(), 28);
+      this.txtStats.anchor.setTo(0.5,0.5);
+
+      //Asignacion de porcentaje de nivel
+      var porcIni = (this.nCorrectas * 100)/this.nIntentos;
+      var porcEva = (this.nCorrectas * porcIni)/100;
+      if(this.nCorrectas > 0){
+        this.porcentaje = Math.ceil((this.nCorrectas/this.nIntentos) * 100);
+      }else{
+        this.porcentaje = 0;
+      }
+      this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
+      this.txtPorc.anchor.setTo(0.5,0.5);
+
+      console.log('C-I: ',porcIni,' Eva: ',porcEva,' E-S: ',this.porcentaje);
+
+      //Asignacion de estrellas
+      if(this.porcentaje > 0){//1 estrella
+        this.game.add.sprite(221,227,'estrella');
+      }
+      if(this.porcentaje > 49){//2 estrellas
+        this.game.add.sprite(348,227,'estrella');
+      }
+      if(this.porcentaje > 99){//3 estrellas
+        this.game.add.sprite(471,227,'estrella');
+      }
+    },    
 
     pausaJuego: function(game){
       var x1 = (this.game.width - 81);

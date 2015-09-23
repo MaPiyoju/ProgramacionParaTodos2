@@ -19,6 +19,7 @@ Preload.prototype = {
     /*Bitmap text*/
     this.load.bitmapFont('font1', 'assets/fonts/font1/font1.png', 'assets/fonts/font1/font1.fnt');
     this.load.bitmapFont('font', 'assets/fonts/font/font.png', 'assets/fonts/font/font.fnt');
+    this.load.bitmapFont('font_white', 'assets/fonts/font_white/font_white.png', 'assets/fonts/font_white/font_white.fnt');
 
     /*Botones e imagenes generales*/
     this.load.image('btnContinuar','assets/images/Botones/btnContinuar.png');
@@ -42,10 +43,13 @@ Preload.prototype = {
     this.load.image('introN1', 'assets/images/Nivel1/intro.jpg');
     this.load.image('tile_nivel1', 'assets/images/Nivel1/tile.jpg');
     this.load.image('fondoSit', 'assets/images/Nivel1/fondosituacion.png');//Fondo situacion
+    this.load.image('situacion0', 'assets/images/Nivel1/situacion0.png');//Situacion base
     this.load.image('fondoAcc', 'assets/images/Nivel1/accion.png');//Fondo accion
     this.load.image('slot', 'assets/images/Nivel1/slot.png');
     this.load.image('fondoSlot', 'assets/images/Nivel1/fondoSlots.png');
     this.load.image('btnConfirmar', 'assets/images/Nivel1/btnConfirmar.png');
+    this.load.image('final1', 'assets/images/Nivel1/final.png');
+    this.load.image('estrella', 'assets/images/Nivel1/estrella.png');
     
     this.load.text('data','assets/data/nivel1.json');//Datos nivel 1
 
@@ -55,6 +59,8 @@ Preload.prototype = {
     this.load.image('piso','assets/images/Nivel2/piso.jpg');
     this.load.spritesheet('personaje','assets/images/Nivel2/personaje.png',48,68);
     this.load.spritesheet('item','assets/images/Nivel2/item.png',32,31);
+
+    this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
 
   },
 

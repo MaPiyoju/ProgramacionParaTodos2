@@ -188,6 +188,18 @@ window.onload = function () {
           this.cerrarMensaje.visible=false;
       }
   }; 
+
+
+  /*Metodos generales para retorno a menu y repetir nivel para llamado externo*/
+  Pause.prototype.menuBtn = function(this_, game) {
+    this_.game.state.clearCurrentState();
+    game.game.state.start("play");
+  };
+  
+  Pause.prototype.repetirBtn = function(this_,game) {
+    this.game.state.clearCurrentState();    
+    game.game.state.start(game.game.state.current);
+  };
  
   module.exports = Pause;
 },{}],4:[function(require,module,exports){
@@ -289,9 +301,12 @@ module.exports = Menu;
     nIntentos: 0,
 
     init: function(){
-      this.maxtime= 60;
+      this.maxtime= 30;
       this.flagpause= false; 
       this.intro = true;  
+      this.nSituaciones=0;
+      this.nCorrectas=0;
+      this.nIntentos=0;
     },
 
     create: function(){
@@ -380,14 +395,17 @@ module.exports = Menu;
 
     crearSitua: function(nSitua){
       this.nSituaciones++;//Aumento de conteo situaciones stats
-
+      var keySitua = '';
       if(this.levelData.dataSitua[nSitua].situaImg){//En caso de contar con imagen para la situacion
-        var keySitua = 'situa' + (nSitua+1);//Generacion nombre llave de imagen de acuerdo a situacion
-        this.imgSitua = this.game.add.sprite(35,70,keySitua);
-        this.situaGroup.add(this.imgSitua);//Creacion imagen situacion
-        this.marcoSitua.bringToTop();
-        this.situaGroup.updateZ();
+        keySitua = 'situa' + (nSitua+1);//Generacion nombre llave de imagen de acuerdo a situacion
+      }else{
+        keySitua = 'situacion0';//Situacion generica en caso de no contar con imagen
       }
+      this.imgSitua = this.game.add.sprite(35,70,keySitua);
+      this.situaGroup.add(this.imgSitua);//Creacion imagen situacion
+      this.marcoSitua.bringToTop();
+      this.situaGroup.updateZ();
+
       this.txtSitua = this.game.add.bitmapText(35, 330, 'font', this.levelData.dataSitua[nSitua].situaTxt,24);//Se agrega texto de situacion
       this.txtSitua.maxWidth = 280;
       this.txtSitua.align = "center";
@@ -505,7 +523,7 @@ module.exports = Menu;
     },
 
     clickItem: function(item){
-      if(!this.alert.visible){
+      if(!this.alert.visible && this.maxtime > 0){
         this.itemSelec = true;//Se habilita la seleccion de item para movimiento
         this.textoItem = item.texto;//Se establece el texto del item seleccionado para movimiento
         item.movimiento = true;//Se habilita el movimiento del item
@@ -543,9 +561,9 @@ module.exports = Menu;
               item.anchor.setTo(0,0);
               item.x = slot.x;//Se establece la posicion X del elemento sobre el slot
               item.y = slot.y;//Se establece la posicion Y del elemento sobre el slot
-              item.texto.anchor.setTo(-0.5,-0.5);
-              item.texto.x = slot.x;//Se establece la posicion en X para el texto sobre el slot
-              item.texto.y = slot.y;//Se establece la posicoin en Y para el texto sobre el slot
+              item.texto.anchor.setTo(0.5,0.5);
+              item.texto.x = slot.x + (item.width/2);//Se establece la posicion en X para el texto sobre el slot
+              item.texto.y = slot.y + (item.height/2);//Se establece la posicoin en Y para el texto sobre el slot
 
               slot.valido = item.ok?true:false;//Se establece el slot como valido o no de acuerdo a la accion relacionada
               slot.accion = item.ok?item.nPaso:0;//Se designa el numero de paso sobre el slot de acuerdo a la accion
@@ -565,7 +583,7 @@ module.exports = Menu;
     },
 
     ejecutar: function () {
-      if(!this.alert.visible){
+      if(!this.alert.visible && this.maxtime > 0){
         this.nIntentos++;//Aumento conteo numero de intentos
 
         //Se realiza validacion de acciones sobre slots
@@ -641,14 +659,44 @@ module.exports = Menu;
     },
 
     showStats: function(){
-      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY, 'font', 'Número de situaciones: '+this.nSituaciones.toString()+'\nNúmero de intentos: '+this.nIntentos.toString()+'\nNúmero de aciertos: '+this.nCorrectas.toString(), 28);
-      this.txtStats.anchor.setTo(0.5,0.5);
-    },
+      this.btnPausa.kill();//Se retira el boton de pausa
+      this.retirarItems();//Retirar elementos de juego
+      this.alert.hide();//REtirar alerta de retroalimentacion
+      //Creacion cuadro retroalimentación final
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal.anchor.setTo(0.5,0.5);
+      this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
+      this.btnMenu.frame = 2;
+      this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
+      this.btnRepetir.frame = 0;
 
-    clickListener: function() {
-      //Se da paso al seiguiente nivel de juego (Segunda parte del nivel 1)
-      this.game.state.start('nivel1_1',true,false,this.score);
-    },
+      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', 'Número de situaciones: '+this.nSituaciones.toString()+'\nNúmero de intentos: '+this.nIntentos.toString()+'\nNúmero de aciertos: '+this.nCorrectas.toString(), 28);
+      this.txtStats.anchor.setTo(0.5,0.5);
+
+      //Asignacion de porcentaje de nivel
+      var porcIni = (this.nCorrectas * 100)/this.nIntentos;
+      var porcEva = (this.nCorrectas * porcIni)/100;
+      if(this.nCorrectas > 0){
+        this.porcentaje = Math.ceil((this.nCorrectas/this.nIntentos) * 100);
+      }else{
+        this.porcentaje = 0;
+      }
+      this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
+      this.txtPorc.anchor.setTo(0.5,0.5);
+
+      console.log('C-I: ',porcIni,' Eva: ',porcEva,' E-S: ',this.porcentaje);
+
+      //Asignacion de estrellas
+      if(this.porcentaje > 0){//1 estrella
+        this.game.add.sprite(221,227,'estrella');
+      }
+      if(this.porcentaje > 49){//2 estrellas
+        this.game.add.sprite(348,227,'estrella');
+      }
+      if(this.porcentaje > 99){//3 estrellas
+        this.game.add.sprite(471,227,'estrella');
+      }
+    },    
 
     pausaJuego: function(game){
       var x1 = (this.game.width - 81);
@@ -681,26 +729,25 @@ module.exports = Menu;
   Nivel1.prototype = {
 
     //Definición de propiedades
-    scoreText: new Array(),
-    score: {tipoCadena:0,tipoNumero:0,tipoBool:0,tipoArray:0},
     maxtime: 60,
     flagpause: false,
     intro:true,
+    gravedad: {min:10,max:30},
 
-    init: function(){      
-      this.scoreText= new Array();
-      this.score= {tipoCadena:0,tipoNumero:0,tipoBool:0,tipoArray:0};
+    init: function(){
       this.maxtime= 60;
       this.flagpause= false; 
       this.intro = true;  
     },
 
     create: function(){
+      //Parseo de datos de juego para su uso
+      this.levelData = JSON.parse(this.game.cache.getText('data2'));
+
       this.game.world.setBounds(0, 0, 800, 600);
       //Fondo de juego
       this.game.add.tileSprite(0, 0,800,600, 'introN1');
       this.game.input.onDown.add(this.iniciarJuego,this);
-
       this.game.add.bitmapText(60, 150, 'font', 'Bienvenido, ', 24);
     },
 
@@ -721,16 +768,14 @@ module.exports = Menu;
       this.physics = this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
       this.game.world.setBounds(0, 0, 800, 600);
-
-      //Se define el contador de controlde nivel
+      //Se define el timer de nivel
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(1000, this.updateTimer, this);//Contador de juego
-      this.tiempo.loop(5000, this.crearItem, this);//Creacion de items
+      this.tiempo.loop(3500, this.crearItem, this);//Creacion de items
       this.tiempo.start();
 
       //Fondo de juego
-      this.game.add.tileSprite(0, 0,800,600, 'tile_nivel2');      
-
+      this.game.add.tileSprite(0, 0,800,600, 'tile_nivel2');
       //Creacion del piso
       this.platafGroup = this.game.add.group();
       this.platafGroup.enableBody = true;
@@ -745,49 +790,36 @@ module.exports = Menu;
       //Habilitacion de fisicas sobre el jugador
       this.game.physics.arcade.enable(this.jugador);
       //Propiedades fisicas del jugador (Se agrega un pequeño rebote)
-      //this.jugador.body.bounce.y = 0.2;
       this.jugador.body.gravity.y = 550;
       this.jugador.body.collideWorldBounds = true;
 
       //Se definen las animaciones del jugador
       this.jugador.animations.add('left', [14,13,12,11,10,9,8,7], 15, true);
       this.jugador.animations.add('right', [16,17,18,19,20,21,22,23], 15, true);
-
       this.jugador.animations.add('jump', [31,32,33,34,35,36,37,38,39], 15, true);
       this.jugador.animations.add('jump_left', [6,5,4,3,2,1,0], 15, true);
       this.jugador.animations.add('jump_right', [24,25,26,27,28,29,30], 15, true);
 
-      this.jugador.esSalto = false;
-
       //Creacion del grupo de items
-      this.items = this.game.add.group();
+      this.itemsGroup = this.game.add.group();
       //Habilitacion de colisiones 
-      this.items.enableBody = true;
-
-      //Control de score
-      this.cuadroScore = this.game.add.sprite((this.game.width - 130),(this.game.height - 200),'');
-      this.cuadroScore.fixedToCamera = true;
-      this.scoreText[0] = this.game.add.bitmapText(this.cuadroScore.x + 90 , this.cuadroScore.y + 28, 'font', '0', 24);
-      this.scoreText[0].fixedToCamera = true;
-      this.scoreText[1] = this.game.add.bitmapText(this.cuadroScore.x + 90 , this.cuadroScore.y + 68, 'font', '0', 24);
-      this.scoreText[1].fixedToCamera = true;
-      this.scoreText[2] = this.game.add.bitmapText(this.cuadroScore.x + 90 , this.cuadroScore.y + 106, 'font', '0', 24);
-      this.scoreText[2].fixedToCamera = true;
-      this.scoreText[3] = this.game.add.bitmapText(this.cuadroScore.x + 90 , this.cuadroScore.y + 145, 'font', '0', 24);
-      this.scoreText[3].fixedToCamera = true;
+      this.itemsGroup.enableBody = true;
       
       //Imagen de fondo para el tiempo
       this.cuadroTime = this.game.add.sprite(((this.game.width)/2), 5,'time');
       this.cuadroTime.anchor.setTo(0.5, 0);
       this.cuadroTime.fixedToCamera = true;
       //Se setea el texto para el cronometro
-
-      this.timer = this.game.add.bitmapText((this.game.width/2), 20, 'font', '00:00', 28);//this.game.add.text(((this.game.width)/2), 15 , '00:00', { font: '32px calibri', fill: '#000',align:'center' });
-
+      this.timer = this.game.add.bitmapText((this.game.width/2), 20, 'font', '00:00', 28);
       this.timer.anchor.setTo(0.5, 0);
-      this.timer.fixedToCamera = true; 
 
-      this.cursors = this.game.input.keyboard.createCursorKeys();
+      this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
+
+      //Creacion de solicitud de nivel
+      this.txtSolicitud = this.game.add.bitmapText(680, 500, 'font', '', 28);
+      this.solicitud();
+
+      this.game.physics.arcade.overlap(this.jugador, this.itemsGroup, this.recogerItem, null, this);//Se define metodo llamado de colision para item - jugador
 
       //Se agrega el boton de pausa
       this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
@@ -802,9 +834,14 @@ module.exports = Menu;
       this.intro = false;
     },
 
+    solicitud: function(){
+      this.solicitud = Math.floor(Math.random()*this.levelData.dataTipo.length);
+      this.txtSolicitud.text = this.levelData.dataTipo[this.solicitud].tipo;
+    },
+
     update: function() {
       if(!this.intro){
-        this.game.physics.arcade.collide(this.jugador, this.platafGroup);
+        this.game.physics.arcade.collide(this.jugador, this.platafGroup);//Colisiones entre jugador y plataforma piso
 
         this.jugador.body.velocity.x = 0;//Reseteo de velocidad horizontal si no se presentan acciones sobre el jugador
         //Movimiento de jugador
@@ -818,18 +855,34 @@ module.exports = Menu;
           this.jugador.animations.stop();
           this.jugador.frame = 15;
         }
+
+        this.itemsGroup.forEach(function(item){
+          item.texto.x = item.x;
+          item.texto.y = item.y;
+
+          if(item.y>item.game.height){
+            item.texto.destroy();
+            item.destroy();
+
+          }
+        });
       }
     },
 
     crearItem: function(){
       for (var i = 0; i < 5; i++){
-        var tipo = Math.floor(Math.random() * 4);//Numero aleatorio entre 0 y 3
-        var xItem = Math.floor(Math.random() * (this.game.width - 32)) + 32;
-        var yItem = -40;
-        var item = this.items.create(xItem, yItem, 'item', tipo);
-        item.tipo = tipo;
-        item.body.gravity.y = 300;//Se agrega gravedad al objeto
-        //item.body.bounce.y = 0.7 + Math.random() * 0.2;//Se agrega rebote al objeto
+        var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
+        if(random == 1){//En caso de creacion
+          var tipo = Math.floor(Math.random() * this.levelData.dataTipo.length);//Numero aleatorio para determinar tipo de data de juego
+          var xItem = Math.floor(Math.random() * (this.game.width - 50)) + 32;//Posiicion de creacion aleatoria en X
+          var yItem = -40;//Posicion inicial en Y
+          var item = this.itemsGroup.create(xItem, yItem, 'item', tipo);//Creacion de item sobre el grupo de items
+          item.tipo = tipo;//Asignacion de tipo aleatorio
+          var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
+          item.texto = this.game.add.bitmapText(item.x, item.y, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 28);//Creacion texto
+
+          item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
+        }
       }
     },
 
@@ -858,17 +911,11 @@ module.exports = Menu;
     updateTimer: function() {
       //Se comprueba que el tiempo de juego haya terminado
       if(this.maxtime == 0){
-        this.siguiente = this.game.add.sprite(this.game.width/2, this.game.height/2,'btnContinuar');
-        this.siguiente.anchor.setTo(0.5,0.5);
-        this.siguiente.inputEnabled = true;
-        this.siguiente.events.onInputDown.add(this.clickListener, this);
-        this.siguiente.fixedToCamera = true; 
-
         //Detener metodo de update
         this.tiempo.stop();
         //Eliminar items restantes en el campo
-        this.items.forEach(function(item) {
-            item.kill();
+        this.itemsGroup.forEach(function(item) {
+          item.kill();
         });
         this.btnPausa.kill();
       }
@@ -894,11 +941,6 @@ module.exports = Menu;
         minutos = '0' + minutos;
    
       this.timer.setText(minutos + ':' +segundos);
-    },
-
-    clickListener: function() {
-      //Se da paso al seiguiente nivel de juego (Segunda parte del nivel 1)
-      this.game.state.start('nivel1_1',true,false,this.score);
     },
 
     pausaJuego: function(game){
@@ -1001,6 +1043,7 @@ Preload.prototype = {
     /*Bitmap text*/
     this.load.bitmapFont('font1', 'assets/fonts/font1/font1.png', 'assets/fonts/font1/font1.fnt');
     this.load.bitmapFont('font', 'assets/fonts/font/font.png', 'assets/fonts/font/font.fnt');
+    this.load.bitmapFont('font_white', 'assets/fonts/font_white/font_white.png', 'assets/fonts/font_white/font_white.fnt');
 
     /*Botones e imagenes generales*/
     this.load.image('btnContinuar','assets/images/Botones/btnContinuar.png');
@@ -1024,10 +1067,13 @@ Preload.prototype = {
     this.load.image('introN1', 'assets/images/Nivel1/intro.jpg');
     this.load.image('tile_nivel1', 'assets/images/Nivel1/tile.jpg');
     this.load.image('fondoSit', 'assets/images/Nivel1/fondosituacion.png');//Fondo situacion
+    this.load.image('situacion0', 'assets/images/Nivel1/situacion0.png');//Situacion base
     this.load.image('fondoAcc', 'assets/images/Nivel1/accion.png');//Fondo accion
     this.load.image('slot', 'assets/images/Nivel1/slot.png');
     this.load.image('fondoSlot', 'assets/images/Nivel1/fondoSlots.png');
     this.load.image('btnConfirmar', 'assets/images/Nivel1/btnConfirmar.png');
+    this.load.image('final1', 'assets/images/Nivel1/final.png');
+    this.load.image('estrella', 'assets/images/Nivel1/estrella.png');
     
     this.load.text('data','assets/data/nivel1.json');//Datos nivel 1
 
@@ -1037,6 +1083,8 @@ Preload.prototype = {
     this.load.image('piso','assets/images/Nivel2/piso.jpg');
     this.load.spritesheet('personaje','assets/images/Nivel2/personaje.png',48,68);
     this.load.spritesheet('item','assets/images/Nivel2/item.png',32,31);
+
+    this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
 
   },
 
