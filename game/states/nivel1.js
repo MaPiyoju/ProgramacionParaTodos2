@@ -17,9 +17,9 @@
     nIntentos: 0,
 
     //Mensajes retroalimentacion nivel
-    msjVacios: ['Creo que aun faltan pasos por completar, sigue intentando!',''],
-    msjOrden: ['Estas cerca, comprueba tus opciones.','Recuerda, un algoritmo es una serie de pasos correctamente ordenados.'],
-    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!',''],
+    msjVacios: ['Creo que aun faltan pasos por completar, sigue intentando!','Completa tu algoritmo para cumplir con el objetivo','Recuerda que todos los pasos del algoritmo son importantes para cumplir con su objetivo'],
+    msjOrden: ['Estas cerca, comprueba tus opciones.','Recuerda, un algoritmo es una serie de pasos correctamente ordenados.','El orden de los pasos no es el correcto, Revisa tu algoritmo y ordenalo correctamente.'],
+    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!','Tu algoritmo no cumple con el objetivo solicitado, intentalo de nuevo!','Ups, en tu algoritmo existen pasos que no cumplen o no son necesarios para cumplir con el objetivo'],
 
     init: function(){
       this.maxtime= 120;
