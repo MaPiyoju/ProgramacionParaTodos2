@@ -1,124 +1,254 @@
 {
-	"dataSitua":[
-		{
-			"situaImg": "assets/images/nivel1/situacion1.png",
-			"situaTxt": "Cómo preparar un huevo? ",
-			"nPasos": 3,
-			"accion": [
-				{
-					"txt": "Paso 1",
-					"ok": true,
-					"n": 0
-				},
-				{
-					"txt": "Paso 2",
-					"ok": true,
-					"n": 1
-				},
-				{
-					"txt": "Paso 3",
-					"ok": true,
-					"n": 2
-				},
-				{
-					"txt": "Paso false",
-					"ok": false
-				},
-				{
-					"txt": "Paso false",
-					"ok": false
-				},
-				{
-					"txt": "Paso false",
-					"ok": false
-				},
-				{
-					"txt": "Paso false",
-					"ok": false
-				},
-				{
-					"txt": "Paso false",
-					"ok": false
-				}
-			]
-		},
-		{
-			"situaImg": "assets/images/nivel1/situacion2.png",
-			"situaTxt": "Cómo pedir prestado un libro en biblioteca? ",
-			"nPasos": 3,
-			"accion": [
-				{
-					"txt": "Paso 1",
-					"ok": true,
-					"n": 0
-				},
-				{
-					"txt": "Paso 2",
-					"ok": true,
-					"n": 1
-				},
-				{
-					"txt": "Paso 3",
-					"ok": true,
-					"n": 2
-				},
-				{
-					"txt": "Paso false",
-					"ok": false
-				}
-			]
-		},
-		{
-			"situaImg": "assets/images/nivel1/situacion3.png",
-			"situaTxt": "Cómo contruir un avión de papel? ",
-			"nPasos": 3,
-			"accion": [
-				{
-					"txt": "Paso 1",
-					"ok": true,
-					"n": 0
-				},
-				{
-					"txt": "Paso 2",
-					"ok": true,
-					"n": 1
-				},
-				{
-					"txt": "Paso 3",
-					"ok": true,
-					"n": 2
-				},
-				{
-					"txt": "Paso false",
-					"ok": false
-				}
-			]
-		},
-		{
-			"situaImg": "assets/images/nivel1/situacion4.png",
-			"situaTxt": "Cómo cambiar una llanta? ",
-			"nPasos": 3,
-			"accion": [
-				{
-					"txt": "Paso 1",
-					"ok": true,
-					"n": 0
-				},
-				{
-					"txt": "Paso 2",
-					"ok": true,
-					"n": 1
-				},
-				{
-					"txt": "Paso 3",
-					"ok": true,
-					"n": 2
-				},
-				{
-					"txt": "Paso false",
-					"ok": false
-				}
-			]
-		}
-	]
+    "dataSitua": [
+        {
+            "situaImg": "assets/images/nivel1/situacion1.png",
+            "situaTxt": "Cómo preparar un huevo? ",
+            "nPasos": 8,
+            "accion": [
+                {
+                    "txt": "Prender la estufa",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Poner un sartén en la estufa",
+                    "ok": true,
+                    "n": 1
+                },                
+                {
+                    "txt": "Tomar un huevo",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Romper el huevo",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Echar el huevo dentro del sartén",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Esperar que se cocine el huevo",
+                    "ok": true,
+                    "n": 5
+                },
+                {
+                    "txt": "Tomar un plato",
+                    "ok": true,
+                    "n": 6
+                },
+                {
+                    "txt": "Echar el huevo en el plato",
+                    "ok": true,
+                    "n": 7
+                },
+                {
+                    "txt": "Lavar el plato",
+                    "ok": false
+                },
+                {
+                    "txt": "Echar agua al sarten",
+                    "ok": false
+                },
+                {
+                    "txt": "Lavar el sarten",
+                    "ok": false
+                },
+                {
+                    "txt": "Revolver el arroz con huevo",
+                    "ok": false
+                }
+            ]
+        },
+        {
+            "situaImg": "assets/images/nivel1/situacion2.png",
+            "situaTxt": "Cómo pedir prestado un libro en biblioteca? ",
+            "nPasos": 7,
+            "accion": [
+                {
+                    "txt": "Saber qué libro solicitar",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Dirigirse a la biblioteca",
+                    "ok": true,
+                    "n": 1
+                },
+                {
+                    "txt": "Buscar el libro",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Caminar hacia el servicio de préstamo",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Entregar tu credencial",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Registrar que libro te llevas y cuando lo regresas",
+                    "ok": true,
+                    "n": 5
+                },
+                {
+                    "txt": "Dirigirse a el servicio de préstamo",
+                    "ok": true,
+                    "n": 6
+                },
+                {
+                    "txt": "Esperar el bus",
+                    "ok": false
+                },
+                {
+                    "txt": "Leer el libro ",
+                    "ok": false
+                },
+                {
+                    "txt": "Sentarse en la sala",
+                    "ok": false
+                },
+                {
+                    "txt": "Alistar el dinero",
+                    "ok": false
+                },
+                {
+                    "txt": "Pagar el libro",
+                    "ok": false
+                }
+
+            ]
+        },
+        {
+            "situaImg": "assets/images/nivel1/situacion3.png",
+            "situaTxt": "Cómo contruir un avión de papel? ",
+            "nPasos": 5,
+            "accion": [
+                {
+                    "txt": "Tomar una hoja",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Doblar a la mitad",
+                    "ok": true,
+                    "n": 1
+                },
+                {
+                    "txt": "Doblar las esquinas inferiores",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Volver a doblar a la mitad",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Sacar las puntas",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Romper en la mitad",
+                    "ok": false
+                },
+                {
+                    "txt": "Cortar las esquinas",
+                    "ok": false
+                },
+                {
+                    "txt": "Quemar la punta",
+                    "ok": false
+                },
+                {
+                    "txt": "Pegar stickers",
+                    "ok": false
+                },
+                {
+                    "txt": "Sacar el cuaderno",
+                    "ok": false
+                },
+                {
+                    "txt": "Alistar las tijeras",
+                    "ok": false
+                },
+                {
+                    "txt": "Dibujar el avión",
+                    "ok": false
+                }
+            ]
+        },
+        {
+            "situaImg": "assets/images/nivel1/situacion4.png",
+            "situaTxt": "Cómo cambiar una llanta? ",
+            "nPasos": 8,
+            "accion": [
+                {
+                    "txt": "Revisar que llanta fue",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Colocar el gato hidraulico",
+                    "ok": true,
+                    "n": 1
+                },
+                {
+                    "txt": "Sacar la llave de cruz",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Quitar los tornillos",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Sacar la llanta",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Poner el Repuesto",
+                    "ok": true,
+                    "n": 5
+                },
+                {
+                    "txt": "Poner los tornillos",
+                    "ok": true,
+                    "n": 6
+                },
+                {
+                    "txt": "Quitar el gato hidraulico",
+                    "ok": true,
+                    "n": 7
+                },
+                {
+                    "txt": "Encender el carro",
+                    "ok": false
+                },
+                {
+                    "txt": "Acelerar el carro",
+                    "ok": false
+                },
+                {
+                    "txt": "Echar aire a la llanta",
+                    "ok": false
+                },
+                {
+                    "txt": "Echar gasolina",
+                    "ok": false
+                }
+
+            ]
+        }
+    ]
 }

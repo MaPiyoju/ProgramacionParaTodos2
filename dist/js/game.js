@@ -291,7 +291,7 @@ module.exports = Menu;
   Nivel1.prototype = {
 
     //Definición de propiedades globales de nivel
-    maxtime: 60,
+    maxtime: 120,
     flagpause: false,
     intro:true,
 
@@ -300,8 +300,13 @@ module.exports = Menu;
     nCorrectas: 0,
     nIntentos: 0,
 
+    //Mensajes retroalimentacion nivel
+    msjVacios: ['Creo que aun faltan pasos por completar, sigue intentando!',''],
+    msjOrden: ['Estas cerca, comprueba tus opciones.','Recuerda, un algoritmo es una serie de pasos correctamente ordenados.'],
+    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!',''],
+
     init: function(){
-      this.maxtime= 30;
+      this.maxtime= 120;
       this.flagpause= false; 
       this.intro = true;  
       this.nSituaciones=0;
@@ -394,7 +399,9 @@ module.exports = Menu;
     },
 
     crearSitua: function(nSitua){
-      this.nSituaciones++;//Aumento de conteo situaciones stats
+      if(this.maxtime >= 3){//En caso de quedar 3 segundos de juego la situacion no es tenida en cuenta
+        this.nSituaciones++;//Aumento de conteo situaciones stats
+      }
       var keySitua = '';
       if(this.levelData.dataSitua[nSitua].situaImg){//En caso de contar con imagen para la situacion
         keySitua = 'situa' + (nSitua+1);//Generacion nombre llave de imagen de acuerdo a situacion
@@ -431,7 +438,7 @@ module.exports = Menu;
           //this.slotGroup.add(slot.txtPaso);
           xIniSl += 220;//Aumento x para siguiente slot          
         }
-        yIniSl += 100;//Aumento y para siguiente slot
+        yIniSl += 65;//Aumento y para siguiente slot
       }
 
       //Se realiza creación de acciones o pasos de acuerdo a la situacion
@@ -441,7 +448,8 @@ module.exports = Menu;
       var cont = 0;//Contador para control de creacion de acciones
       this.levelData.dataSitua[nSitua].accion.forEach(function(data){
         var accion = thisTemp.game.add.sprite(xIniAcc,yIniAcc,'fondoAcc');//Creacion objeto de accion
-        accion.texto = thisTemp.game.add.bitmapText(accion.x, accion.y, 'font', data.txt);//Se agrega el texto de la accion
+        accion.texto = thisTemp.game.add.bitmapText(accion.x, accion.y, 'font', data.txt,18);//Se agrega el texto de la accion
+        accion.texto.maxWidth = accion.width - 5;
         accion.texto.anchor.setTo(0.5,0.5);
         accion.xPos = accion.x;//Variable para control de retorno de posicion en X
         accion.yPos = accion.y;//Variable para control de retorno de situacion en Y
@@ -593,7 +601,7 @@ module.exports = Menu;
         this.slotGroup.forEach(function(slot){//Conteo y control de slots llenos
           if(!slot.hasOwnProperty('accion')){
             control = false;
-            thisTemp.alert.show('Creo que aun faltan pasos por completar, sigue intentando!');
+            thisTemp.alert.show(thisTemp.msjVacios[Math.floor(Math.random()*thisTemp.msjVacios.length)]);
             return;
           }
         });
@@ -603,7 +611,7 @@ module.exports = Menu;
               control = false;
               thisTemp.retirarItems();
               thisTemp.revolverItems();
-              thisTemp.alert.show('Ups, algo no anda bien. Intentalo de nuevo!');
+              thisTemp.alert.show(thisTemp.msjError[Math.floor(Math.random()*thisTemp.msjError.length)]);
               return;
             }
           });
@@ -612,7 +620,7 @@ module.exports = Menu;
           this.slotGroup.forEach(function(slot){//Control de slots con elementos en orden correcto
             if(slot.nPaso != slot.accion){
               control = false;
-              thisTemp.alert.show('Estas cerca, comprueba tus opciones.');
+              thisTemp.alert.show(thisTemp.msjOrden[Math.floor(Math.random()*thisTemp.msjOrden.length)]);
               return;
             }
           });
@@ -677,7 +685,7 @@ module.exports = Menu;
       var porcIni = (this.nCorrectas * 100)/this.nIntentos;
       var porcEva = (this.nCorrectas * porcIni)/100;
       if(this.nCorrectas > 0){
-        this.porcentaje = Math.ceil((this.nCorrectas/this.nIntentos) * 100);
+        this.porcentaje = Math.ceil((porcEva/this.nIntentos) * 100);
       }else{
         this.porcentaje = 0;
       }
@@ -733,11 +741,15 @@ module.exports = Menu;
     flagpause: false,
     intro:true,
     gravedad: {min:10,max:30},
+    puntaje: 0,
+    vidas: 5,
 
     init: function(){
       this.maxtime= 60;
       this.flagpause= false; 
       this.intro = true;  
+      this.puntaje = 0;
+      this.vidas = 5;
     },
 
     create: function(){
@@ -766,16 +778,14 @@ module.exports = Menu;
     empezar: function() {
       //Habilitacion de fisicas
       this.physics = this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-      this.game.world.setBounds(0, 0, 800, 600);
+      this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       //Se define el timer de nivel
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(1000, this.updateTimer, this);//Contador de juego
       this.tiempo.loop(3500, this.crearItem, this);//Creacion de items
       this.tiempo.start();
 
-      //Fondo de juego
-      this.game.add.tileSprite(0, 0,800,600, 'tile_nivel2');
+      this.game.add.tileSprite(0, -40,800,600, 'tile_nivel2');//Fondo de juego
       //Creacion del piso
       this.platafGroup = this.game.add.group();
       this.platafGroup.enableBody = true;
@@ -787,11 +797,9 @@ module.exports = Menu;
 
       //Se realiza creacion del jugador
       this.jugador = this.game.add.sprite(32, 490, 'personaje',15);
-      //Habilitacion de fisicas sobre el jugador
-      this.game.physics.arcade.enable(this.jugador);
-      //Propiedades fisicas del jugador (Se agrega un pequeño rebote)
-      this.jugador.body.gravity.y = 550;
-      this.jugador.body.collideWorldBounds = true;
+      this.game.physics.arcade.enable(this.jugador);//Habilitacion de fisicas sobre el jugador
+      this.jugador.body.gravity.y = 550;//Gravedad de jugador
+      this.jugador.body.collideWorldBounds = true;//Colisionar contra limites de escenario
 
       //Se definen las animaciones del jugador
       this.jugador.animations.add('left', [14,13,12,11,10,9,8,7], 15, true);
@@ -802,24 +810,30 @@ module.exports = Menu;
 
       //Creacion del grupo de items
       this.itemsGroup = this.game.add.group();
-      //Habilitacion de colisiones 
-      this.itemsGroup.enableBody = true;
+      this.itemsGroup.enableBody = true;//Habilitacion de colisiones 
       
       //Imagen de fondo para el tiempo
       this.cuadroTime = this.game.add.sprite(((this.game.width)/2), 5,'time');
       this.cuadroTime.anchor.setTo(0.5, 0);
       this.cuadroTime.fixedToCamera = true;
-      //Se setea el texto para el cronometro
-      this.timer = this.game.add.bitmapText((this.game.width/2), 20, 'font', '00:00', 28);
+      this.timer = this.game.add.bitmapText((this.game.width/2), 20, 'font', '00:00', 28);//Se setea el texto para el cronometro
       this.timer.anchor.setTo(0.5, 0);
 
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
 
+      //Creacion vida de jugador
+      this.vidaGroup = this.game.add.group();
+      for(var i=0;i<this.vidas;i++){
+        var vida = this.game.add.sprite(45+(57*i),23,'vida');
+        vida.n = i;
+        this.vidaGroup.add(vida);
+      }      
+      this.vidaGroup.add(this.game.add.sprite(10,10,'fondoVida'));
+
       //Creacion de solicitud de nivel
       this.txtSolicitud = this.game.add.bitmapText(680, 500, 'font', '', 28);
-      this.solicitud();
-
-      this.game.physics.arcade.overlap(this.jugador, this.itemsGroup, this.recogerItem, null, this);//Se define metodo llamado de colision para item - jugador
+      this.solicitud();   
+      this.txtPuntaje = this.game.add.bitmapText(680, 530, 'font', '0', 28);//Creacion texto para puntaje
 
       //Se agrega el boton de pausa
       this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
@@ -842,7 +856,7 @@ module.exports = Menu;
     update: function() {
       if(!this.intro){
         this.game.physics.arcade.collide(this.jugador, this.platafGroup);//Colisiones entre jugador y plataforma piso
-
+        this.game.physics.arcade.overlap(this.jugador, this.itemsGroup, this.recogerItem, null, this);//Se define metodo llamado de colision para item - jugador
         this.jugador.body.velocity.x = 0;//Reseteo de velocidad horizontal si no se presentan acciones sobre el jugador
         //Movimiento de jugador
         if (this.cursors.left.isDown){//Movimiento a la izquierda
@@ -875,11 +889,13 @@ module.exports = Menu;
         if(random == 1){//En caso de creacion
           var tipo = Math.floor(Math.random() * this.levelData.dataTipo.length);//Numero aleatorio para determinar tipo de data de juego
           var xItem = Math.floor(Math.random() * (this.game.width - 50)) + 32;//Posiicion de creacion aleatoria en X
-          var yItem = -40;//Posicion inicial en Y
-          var item = this.itemsGroup.create(xItem, yItem, 'item', tipo);//Creacion de item sobre el grupo de items
+          var yItem = -64;//Posicion inicial en Y
+          var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
           item.tipo = tipo;//Asignacion de tipo aleatorio
+          item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 28);//Creacion texto
+          item.texto = this.game.add.bitmapText(item.x, item.y - 50, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+          item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
         }
@@ -887,25 +903,29 @@ module.exports = Menu;
     },
 
     recogerItem: function (jugador, item) {
-        switch(item.tipo){
-          case 0://Tipo cadena
-            this.score.tipoCadena += 1;
-            this.scoreText[0].setText(this.score.tipoCadena);
-            break;
-          case 1://Tipo numero
-            this.score.tipoNumero += 1;
-            this.scoreText[1].setText(this.score.tipoNumero);
-            break;
-          case 2://Tipo booleano
-            this.score.tipoBool += 1;
-            this.scoreText[2].setText(this.score.tipoBool);
-            break;
-          case 3://Tipo array
-            this.score.tipoArray += 1;
-            this.scoreText[3].setText(this.score.tipoArray);
-            break;
+      if(this.solicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
+        this.puntaje+=20;
+      }else{//En caso de ser un elemento diferente al tipo solicitad
+        this.vidas--;//Se realiza la eliminacion de una vida
+        this.updateVidas();//Se actualiza la barra de vida
+      }
+      this.txtPuntaje.text = this.puntaje;
+      item.texto.destroy();
+      item.destroy();
+    },
+
+    updateVidas: function(){
+      var thisTemp = this;
+      this.vidaGroup.forEach(function(vida){//Se realiza recorrido sobre vidas para asignar o no visibilidad de acuerdo a la cantidad de vidas del jugador
+        if(vida.hasOwnProperty('n')){
+          if(vida.n>thisTemp.vidas-1){
+            console.log(vida.n,' - ',(thisTemp.vidas-1));
+            vida.visible = false;
+          }else{
+            vida.visible = true;
+          }
         }
-        item.kill();
+      });
     },
 
     updateTimer: function() {
@@ -1082,7 +1102,9 @@ Preload.prototype = {
     this.load.image('tile_nivel2','assets/images/Nivel2/tile.jpg');
     this.load.image('piso','assets/images/Nivel2/piso.jpg');
     this.load.spritesheet('personaje','assets/images/Nivel2/personaje.png',48,68);
-    this.load.spritesheet('item','assets/images/Nivel2/item.png',32,31);
+    this.load.spritesheet('item','assets/images/Nivel2/item.png',85,64);
+    this.load.image('fondoVida','assets/images/Nivel2/fondoVida.png');
+    this.load.image('vida','assets/images/Nivel2/vida.png');
 
     this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
 

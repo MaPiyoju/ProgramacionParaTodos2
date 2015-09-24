@@ -7,7 +7,7 @@
   Nivel1.prototype = {
 
     //Definición de propiedades globales de nivel
-    maxtime: 60,
+    maxtime: 120,
     flagpause: false,
     intro:true,
 
@@ -16,8 +16,13 @@
     nCorrectas: 0,
     nIntentos: 0,
 
+    //Mensajes retroalimentacion nivel
+    msjVacios: ['Creo que aun faltan pasos por completar, sigue intentando!',''],
+    msjOrden: ['Estas cerca, comprueba tus opciones.','Recuerda, un algoritmo es una serie de pasos correctamente ordenados.'],
+    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!',''],
+
     init: function(){
-      this.maxtime= 30;
+      this.maxtime= 120;
       this.flagpause= false; 
       this.intro = true;  
       this.nSituaciones=0;
@@ -110,7 +115,9 @@
     },
 
     crearSitua: function(nSitua){
-      this.nSituaciones++;//Aumento de conteo situaciones stats
+      if(this.maxtime >= 3){//En caso de quedar 3 segundos de juego la situacion no es tenida en cuenta
+        this.nSituaciones++;//Aumento de conteo situaciones stats
+      }
       var keySitua = '';
       if(this.levelData.dataSitua[nSitua].situaImg){//En caso de contar con imagen para la situacion
         keySitua = 'situa' + (nSitua+1);//Generacion nombre llave de imagen de acuerdo a situacion
@@ -147,7 +154,7 @@
           //this.slotGroup.add(slot.txtPaso);
           xIniSl += 220;//Aumento x para siguiente slot          
         }
-        yIniSl += 100;//Aumento y para siguiente slot
+        yIniSl += 65;//Aumento y para siguiente slot
       }
 
       //Se realiza creación de acciones o pasos de acuerdo a la situacion
@@ -157,7 +164,8 @@
       var cont = 0;//Contador para control de creacion de acciones
       this.levelData.dataSitua[nSitua].accion.forEach(function(data){
         var accion = thisTemp.game.add.sprite(xIniAcc,yIniAcc,'fondoAcc');//Creacion objeto de accion
-        accion.texto = thisTemp.game.add.bitmapText(accion.x, accion.y, 'font', data.txt);//Se agrega el texto de la accion
+        accion.texto = thisTemp.game.add.bitmapText(accion.x, accion.y, 'font', data.txt,18);//Se agrega el texto de la accion
+        accion.texto.maxWidth = accion.width - 5;
         accion.texto.anchor.setTo(0.5,0.5);
         accion.xPos = accion.x;//Variable para control de retorno de posicion en X
         accion.yPos = accion.y;//Variable para control de retorno de situacion en Y
@@ -309,7 +317,7 @@
         this.slotGroup.forEach(function(slot){//Conteo y control de slots llenos
           if(!slot.hasOwnProperty('accion')){
             control = false;
-            thisTemp.alert.show('Creo que aun faltan pasos por completar, sigue intentando!');
+            thisTemp.alert.show(thisTemp.msjVacios[Math.floor(Math.random()*thisTemp.msjVacios.length)]);
             return;
           }
         });
@@ -319,7 +327,7 @@
               control = false;
               thisTemp.retirarItems();
               thisTemp.revolverItems();
-              thisTemp.alert.show('Ups, algo no anda bien. Intentalo de nuevo!');
+              thisTemp.alert.show(thisTemp.msjError[Math.floor(Math.random()*thisTemp.msjError.length)]);
               return;
             }
           });
@@ -328,7 +336,7 @@
           this.slotGroup.forEach(function(slot){//Control de slots con elementos en orden correcto
             if(slot.nPaso != slot.accion){
               control = false;
-              thisTemp.alert.show('Estas cerca, comprueba tus opciones.');
+              thisTemp.alert.show(thisTemp.msjOrden[Math.floor(Math.random()*thisTemp.msjOrden.length)]);
               return;
             }
           });
@@ -393,7 +401,7 @@
       var porcIni = (this.nCorrectas * 100)/this.nIntentos;
       var porcEva = (this.nCorrectas * porcIni)/100;
       if(this.nCorrectas > 0){
-        this.porcentaje = Math.ceil((this.nCorrectas/this.nIntentos) * 100);
+        this.porcentaje = Math.ceil((porcEva/this.nIntentos) * 100);
       }else{
         this.porcentaje = 0;
       }
