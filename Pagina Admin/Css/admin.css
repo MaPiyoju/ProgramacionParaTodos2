@@ -1,0 +1,207 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto);
+
+html,body{
+	margin:0px;	
+	font-family: 'Roboto', sans-serif;
+	height: 100%;
+}
+
+section{
+
+	width: 100%;
+	height:100%;
+}
+input[type="text"],input[type="password"]{
+	width: 300px;
+	height: 30px;
+	margin: 10px;
+  	border: 2px solid #666666;
+  	border-radius: 3px;  	
+  	font-size:14px;
+  	text-indent: 5px;
+}
+
+.background{
+	height: 100%;
+	background:url('../Images/Background_2.jpg');
+	background-repeat: no-repeat;	
+	background-size: 100% 100%;
+}
+
+.inicio {
+	background:rgba(0, 0, 0, 0.40);	
+	height: 100%;
+	color: #FFF;
+	text-align: center;
+}
+
+.subTitulo{
+	font-size: 42px;
+  	padding-top: 77px;
+}
+
+ .titulo{
+	font-size: 64px;
+  	padding-top: 19px;
+  	color: #65AD47;
+  	margin-bottom: 50px
+}
+
+.inicio .botonjugar{
+  margin: 0 auto;
+  height: 46px;
+  width: 140px;
+  background: #65AD47;
+  border: 2px solid #FFF;
+  border-radius: 5px;
+  margin-top: 31px;
+  font-size: 30px;
+  padding-top: 15px;
+}
+
+.registrarme{
+	text-decoration: underline;
+	color: #FFF;
+	display: block;
+	margin-top: 35px;
+}
+
+#totalJugadores{
+	margin-top: 35px;
+	font-size: 30px;
+}
+
+/*Nosotros*/
+.nosotros{
+	background: #333333;
+	height: 100%;
+}
+.nosotros .header{
+	background: #F3F3F3;
+  height: 70%;
+	background-repeat: no-repeat;	
+	background-size: 100% 100%;
+  color: #000;	  
+}
+
+.nosotros .header .titulo{
+	margin-left: 35px;
+  font-size: 64px;
+  padding-top: 2%; 
+  color: #666666; 	
+}
+
+.nosotros .header .article{
+	vertical-align: top;
+	width: 40%;
+	display: inline-block;
+	padding: 50px;
+}
+.nosotros .header .article p{
+  width: 530px;
+  font-size: 17px;
+  margin-left: 50px;
+  line-height: 24px;
+  text-align: justify;
+}
+.nosotros .footer{
+	padding: 3%;
+	color:#FFF;
+	text-align: center;
+}
+
+.nosotros .footer img{
+	width: 8%;
+	display: inline-block;
+}
+.nosotros .footer p{
+	  display: inline-block;
+  width: 752px;
+  font-size: 20px;
+  margin: 2%;
+  font-style: italic;
+}
+.nosotros .footer p span{
+ 	font-size: 16px;
+  text-align: end;
+  font-style: normal;
+  padding-left: 84%;
+}
+
+
+#niveles{
+		margin: 0 auto;
+		text-align: center;
+		padding-top: 20px;
+}
+
+#niveles ul li{
+	display: inline-block;
+	vertical-align: top;
+	border:1px #E2DCDC  solid;
+	min-width: 250px;
+	width: 15%;
+	height: 450px;
+}
+
+#nivel1 {
+	text-align: center;
+}
+
+#nivel1 .subTitulo{
+	font-size: 32px;
+  	padding-top: 17px;
+}
+
+#nivel1 .titulo{
+	font-size: 54px;
+  	padding-top: 0px;
+  	color: #65AD47;
+  	margin-bottom: 15px
+}
+
+#situaciones{
+	display: inline-block;
+	vertical-align: top;
+	width: 30%;
+	min-width:400px;
+	height: 500px;
+	text-align: right;
+}
+
+#situaciones ul li {
+	background: #F3F3F3;
+	list-style: none;	
+	border:1px #E2DCDC  solid;
+	min-width: 250px;
+	width: 98%;
+	height: 45px;
+	text-align: center;
+}
+
+#formSituacion{
+	display: inline-block;
+	vertical-align: top;
+	width: 60%;
+	min-width:400px;
+	height: 500px;
+}
+
+#formSituacion>div{
+	margin-left: 100px;
+	margin-bottom: 20px;
+	text-align: left;
+}
+
+.cerrar{
+    display: inline-block;
+    margin-left: 42%;
+    font-weight: bold;
+    color: #DE2323;
+    text-transform: uppercase;
+    margin-top: 6px;
+    vertical-align: top;
+}
+.cerrar:hover{
+	cursor: pointer;
+}
