@@ -880,8 +880,8 @@ module.exports = Menu;
   'use strict';
   var Pausa = require('../prefabs/pause');
 
-  function Nivel1() {}
-  Nivel1.prototype = {
+  function Nivel2() {}
+  Nivel2.prototype = {
 
     //Definición de propiedades
     maxtime: 60,
@@ -1040,9 +1040,14 @@ module.exports = Menu;
           var yItem = -64;//Posicion inicial en Y
           var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
           item.tipo = tipo;//Asignacion de tipo aleatorio
+          //Random para crear item dorado
+          item.dorado = false;          
+          if((this.maxtime%8) == 0 ){
+             item.dorado = true;
+          }
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',(item.dorado ? "*" : "")  + this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
           item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
@@ -1133,7 +1138,7 @@ module.exports = Menu;
     }
   };
   
-  module.exports = Nivel1;
+  module.exports = Nivel2;
 },{"../prefabs/pause":4}],11:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
@@ -1491,6 +1496,8 @@ Preload.prototype = {
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
+    /*Audios de juego*/
+    this.load.audio('error', ['assets/audio/error_0.wav']);
   },
 
   create: function() {

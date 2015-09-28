@@ -173,7 +173,7 @@
                     "ok": false
                 },
                 {
-                    "txt": "Sacar el cuaderno",
+                    "txt": "doblar el cuaderno",
                     "ok": false
                 },
                 {
@@ -249,6 +249,193 @@
                 }
 
             ]
-        }
+        },
+        {
+            "situaImg": "assets/images/nivel1/situacion4.png",
+            "situaTxt": "Cómo cambiar una bombilla? ",
+            "nPasos": 5,
+            "accion": [
+                {
+                    "txt": "Revisar que bombilla no funciona",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Apagar el interruptor",
+                    "ok": true,
+                    "n": 1
+                },
+                {
+                    "txt": "Quitar la bombilla",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Poner la nueva bombilla",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Encender la interruptor",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Traer una silla",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Romper la bombilla",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Sacar los alicates",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Quitar los tornillos",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Esperar que oscurezca",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Llamar a un amigo",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Comprar una vela",
+                    "ok": false                    
+                }
+
+            ]
+        },
+        {
+            "situaImg": "assets/images/nivel1/situacion4.png",
+            "situaTxt": "Cómo lavarse los dientes? ",
+            "nPasos": 5,
+            "accion": [
+                {
+                    "txt": "Tomar el cepillo dental",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Aplicar la pasta de dientes",
+                    "ok": true,
+                    "n": 1
+                },
+                {
+                    "txt": "Introducir el cepillo en la boca",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Enjuagar bien la boca",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Secar la boca del agua",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Limpiar y guardar el cepillo",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Lavarse la cara",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Quitarse la ropa",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Aplicar muy bien jabon",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Lavarse las manos",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Cerrar la puerta",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Ponerse la ropa",
+                    "ok": false                    
+                }
+
+            ]
+        },
+        {
+            "situaImg": "assets/images/nivel1/situacion4.png",
+            "situaTxt": "Cómo ver una pelicula en cine ? ",
+            "nPasos": 9,
+            "accion": [
+                {
+                    "txt": "Llegar al cine",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Analizar cartelera",
+                    "ok": true,
+                    "n": 1
+                },
+                {
+                    "txt": "Seleccionar pelicula",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Comprar entradas",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Dirigirse a la sala de la pelicula",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Entregar ticket en la entrada",
+                    "ok": false ,
+                    "n": 5                   
+                },
+                {
+                    "txt": "Hubicarse en los puestos",
+                    "ok": false,
+                    "n": 6                    
+                },
+                {
+                    "txt": "Esperar que empice la pelicula",
+                    "ok": false,
+                    "n": 7                    
+                },
+                {
+                    "txt": "Mirar la pelicula",
+                    "ok": false,
+                    "n": 8                    
+                },
+                {
+                    "txt": "Comprar la pelicula",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Prender el DVD",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Poner la pelicula ",
+                    "ok": false                    
+                }
+
+            ]
+        }   
     ]
 }
