@@ -28,6 +28,7 @@ Preload.prototype = {
     this.load.spritesheet('btnPausa', 'assets/images/Botones/btnPausa.png',45,45);
     this.load.image('fondoPausa', 'assets/images/Botones/fondoPausa.png');
     this.load.spritesheet('OpcPausa', 'assets/images/Botones/opcPausa.png',54,49);
+    this.load.image('estrella', 'assets/images/Botones/estrella.png');
 
     /*Imagenes Menu e intro*/
     this.load.image('intro', 'assets/images/Menu/intro.jpg');
@@ -49,7 +50,6 @@ Preload.prototype = {
     this.load.image('fondoSlot', 'assets/images/Nivel1/fondoSlots.png');
     this.load.image('btnConfirmar', 'assets/images/Nivel1/btnConfirmar.png');
     this.load.image('final1', 'assets/images/Nivel1/final.png');
-    this.load.image('estrella', 'assets/images/Nivel1/estrella.png');
     
     this.load.text('data','assets/data/nivel1.json');//Datos nivel 1
 
@@ -61,8 +61,13 @@ Preload.prototype = {
     this.load.spritesheet('item','assets/images/Nivel2/item.png',85,64);
     this.load.image('fondoVida','assets/images/Nivel2/fondoVida.png');
     this.load.image('vida','assets/images/Nivel2/vida.png');
+    this.load.spritesheet('solicitud','assets/images/Nivel2/solicitud.png',107,28);
 
     this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
+
+    /*Imagenes nivel 3*/
+    this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
+    this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
   },
 

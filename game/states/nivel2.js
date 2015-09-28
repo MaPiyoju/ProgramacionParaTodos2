@@ -51,6 +51,7 @@
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(1000, this.updateTimer, this);//Contador de juego
       this.tiempo.loop(3500, this.crearItem, this);//Creacion de items
+      this.tiempo.loop(15000, this.solicitud, this);//Cambio de solicitud cada 15 segundos
       this.tiempo.start();
 
       this.game.add.tileSprite(0, -40,800,600, 'tile_nivel2');//Fondo de juego
@@ -99,9 +100,9 @@
       this.vidaGroup.add(this.game.add.sprite(10,10,'fondoVida'));
 
       //Creacion de solicitud de nivel
-      this.txtSolicitud = this.game.add.bitmapText(680, 500, 'font', '', 28);
+      this.txtSolicitud = this.game.add.sprite(680, 450, 'solicitud', 0);
       this.solicitud();   
-      this.txtPuntaje = this.game.add.bitmapText(680, 530, 'font', '0', 28);//Creacion texto para puntaje
+      this.txtPuntaje = this.game.add.bitmapText(680, 480, 'font', '0', 28);//Creacion texto para puntaje
 
       //Se agrega el boton de pausa
       this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
@@ -117,8 +118,8 @@
     },
 
     solicitud: function(){
-      this.solicitud = Math.floor(Math.random()*this.levelData.dataTipo.length);
-      this.txtSolicitud.text = this.levelData.dataTipo[this.solicitud].tipo;
+      this.tipoSolicitud = Math.floor(Math.random()*this.levelData.dataTipo.length);
+      this.txtSolicitud.frame = this.tipoSolicitud;
     },
 
     update: function() {
@@ -128,10 +129,10 @@
         this.jugador.body.velocity.x = 0;//Reseteo de velocidad horizontal si no se presentan acciones sobre el jugador
         //Movimiento de jugador
         if (this.cursors.left.isDown){//Movimiento a la izquierda
-          this.jugador.body.velocity.x = -150;
+          this.jugador.body.velocity.x = -200;
           this.jugador.animations.play('jump_left');//Se muestra animacion de salto
         }else if (this.cursors.right.isDown){//Movimiento a la derecha
-          this.jugador.body.velocity.x = 150;
+          this.jugador.body.velocity.x = 200;
           this.jugador.animations.play('jump_right');//Se muestra animacion de salto
         }else{//Idle          
           this.jugador.animations.stop();
@@ -140,7 +141,7 @@
 
         this.itemsGroup.forEach(function(item){
           item.texto.x = item.x;
-          item.texto.y = item.y;
+          item.texto.y = item.y - 25;
 
           if(item.y>item.game.height){
             item.texto.destroy();
@@ -162,7 +163,7 @@
           item.tipo = tipo;//Asignacion de tipo aleatorio
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y - 50, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
           item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
@@ -171,7 +172,7 @@
     },
 
     recogerItem: function (jugador, item) {
-      if(this.solicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
+      if(this.tipoSolicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
         this.puntaje+=20;
       }else{//En caso de ser un elemento diferente al tipo solicitad
         this.vidas--;//Se realiza la eliminacion de una vida

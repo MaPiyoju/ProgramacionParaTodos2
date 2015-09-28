@@ -3,12 +3,12 @@
   Play.prototype = {
     create: function() {
       this.btns = this.game.add.group();
-      this.crearBoton(0,0,'nivel1',195,50,'Hola, aquí aprenderás sobre\nlos tipos de dato básicos de\njavascript. Intentalo!');
-      this.crearBoton(0,100,'nivel2',305,150,'Sumérgete en un juego lleno\nde diversión mientras aprendes\na manipular variables. Vamos!');
-      this.crearBoton(0,200,'nivel3',205,250,'Prueba tu agilidad y lógica por\nmedio del uso de operadores\nlógicos. Empecemos!');
-      this.crearBoton(0,300,'nivel4',310,350,'Preparado?  Conoce, aprende y\nmanipula las estructuras\ncondicionales. Adelante!');
-      this.crearBoton(0,400,'nivel5',205,450,'En esta  ocasión tendrás la\noportunidad de aprender sobre\nestructuras cíclicas. Allá vamos!');
-      this.crearBoton(0,500,'nivel6',308,550,'Estas listo para probar todos\ntus conocimientos? Es hora de\nempezar a codificar. Vamos!');
+      this.crearBoton(0,0,'nivel1',195,50,'');
+      this.crearBoton(0,100,'nivel2',305,150,'');
+      this.crearBoton(0,200,'nivel3',205,250,'');
+      this.crearBoton(0,300,'nivel4',310,350,'');
+      this.crearBoton(0,400,'nivel5',205,450,'');
+      this.crearBoton(0,500,'nivel6',308,550,'');
     },
 
     update: function() {

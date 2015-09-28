@@ -201,7 +201,7 @@
     },
 
     revolverItems: function(){
-      var posiciones = new Array();//Array de control para asignacion de posiciones de elementos
+      var posiciones = [];//Array de control para asignacion de posiciones de elementos
       for(var i=0;i<this.levelData.dataSitua[this.random].accion.length;i++){//LLenado inicial array de control
         posiciones[i] = false;
       }
@@ -394,7 +394,7 @@
       this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
       this.btnRepetir.frame = 0;
 
-      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', 'Número de situaciones: '+this.nSituaciones.toString()+'\nNúmero de intentos: '+this.nIntentos.toString()+'\nNúmero de aciertos: '+this.nCorrectas.toString(), 28);
+      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', '# de situaciones: '+this.nSituaciones.toString()+'\n# de intentos: '+this.nIntentos.toString()+'\n# de aciertos: '+this.nCorrectas.toString(), 28);
       this.txtStats.anchor.setTo(0.5,0.5);
 
       //Asignacion de porcentaje de nivel
@@ -407,8 +407,6 @@
       }
       this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
       this.txtPorc.anchor.setTo(0.5,0.5);
-
-      console.log('C-I: ',porcIni,' Eva: ',porcEva,' E-S: ',this.porcentaje);
 
       //Asignacion de estrellas
       if(this.porcentaje > 0){//1 estrella

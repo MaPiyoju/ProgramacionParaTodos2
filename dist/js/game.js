@@ -11,13 +11,14 @@ window.onload = function () {
   game.state.add('menu', require('./states/menu'));
   game.state.add('nivel1', require('./states/nivel1'));
   game.state.add('nivel2', require('./states/nivel2'));
+  game.state.add('nivel3', require('./states/nivel3'));
   game.state.add('play', require('./states/play'));
   game.state.add('preload', require('./states/preload'));
   
 
   game.state.start('boot');
 };
-},{"./states/boot":4,"./states/gameover":5,"./states/menu":6,"./states/nivel1":7,"./states/nivel2":8,"./states/play":9,"./states/preload":10}],2:[function(require,module,exports){
+},{"./states/boot":6,"./states/gameover":7,"./states/menu":8,"./states/nivel1":9,"./states/nivel2":10,"./states/nivel3":11,"./states/play":12,"./states/preload":13}],2:[function(require,module,exports){
   'use strict';
 
   // Create our pause panel extending Phaser.Group
@@ -62,6 +63,88 @@ window.onload = function () {
  
   module.exports = Alert;
 },{}],3:[function(require,module,exports){
+'use strict';
+
+var Entidad = function(game, x, y, key,frame) {
+  Phaser.Sprite.call(this, game, x, y, key, frame);
+
+  /*Definicion de propiedades*/
+  this.posx = 0;//Posicion relativa de x en el tablero
+  this.posy = 0;//Posicion relativa de y en el tablero
+  this.propiedades = [{nombre:"Posicion X",prop:"posx",val:this.posx},
+                {nombre:"Posicion Y",prop:"posy",val:this.posy}];
+  this.consejos = ["Siempre que abras un parentésis ( recuerda darle cierre )","Fijate siempre en lo que escribes, el mas mínimo error genera fallas en el código","Un error de sintaxis puede deberse a la falta de un paréntesis","Un error de sintaxis puede deberse a puntos(.) repetidos","Si te sientes bloqueado, detente y relajate","Siempre que llames una función o método asegurate de establecer sus propiedades dentro del paréntesis"];
+};
+
+Entidad.prototype = Object.create(Phaser.Sprite.prototype);
+Entidad.prototype.constructor = Entidad;
+
+Entidad.prototype.update = function() {
+};
+
+Entidad.prototype.mostrar = function(msj) {
+  if(!this.txtMostrar){//Se realiza la cracion del mensaje
+    this.txtFondo = this.game.add.sprite(this.x + (this.width * 3)+10,this.y + 20,'globo1');
+    this.txtFondo.anchor.setTo(0.5,0);
+    this.txtMostrar = this.game.add.text(this.txtFondo.x,this.txtFondo.y + 8,msj,{ font: '12px consolas', fill: '#000', align:'left'});
+    this.txtMostrar.anchor.setTo(0.5,0);
+    this.txtMostrar.wordWrap = true;
+    this.txtMostrar.wordWrapWidth = 110;
+    this.txtMostrar.alpha = 0;
+    this.txtFondo.alpha = 0;
+  }else{
+    this.txtFondo.x = this.x + (this.width * 3)+10;
+    this.txtFondo.y = this.y + 40;
+    this.txtMostrar.x = this.txtFondo.x;
+    this.txtMostrar.y = this.txtFondo.y + 15;
+    this.txtMostrar.setText(msj);//Se establece el texto del mensaje
+  }
+  if(!msj){//Texto por defecto
+    this.txtMostrar.setText("Hola");
+  }
+  console.log('Heigth: '+this.txtMostrar.height);
+  if(this.txtMostrar.height < 40){//En caso de contar con una linea
+    this.txtFondo.loadTexture('globo1');
+    this.txtFondo.y = this.y + 20;
+    this.txtMostrar.y = this.txtFondo.y + 8;
+  }else if(this.txtMostrar.height < 87){//En caso de contar con dos hasta 4 lineas
+    this.txtFondo.loadTexture('globo2');
+  }else{//En caso de contrar con mas de 4 lineas
+    this.txtFondo.loadTexture('globo3');
+  }
+  this.msjBandera = true;
+  this.game.add.tween(this.txtMostrar).to({alpha:1}, 350, Phaser.Easing.Linear.None, true);//Animacion para mostrar mensaje
+  this.game.add.tween(this.txtFondo).to({alpha:1}, 350, Phaser.Easing.Linear.None, true);//Animacion para mostrar mensaje
+  setTimeout(this.ocultar,5000,this);//Se realiza el llamado de metodo para ocultar mensaje en 5 segundos
+};
+
+Entidad.prototype.ocultar = function(e) {
+  //Animacion para ocutar mensaje
+  e.game.add.tween(e.txtMostrar).to({alpha:0}, 350, Phaser.Easing.Linear.None, true);
+  e.game.add.tween(e.txtFondo).to({alpha:0}, 350, Phaser.Easing.Linear.None, true);
+  e.msjBandera = false;
+  e.propBandera = false;
+  e.consBandera = false;
+};
+
+Entidad.prototype.prop = function() {
+  var retorno = "";
+  for(var i=0;i<this.propiedades.length;i++){
+    retorno += this.propiedades[i].nombre + ": " + this.propiedades[i].prop + "\n";
+  }
+  this.propBandera = true;
+  return retorno;
+};
+
+Entidad.prototype.consejo = function() {
+  var random = Math.floor(Math.random() * this.consejos.length);
+  this.consBandera = true;
+  return this.consejos[random];
+};
+
+module.exports = Entidad;
+
+},{}],4:[function(require,module,exports){
 
   'use strict';
 
@@ -202,7 +285,73 @@ window.onload = function () {
   };
  
   module.exports = Pause;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
+'use strict';
+
+var Entidad = require('../prefabs/entidad');
+
+var Tablero = function(game, x, y ,xCuadros , yCuadros, parent){
+  Phaser.Group.call(this, game, parent);  
+
+  /*Definicion de propiedades*/
+  this.x = x;
+  this.y = y;
+  this.xCuadros = xCuadros;
+  this.yCuadros = yCuadros;
+  this.dimension = 50;
+
+  //Fondo de tablero
+  //this.fondoTablero = this.game.add.sprite(x-5,y-4,'fondoTablero');
+  //this.add(this.fondoTablero);
+
+  //Se dibuja el tablero con base en los valores de entrada
+  for(var i=0;i<xCuadros;i++){
+    for(var j=0;j<yCuadros;j++){
+      this.dibujarCuadro(x+(i*this.dimension),y+(j*this.dimension),this.dimension);
+    }
+  }
+  this.enableBody = true;//Habilitacion de colisiones en cada elemento del grupo
+};
+
+Tablero.prototype = Object.create(Phaser.Group.prototype);
+Tablero.constructor = Tablero;
+
+Tablero.prototype.update = function() {
+  
+};
+
+Tablero.prototype.dibujarCuadro = function(x,y,dimension) {
+  var cuadro = this.game.add.graphics( 0, 0 );
+  cuadro.beginFill(0x272822, 1);
+  cuadro.lineStyle(1, 0xffffff);
+  cuadro.bounds = new PIXI.Rectangle(x, y, dimension, dimension);
+  cuadro.drawRect(x, y, dimension, dimension);
+  this.add(cuadro);
+};
+
+Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
+  if(obj != ''){//Creacion objeto nuevo en tablero de juego
+    var obj = new Entidad(this.game,this.x+(i*this.dimension),this.y+(j*this.dimension),obj,frame);
+    obj.i = i;
+    obj.j = j;
+    this.add(obj);
+  }else{//Actualizacion posicion objeto en tablero de juego
+    sprite.x = this.x+(i*this.dimension);
+    sprite.i = i;
+    sprite.propiedades[0].val = i;//Se actualiza el valor en propiedades
+    sprite.y = this.y+(j*this.dimension);
+    sprite.j = j;
+    sprite.propiedades[1].val = j;//Se actualiza el valor en propiedades
+  }
+  return obj;
+}
+
+Tablero.prototype.destruir = function() {
+ 
+};
+
+module.exports = Tablero;
+},{"../prefabs/entidad":3}],6:[function(require,module,exports){
 
 'use strict';
 
@@ -221,7 +370,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -249,7 +398,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 
 'use strict';
 function Menu() {}
@@ -281,7 +430,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
   var Alert = require('../prefabs/alert');
@@ -301,9 +450,9 @@ module.exports = Menu;
     nIntentos: 0,
 
     //Mensajes retroalimentacion nivel
-    msjVacios: ['Creo que aun faltan pasos por completar, sigue intentando!',''],
-    msjOrden: ['Estas cerca, comprueba tus opciones.','Recuerda, un algoritmo es una serie de pasos correctamente ordenados.'],
-    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!',''],
+    msjVacios: ['Creo que aun faltan pasos por completar, sigue intentando!','Completa tu algoritmo para cumplir con el objetivo','Recuerda que todos los pasos del algoritmo son importantes para cumplir con su objetivo'],
+    msjOrden: ['Estas cerca, comprueba tus opciones.','Recuerda, un algoritmo es una serie de pasos correctamente ordenados.','El orden de los pasos no es el correcto, Revisa tu algoritmo y ordenalo correctamente.'],
+    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!','Tu algoritmo no cumple con el objetivo solicitado, intentalo de nuevo!','Ups, en tu algoritmo existen pasos que no cumplen o no son necesarios para cumplir con el objetivo'],
 
     init: function(){
       this.maxtime= 120;
@@ -485,7 +634,7 @@ module.exports = Menu;
     },
 
     revolverItems: function(){
-      var posiciones = new Array();//Array de control para asignacion de posiciones de elementos
+      var posiciones = [];//Array de control para asignacion de posiciones de elementos
       for(var i=0;i<this.levelData.dataSitua[this.random].accion.length;i++){//LLenado inicial array de control
         posiciones[i] = false;
       }
@@ -678,7 +827,7 @@ module.exports = Menu;
       this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
       this.btnRepetir.frame = 0;
 
-      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', 'Número de situaciones: '+this.nSituaciones.toString()+'\nNúmero de intentos: '+this.nIntentos.toString()+'\nNúmero de aciertos: '+this.nCorrectas.toString(), 28);
+      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', '# de situaciones: '+this.nSituaciones.toString()+'\n# de intentos: '+this.nIntentos.toString()+'\n# de aciertos: '+this.nCorrectas.toString(), 28);
       this.txtStats.anchor.setTo(0.5,0.5);
 
       //Asignacion de porcentaje de nivel
@@ -691,8 +840,6 @@ module.exports = Menu;
       }
       this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
       this.txtPorc.anchor.setTo(0.5,0.5);
-
-      console.log('C-I: ',porcIni,' Eva: ',porcEva,' E-S: ',this.porcentaje);
 
       //Asignacion de estrellas
       if(this.porcentaje > 0){//1 estrella
@@ -729,7 +876,7 @@ module.exports = Menu;
   };
   
   module.exports = Nivel1;
-},{"../prefabs/alert":2,"../prefabs/pause":3}],8:[function(require,module,exports){
+},{"../prefabs/alert":2,"../prefabs/pause":4}],10:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
 
@@ -783,6 +930,7 @@ module.exports = Menu;
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(1000, this.updateTimer, this);//Contador de juego
       this.tiempo.loop(3500, this.crearItem, this);//Creacion de items
+      this.tiempo.loop(15000, this.solicitud, this);//Cambio de solicitud cada 15 segundos
       this.tiempo.start();
 
       this.game.add.tileSprite(0, -40,800,600, 'tile_nivel2');//Fondo de juego
@@ -831,9 +979,9 @@ module.exports = Menu;
       this.vidaGroup.add(this.game.add.sprite(10,10,'fondoVida'));
 
       //Creacion de solicitud de nivel
-      this.txtSolicitud = this.game.add.bitmapText(680, 500, 'font', '', 28);
+      this.txtSolicitud = this.game.add.sprite(680, 450, 'solicitud', 0);
       this.solicitud();   
-      this.txtPuntaje = this.game.add.bitmapText(680, 530, 'font', '0', 28);//Creacion texto para puntaje
+      this.txtPuntaje = this.game.add.bitmapText(680, 480, 'font', '0', 28);//Creacion texto para puntaje
 
       //Se agrega el boton de pausa
       this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
@@ -849,8 +997,8 @@ module.exports = Menu;
     },
 
     solicitud: function(){
-      this.solicitud = Math.floor(Math.random()*this.levelData.dataTipo.length);
-      this.txtSolicitud.text = this.levelData.dataTipo[this.solicitud].tipo;
+      this.tipoSolicitud = Math.floor(Math.random()*this.levelData.dataTipo.length);
+      this.txtSolicitud.frame = this.tipoSolicitud;
     },
 
     update: function() {
@@ -860,10 +1008,10 @@ module.exports = Menu;
         this.jugador.body.velocity.x = 0;//Reseteo de velocidad horizontal si no se presentan acciones sobre el jugador
         //Movimiento de jugador
         if (this.cursors.left.isDown){//Movimiento a la izquierda
-          this.jugador.body.velocity.x = -150;
+          this.jugador.body.velocity.x = -200;
           this.jugador.animations.play('jump_left');//Se muestra animacion de salto
         }else if (this.cursors.right.isDown){//Movimiento a la derecha
-          this.jugador.body.velocity.x = 150;
+          this.jugador.body.velocity.x = 200;
           this.jugador.animations.play('jump_right');//Se muestra animacion de salto
         }else{//Idle          
           this.jugador.animations.stop();
@@ -872,7 +1020,7 @@ module.exports = Menu;
 
         this.itemsGroup.forEach(function(item){
           item.texto.x = item.x;
-          item.texto.y = item.y;
+          item.texto.y = item.y - 25;
 
           if(item.y>item.game.height){
             item.texto.destroy();
@@ -894,7 +1042,7 @@ module.exports = Menu;
           item.tipo = tipo;//Asignacion de tipo aleatorio
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y - 50, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
           item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
@@ -903,7 +1051,7 @@ module.exports = Menu;
     },
 
     recogerItem: function (jugador, item) {
-      if(this.solicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
+      if(this.tipoSolicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
         this.puntaje+=20;
       }else{//En caso de ser un elemento diferente al tipo solicitad
         this.vidas--;//Se realiza la eliminacion de una vida
@@ -986,18 +1134,248 @@ module.exports = Menu;
   };
   
   module.exports = Nivel1;
-},{"../prefabs/pause":3}],9:[function(require,module,exports){
+},{"../prefabs/pause":4}],11:[function(require,module,exports){
+  'use strict';
+  var Pausa = require('../prefabs/pause');
+  var Alert = require('../prefabs/alert');
+  var Tablero = require('../prefabs/tablero');
+
+  function Nivel3() {}
+
+  Nivel3.prototype = {
+
+    //Definición de propiedades globales de nivel
+    maxtime: 120,
+    flagpause: false,
+    intro:true,
+    movimiento: 0,
+    gusanoGroup: null,
+    cuerpoGroup: null,
+    itemGroup: null,
+
+    init: function(){
+      this.maxtime= 120;
+      this.flagpause= false; 
+      this.intro = true;
+      this.movimiento = 0;
+      this.gusanoGroup = [];
+      this.cuerpoGroup = [];
+      this.itemGroup = [];
+    },
+
+    create: function(){
+      //Parseo de datos de juego para su uso
+      this.levelData = JSON.parse(this.game.cache.getText('data'));
+      this.situaLength = this.levelData.dataSitua.length;//Cantidad de situaciones de nivel
+
+      this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
+      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
+      this.game.input.onDown.add(this.iniciarJuego,this);
+      this.game.add.bitmapText(60, 150, 'font', 'Bienvenido,', 24);
+    },
+
+    iniciarJuego : function(game){
+      var x1 = 115;
+      var x2 = 264;
+      var y1 = 480;
+      var y2 = 550;
+      if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+        if(this.intro){
+          this.empezar();
+        }
+      }
+    },
+
+    empezar: function(){
+      this.physics = this.game.physics.startSystem(Phaser.Physics.ARCADE);//Habilitacion de fisicas
+      this.intro = false;//Se deshabilita el intro de juego
+      this.introImg.kill();//Se elimina imagen de intro
+
+      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel1');//Fondo de juego
+      //this.random = Math.floor(Math.random() * this.situaLength);//Se realiza la carga de una situación de forma aleatoria
+      
+      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
+      this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano', null, 0);
+      this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
+      this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
+      this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
+      this.comerItem();//Creacion bolas iniciales de gusano
+      this.comerItem();//Creacion bolas iniciales de gusano
+
+      this.tiempo = this.game.time.create(false);
+      this.tiempo.loop(125, this.updateMov, this);//Actualizacion movimiento jugador
+      this.tiempo.start();
+
+      this.alert = new Alert(this.game);//Creacion onjeto de alerta
+      //Se agrega el boton de pausa
+      this.btnPausa = this.game.add.button((this.game.width - 81), 10, 'btnPausa');
+      this.btnPausa.frame = 1;
+      this.btnPausa.fixedToCamera = true;
+
+      //Se incluye el panel de pausa al nivel
+      this.pnlPausa = new Pausa(this.game);
+      this.game.add.existing(this.pnlPausa);
+      this.game.input.onDown.add(this.pausaJuego,this);
+    },
+
+    update: function() {
+      if(!this.intro){
+        this.game.physics.arcade.overlap(this.gusano, this.itemGroup, this.comerItem, null, this);//Se define metodo llamado de colision para item - cabeza
+        this.game.physics.arcade.overlap(this.gusano, this.cuerpoGroup, this.chocar, null, this);//Se define metodo llamado de colision para cuerpo - cabeza
+        //Definicion movimiento de jugador por medio de cursores de movimiento(Flechas teclado)
+        if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
+          this.movimiento = 0;
+        }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
+          this.movimiento = 1;
+        }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
+          this.movimiento = 2;
+        }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
+          this.movimiento = 3;
+        }
+      }
+    },
+
+    updateMov: function(){
+      this.gusano.lasti = this.gusano.i;//Posicion actual X cabeza para siguiente elemento
+      this.gusano.lastj = this.gusano.j;//Posicion actual Y cabeza para siguiente elemento
+      //Movimiento cabeza de gusano
+      switch(this.movimiento){
+        case 0://Movimiento hacia la derecha
+          if(this.gusano.i == this.tablero.xCuadros - 1){//Limite de tablero
+            this.gusano.i = -1;
+          }
+          this.tablero.setObjCuadro(this.gusano.i+1,this.gusano.j,'',this.gusano,0);
+          break;
+        case 1://Movimiento hacia la izquierda
+          if(this.gusano.i == 0){//Limite de tablero
+            this.gusano.i = this.tablero.xCuadros;
+          }
+          this.tablero.setObjCuadro(this.gusano.i-1,this.gusano.j,'',this.gusano,0);
+          break;
+        case 2://Movimiento hacia arriba
+          if(this.gusano.j == 0){//Limite de tablero
+            this.gusano.j = this.tablero.yCuadros;
+          }
+          this.tablero.setObjCuadro(this.gusano.i,this.gusano.j-1,'',this.gusano,0);
+          break;
+        case 3://Movimiento hacie abajo
+          if(this.gusano.j == this.tablero.yCuadros - 1){//Limite de tablero
+            this.gusano.j = -1;
+          }
+          this.tablero.setObjCuadro(this.gusano.i,this.gusano.j+1,'',this.gusano,0);
+          break;
+      }
+      //Movimiento cuerpo gusano
+      for(var i=1;i<this.gusanoGroup.length;i++){//Empieza en 1 para omitir la cabeza de gusano
+        this.gusanoGroup[i].lasti = this.gusanoGroup[i].i;
+        this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
+        this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);
+      }
+    },
+
+    crearItem: function(){
+      var xRandom = Math.floor(Math.random()*this.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
+      var yRandom = Math.floor(Math.random()*this.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
+      this.itemGroup.push(this.tablero.setObjCuadro(xRandom, yRandom, 'itemGusano', null, 0));
+    },
+
+    comerItem: function(cabeza, item){
+      if(item){
+        item.destroy();
+      }
+      var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].i, this.gusanoGroup[this.gusanoGroup.length-1].j, 'gusano', null, 1);
+      switch(this.movimiento){
+        case 0://En caso de movimiento hacia la derecha
+          this.tablero.setObjCuadro(this.gusano.i-1, this.gusano.j, '', bola, 1);
+          break;
+        case 1://En caso de movimiento hacia la izquierda
+          this.tablero.setObjCuadro(this.gusano.i+1, this.gusano.j, '', bola, 1);
+          break;
+        case 2://En caso de movimiento hacia arriba
+          this.tablero.setObjCuadro(this.gusano.i, this.gusano.j+1, '', bola, 1);
+          break;
+        case 3://En caso de movimiento hacia abajo
+          this.tablero.setObjCuadro(this.gusano.i, this.gusano.j-1, '', bola, 1);
+          break;
+      }
+      this.cuerpoGroup.push(bola);
+      this.gusanoGroup.push(bola);
+      this.crearItem();//Creacion nuevo item
+    },
+
+    chocar: function(cabeza, cuerpo){
+      this.showStats();//Mostrar estadisticas
+      //Detener metodo de update
+      this.tiempo.stop();
+    },
+
+    showStats: function(){
+      this.btnPausa.kill();//Se retira el boton de pausa
+      //this.retirarItems();//Retirar elementos de juego
+      this.alert.hide();//REtirar alerta de retroalimentacion
+      //Creacion cuadro retroalimentación final
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal.anchor.setTo(0.5,0.5);
+      this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
+      this.btnMenu.frame = 2;
+      this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
+      this.btnRepetir.frame = 0;
+
+      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', '', 28);
+      this.txtStats.anchor.setTo(0.5,0.5);
+
+      this.porcentaje = 0;
+      
+      this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
+      this.txtPorc.anchor.setTo(0.5,0.5);
+
+      //Asignacion de estrellas
+      if(this.porcentaje > 0){//1 estrella
+        this.game.add.sprite(221,227,'estrella');
+      }
+      if(this.porcentaje > 49){//2 estrellas
+        this.game.add.sprite(348,227,'estrella');
+      }
+      if(this.porcentaje > 99){//3 estrellas
+        this.game.add.sprite(471,227,'estrella');
+      }
+    },    
+
+    pausaJuego: function(game){
+      var x1 = (this.game.width - 81);
+      var x2 = (this.game.width - 36);
+      var y1 = 10;
+      var y2 = 55;
+      if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+        if(this.game.paused == false){
+          //Se muestra panel de pausa
+          if(this.flagpause==false){
+            this.pnlPausa.show();   
+            this.flagpause = true;
+          }            
+        }else{
+          //Se esconde el panel de pausa
+          this.game.paused = false;
+          this.pnlPausa.hide();
+          this.flagpause = false;
+        }
+      }
+    }
+  };
+  
+  module.exports = Nivel3;
+},{"../prefabs/alert":2,"../prefabs/pause":4,"../prefabs/tablero":5}],12:[function(require,module,exports){
   'use strict';
   function Play() {}
   Play.prototype = {
     create: function() {
       this.btns = this.game.add.group();
-      this.crearBoton(0,0,'nivel1',195,50,'Hola, aquí aprenderás sobre\nlos tipos de dato básicos de\njavascript. Intentalo!');
-      this.crearBoton(0,100,'nivel2',305,150,'Sumérgete en un juego lleno\nde diversión mientras aprendes\na manipular variables. Vamos!');
-      this.crearBoton(0,200,'nivel3',205,250,'Prueba tu agilidad y lógica por\nmedio del uso de operadores\nlógicos. Empecemos!');
-      this.crearBoton(0,300,'nivel4',310,350,'Preparado?  Conoce, aprende y\nmanipula las estructuras\ncondicionales. Adelante!');
-      this.crearBoton(0,400,'nivel5',205,450,'En esta  ocasión tendrás la\noportunidad de aprender sobre\nestructuras cíclicas. Allá vamos!');
-      this.crearBoton(0,500,'nivel6',308,550,'Estas listo para probar todos\ntus conocimientos? Es hora de\nempezar a codificar. Vamos!');
+      this.crearBoton(0,0,'nivel1',195,50,'');
+      this.crearBoton(0,100,'nivel2',305,150,'');
+      this.crearBoton(0,200,'nivel3',205,250,'');
+      this.crearBoton(0,300,'nivel4',310,350,'');
+      this.crearBoton(0,400,'nivel5',205,450,'');
+      this.crearBoton(0,500,'nivel6',308,550,'');
     },
 
     update: function() {
@@ -1041,7 +1419,7 @@ module.exports = Menu;
   };
   
   module.exports = Play;
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 
 'use strict';
 function Preload() {
@@ -1072,6 +1450,7 @@ Preload.prototype = {
     this.load.spritesheet('btnPausa', 'assets/images/Botones/btnPausa.png',45,45);
     this.load.image('fondoPausa', 'assets/images/Botones/fondoPausa.png');
     this.load.spritesheet('OpcPausa', 'assets/images/Botones/opcPausa.png',54,49);
+    this.load.image('estrella', 'assets/images/Botones/estrella.png');
 
     /*Imagenes Menu e intro*/
     this.load.image('intro', 'assets/images/Menu/intro.jpg');
@@ -1093,7 +1472,6 @@ Preload.prototype = {
     this.load.image('fondoSlot', 'assets/images/Nivel1/fondoSlots.png');
     this.load.image('btnConfirmar', 'assets/images/Nivel1/btnConfirmar.png');
     this.load.image('final1', 'assets/images/Nivel1/final.png');
-    this.load.image('estrella', 'assets/images/Nivel1/estrella.png');
     
     this.load.text('data','assets/data/nivel1.json');//Datos nivel 1
 
@@ -1105,8 +1483,13 @@ Preload.prototype = {
     this.load.spritesheet('item','assets/images/Nivel2/item.png',85,64);
     this.load.image('fondoVida','assets/images/Nivel2/fondoVida.png');
     this.load.image('vida','assets/images/Nivel2/vida.png');
+    this.load.spritesheet('solicitud','assets/images/Nivel2/solicitud.png',107,28);
 
     this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
+
+    /*Imagenes nivel 3*/
+    this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
+    this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
   },
 
