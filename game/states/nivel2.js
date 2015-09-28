@@ -168,7 +168,7 @@
           }
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',(item.dorado ? "*" + "")  + this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',(item.dorado ? "*" : "")  + this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
           item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
