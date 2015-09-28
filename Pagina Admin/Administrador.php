@@ -2,6 +2,7 @@
 // Lee el fichero en una variable,
 // y convierte su contenido a una estructura de datos
 $str_datos = file_get_contents("../assets/data/nivel1.json");
+$str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +18,7 @@ $str_datos = file_get_contents("../assets/data/nivel1.json");
 	<script type="text/javascript" src="Scripts/Nivel1.js"></script>	
 	<script type="text/javascript">
 		var DatosJson = <?php echo $str_datos; ?>;	
+		var DatosNiv2 = <?php echo $str_datos_2; ?>;	
 	</script>
 </head>
 <body>	
@@ -95,10 +97,46 @@ $str_datos = file_get_contents("../assets/data/nivel1.json");
 					<input style="margin-right: 10px;" type="button" id="btnGuardarSituacion" ng-click="niv1.AddSituacion()" value="Guardar"/> 
 				</div>
 		</section>		
-		<section id="nivel1" ng-controller="ControllerNiv1 as niv1">
+		<section id="nivel1" ng-controller="ControllerNiv2 as niv2">
 			<div class="subTitulo">Nivel 2</div>
 			<div class="titulo">Datos</div>			
-			
+			<div class="TipoDatos">
+				<div class="title">
+					Reales
+				</div>
+				<div class="contentExpresiones">
+						<ul >
+							 <li  ng-repeat="expresion in niv2.Reales.exp"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" >x</div></li>
+						</ul>
+				</div>
+
+				<input type="text" id="txtExpresionReales"   />
+				<input type="button" id="btnGuardarExpresionReales" value="+" ng-click="niv2.AddReales()" /> 
+			</div>
+			<div class="TipoDatos">
+				<div class="title">
+					Booleanos
+				</div>
+				<div class="contentExpresiones">
+						<ul >
+							 <li  ng-repeat="expresion in niv2.Booleans.exp"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" >x</div></li>
+						</ul>
+				</div>
+				<input type="text" id="txtExpresionBoleanos"   />
+				<input type="button" id="btnGuardarExpresionBoleanos" value="+" /> 
+			</div>
+			<div class="TipoDatos">
+				<div class="title">
+					Enteros
+				</div>
+				<div class="contentExpresiones">
+						<ul >
+							 <li  ng-repeat="expresion in niv2.Enteros.exp"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" >x</div></li>
+						</ul>
+				</div>
+				<input type="text" id="txtExpresionEnteros"   />
+				<input type="button" id="btnGuardarExpresionEnteros" value="+" /> 
+			</div>
 		</section>		
 </body>
 

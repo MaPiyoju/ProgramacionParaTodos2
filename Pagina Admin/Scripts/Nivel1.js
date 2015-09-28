@@ -21,6 +21,12 @@ function indexElement(result,name){
 	return indice;
 }		
 
+function filterDatosNiv2(textfilter,datos2){
+	$.grep(datos2.dataTipo, function(element, index){
+  		return element.tipo== textfilter;
+	});
+}
+
 var miapp = angular.module('miapp',[]);   
 miapp.controller('ControllerNiv1', function () {				
 	this.Situaciones = DatosJson;
@@ -123,4 +129,14 @@ miapp.controller('ControllerNiv1', function () {
 	};
 });  
 
+miapp.controller('ControllerNiv2',function(){
+	this.TiposDatos = DatosNiv2;
+	this.Reales = ($.grep(this.TiposDatos.dataTipo, function(element, index){  		return element.tipo== "reales";	}))[0];
+	this.Booleans = ($.grep(this.TiposDatos.dataTipo, function(element, index){  		return element.tipo== "boolean";	}))[0];
+	this.Enteros = ($.grep(this.TiposDatos.dataTipo, function(element, index){  		return element.tipo== "enteros";	}))[0];
+	
+	this.AddReales = function(){
+		this.Reales.exp.push($("#txtExpresionReales").val());
+	};
 
+});

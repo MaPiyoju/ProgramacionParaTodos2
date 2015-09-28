@@ -161,9 +161,14 @@
           var yItem = -64;//Posicion inicial en Y
           var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
           item.tipo = tipo;//Asignacion de tipo aleatorio
+          //Random para crear item dorado
+          item.dorado = false;          
+          if((this.maxtime%8) == 0 ){
+             item.dorado = true;
+          }
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font', this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',(item.dorado ? "*" + "")  + this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
           item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
@@ -254,4 +259,4 @@
     }
   };
   
-  module.exports = Nivel1;
+  module.exports = Nivel2;

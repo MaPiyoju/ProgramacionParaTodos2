@@ -205,3 +205,32 @@ input[type="text"],input[type="password"]{
 .cerrar:hover{
 	cursor: pointer;
 }
+
+
+.TipoDatos{
+	display:inline-block;
+	vertical-align: top;
+	width: 20%;
+	max-height: 350px;
+	border:1px #E2DCDC  solid;
+
+}
+
+.TipoDatos .title{
+	border:1px #E2DCDC  solid;
+	font-weight: bold;
+	font-size: 20px;
+	background: #E2DCDC;
+	height: 35px;
+	margin-bottom: 10px;
+}
+
+.TipoDatos .contentExpresiones>ul li{
+	border-bottom: 1px #E2DCDC  solid;
+	text-align: left;
+	margin-right: 27px;
+}
+
+.TipoDatos .contentExpresiones>ul li>div{
+	margin-top: 0px;
+}
