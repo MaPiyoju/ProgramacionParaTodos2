@@ -11,6 +11,7 @@
     gravedad: {min:10,max:30},
     puntaje: 0,
     vidas: 5,
+    countBonus: 0,
 
     init: function(){
       this.maxtime= 60;
@@ -18,6 +19,7 @@
       this.intro = true;  
       this.puntaje = 0;
       this.vidas = 5;
+      this.countBonus = 0;
     },
 
     create: function(){
@@ -153,6 +155,7 @@
     },
 
     crearItem: function(){
+      this.countBonus++;
       for (var i = 0; i < 5; i++){
         var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
         if(random == 1){//En caso de creacion
@@ -163,7 +166,7 @@
           item.tipo = tipo;//Asignacion de tipo aleatorio
           //Random para crear item dorado
           item.dorado = false;          
-          if((this.maxtime%8) == 0 ){
+          if((this.countBonus%5) == 0 && i==0){
              item.dorado = true;
           }
           item.anchor.setTo(0.5,0.5);
