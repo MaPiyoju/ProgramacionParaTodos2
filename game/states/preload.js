@@ -70,7 +70,7 @@ Preload.prototype = {
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
     /*Audios de juego*/
-    this.load.audio('error', ['assets/audio/error_0.wav']);
+    this.load.audio('errorSound', ['assets/audio/error_0.wav']);
   },
 
   create: function() {

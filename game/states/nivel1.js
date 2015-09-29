@@ -28,6 +28,9 @@
       this.nSituaciones=0;
       this.nCorrectas=0;
       this.nIntentos=0;
+
+      //Se incluyen audios de juego
+      this.errorSound = this.game.add.audio('errorSound');
     },
 
     create: function(){
@@ -317,6 +320,7 @@
         this.slotGroup.forEach(function(slot){//Conteo y control de slots llenos
           if(!slot.hasOwnProperty('accion')){
             control = false;
+            thisTemp.errorSound.play();
             thisTemp.alert.show(thisTemp.msjVacios[Math.floor(Math.random()*thisTemp.msjVacios.length)]);
             return;
           }
@@ -327,6 +331,7 @@
               control = false;
               thisTemp.retirarItems();
               thisTemp.revolverItems();
+              thisTemp.errorSound.play();
               thisTemp.alert.show(thisTemp.msjError[Math.floor(Math.random()*thisTemp.msjError.length)]);
               return;
             }
@@ -336,6 +341,7 @@
           this.slotGroup.forEach(function(slot){//Control de slots con elementos en orden correcto
             if(slot.nPaso != slot.accion){
               control = false;
+              thisTemp.errorSound.play();
               thisTemp.alert.show(thisTemp.msjOrden[Math.floor(Math.random()*thisTemp.msjOrden.length)]);
               return;
             }

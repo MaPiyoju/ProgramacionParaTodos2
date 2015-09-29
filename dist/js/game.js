@@ -461,6 +461,9 @@ module.exports = Menu;
       this.nSituaciones=0;
       this.nCorrectas=0;
       this.nIntentos=0;
+
+      //Se incluyen audios de juego
+      this.errorSound = this.game.add.audio('errorSound');
     },
 
     create: function(){
@@ -750,6 +753,7 @@ module.exports = Menu;
         this.slotGroup.forEach(function(slot){//Conteo y control de slots llenos
           if(!slot.hasOwnProperty('accion')){
             control = false;
+            thisTemp.errorSound.play();
             thisTemp.alert.show(thisTemp.msjVacios[Math.floor(Math.random()*thisTemp.msjVacios.length)]);
             return;
           }
@@ -760,6 +764,7 @@ module.exports = Menu;
               control = false;
               thisTemp.retirarItems();
               thisTemp.revolverItems();
+              thisTemp.errorSound.play();
               thisTemp.alert.show(thisTemp.msjError[Math.floor(Math.random()*thisTemp.msjError.length)]);
               return;
             }
@@ -769,6 +774,7 @@ module.exports = Menu;
           this.slotGroup.forEach(function(slot){//Control de slots con elementos en orden correcto
             if(slot.nPaso != slot.accion){
               control = false;
+              thisTemp.errorSound.play();
               thisTemp.alert.show(thisTemp.msjOrden[Math.floor(Math.random()*thisTemp.msjOrden.length)]);
               return;
             }
@@ -890,6 +896,7 @@ module.exports = Menu;
     gravedad: {min:10,max:30},
     puntaje: 0,
     vidas: 5,
+    countBonus: 0,
 
     init: function(){
       this.maxtime= 60;
@@ -897,6 +904,7 @@ module.exports = Menu;
       this.intro = true;  
       this.puntaje = 0;
       this.vidas = 5;
+      this.countBonus = 0;
     },
 
     create: function(){
@@ -1032,6 +1040,7 @@ module.exports = Menu;
     },
 
     crearItem: function(){
+      this.countBonus++;
       for (var i = 0; i < 5; i++){
         var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
         if(random == 1){//En caso de creacion
@@ -1042,7 +1051,7 @@ module.exports = Menu;
           item.tipo = tipo;//Asignacion de tipo aleatorio
           //Random para crear item dorado
           item.dorado = false;          
-          if((this.maxtime%8) == 0 ){
+          if((this.countBonus%5) == 0 && i==0){
              item.dorado = true;
           }
           item.anchor.setTo(0.5,0.5);
@@ -1497,7 +1506,7 @@ Preload.prototype = {
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
     /*Audios de juego*/
-    this.load.audio('error', ['assets/audio/error_0.wav']);
+    this.load.audio('errorSound', ['assets/audio/error_0.wav']);
   },
 
   create: function() {
