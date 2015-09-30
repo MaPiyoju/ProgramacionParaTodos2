@@ -69,6 +69,8 @@ Preload.prototype = {
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
+    /*Audios de juego*/
+    this.load.audio('errorSound', ['assets/audio/error_0.wav']);
   },
 
   create: function() {

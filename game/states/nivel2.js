@@ -1,8 +1,8 @@
   'use strict';
   var Pausa = require('../prefabs/pause');
 
-  function Nivel1() {}
-  Nivel1.prototype = {
+  function Nivel2() {}
+  Nivel2.prototype = {
 
     //Definición de propiedades
     maxtime: 60,

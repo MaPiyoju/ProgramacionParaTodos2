@@ -461,6 +461,9 @@ module.exports = Menu;
       this.nSituaciones=0;
       this.nCorrectas=0;
       this.nIntentos=0;
+
+      //Se incluyen audios de juego
+      this.errorSound = this.game.add.audio('errorSound');
     },
 
     create: function(){
@@ -750,6 +753,7 @@ module.exports = Menu;
         this.slotGroup.forEach(function(slot){//Conteo y control de slots llenos
           if(!slot.hasOwnProperty('accion')){
             control = false;
+            thisTemp.errorSound.play();
             thisTemp.alert.show(thisTemp.msjVacios[Math.floor(Math.random()*thisTemp.msjVacios.length)]);
             return;
           }
@@ -760,6 +764,7 @@ module.exports = Menu;
               control = false;
               thisTemp.retirarItems();
               thisTemp.revolverItems();
+              thisTemp.errorSound.play();
               thisTemp.alert.show(thisTemp.msjError[Math.floor(Math.random()*thisTemp.msjError.length)]);
               return;
             }
@@ -769,6 +774,7 @@ module.exports = Menu;
           this.slotGroup.forEach(function(slot){//Control de slots con elementos en orden correcto
             if(slot.nPaso != slot.accion){
               control = false;
+              thisTemp.errorSound.play();
               thisTemp.alert.show(thisTemp.msjOrden[Math.floor(Math.random()*thisTemp.msjOrden.length)]);
               return;
             }
@@ -880,8 +886,8 @@ module.exports = Menu;
   'use strict';
   var Pausa = require('../prefabs/pause');
 
-  function Nivel1() {}
-  Nivel1.prototype = {
+  function Nivel2() {}
+  Nivel2.prototype = {
 
     //Definición de propiedades
     maxtime: 60,
@@ -890,8 +896,12 @@ module.exports = Menu;
     gravedad: {min:10,max:30},
     puntaje: 0,
     vidas: 5,
+<<<<<<< HEAD
     intentos:0,
     aciertos:0,
+=======
+    countBonus: 0,
+>>>>>>> origin/master
 
     init: function(){
       this.maxtime= 60;
@@ -899,8 +909,12 @@ module.exports = Menu;
       this.intro = true;  
       this.puntaje = 0;
       this.vidas = 5;
+<<<<<<< HEAD
       this.intentos = 0;
       this.aciertos = 0;
+=======
+      this.countBonus = 0;
+>>>>>>> origin/master
     },
 
     create: function(){
@@ -1036,7 +1050,12 @@ module.exports = Menu;
       }
     },
 
+<<<<<<< HEAD
     crearItem: function(){     
+=======
+    crearItem: function(){
+      this.countBonus++;
+>>>>>>> origin/master
       for (var i = 0; i < 5; i++){
         var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
         if(random == 1){//En caso de creacion
@@ -1045,10 +1064,21 @@ module.exports = Menu;
           var yItem = -64;//Posicion inicial en Y
           var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
           item.tipo = tipo;//Asignacion de tipo aleatorio
+<<<<<<< HEAD
           
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
           item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+=======
+          //Random para crear item dorado
+          item.dorado = false;          
+          if((this.countBonus%5) == 0 && i==0){
+             item.dorado = true;
+          }
+          item.anchor.setTo(0.5,0.5);
+          var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
+          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',(item.dorado ? "*" : "")  + this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+>>>>>>> origin/master
           item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
@@ -1211,7 +1241,7 @@ module.exports = Menu;
     }
   };
   
-  module.exports = Nivel1;
+  module.exports = Nivel2;
 },{"../prefabs/pause":4}],11:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
@@ -1569,6 +1599,8 @@ Preload.prototype = {
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
+    /*Audios de juego*/
+    this.load.audio('errorSound', ['assets/audio/error_0.wav']);
   },
 
   create: function() {
