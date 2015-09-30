@@ -26,6 +26,7 @@ Preload.prototype = {
     this.load.image('alert','assets/images/Botones/alert.png');
     this.load.image('time','assets/images/Botones/time.png');
     this.load.spritesheet('btnPausa', 'assets/images/Botones/btnPausa.png',45,45);
+    this.load.image('btnCerrar', 'assets/images/Botones/btnCerrar.png');
     this.load.image('fondoPausa', 'assets/images/Botones/fondoPausa.png');
     this.load.spritesheet('OpcPausa', 'assets/images/Botones/opcPausa.png',54,49);
     this.load.image('estrella', 'assets/images/Botones/estrella.png');
@@ -70,7 +71,10 @@ Preload.prototype = {
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
     /*Audios de juego*/
-    this.load.audio('errorSound', ['assets/audio/error_0.wav']);
+    this.load.audio('menuBgMusic', ['assets/audio/BgLoop/menu.ogg','assets/audio/BgLoop/menu.mp3']);
+
+    this.load.audio('menuoverSound', ['assets/audio/menuOver.ogg','assets/audio/menuOver.mp3']);
+    this.load.audio('errorSound', ['assets/audio/error_0.ogg','assets/audio/error_0.mp3']);
   },
 
   create: function() {

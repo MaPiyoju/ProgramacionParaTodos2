@@ -407,19 +407,16 @@ Menu.prototype = {
   preload: function() {
 
   },
-  create: function() {
-    var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
-    this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'yeoman');
+  create: function() {    
+    this.sprite = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'intro');
     this.sprite.anchor.setTo(0.5, 0.5);
 
-    this.titleText = this.game.add.text(this.game.world.centerX, 300, '\'Allo, \'Allo!', style);
-    this.titleText.anchor.setTo(0.5, 0.5);
+    this.bgMusic = this.game.add.audio('menuBgMusic',0.25,true);
+    this.bgMusic.play();
+  },
 
-    this.instructionsText = this.game.add.text(this.game.world.centerX, 400, 'Click anywhere to play "Click The Yeoman Logo"', { font: '16px Arial', fill: '#ffffff', align: 'center'});
-    this.instructionsText.anchor.setTo(0.5, 0.5);
-
-    this.sprite.angle = -20;
-    this.game.add.tween(this.sprite).to({angle: 20}, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
+  restartGame: function() {
+    this.bgMusic.stop();
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
@@ -502,7 +499,7 @@ module.exports = Menu;
       this.slotGroup = this.game.add.group();//Se realiza creacion de grupo de slots
       this.accionGroup = this.game.add.group();//Se realiza creacion de grupo de acciones
       this.crearSitua(this.random);//Crear situacion de acuerdo al parametro aleatorio generado
-      this.btnValidar = this.game.add.button(540,320,'btnConfirmar',this.ejecutar,this);
+      this.btnValidar = this.game.add.button(495,335,'btnConfirmar',this.ejecutar,this);
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
 
@@ -590,7 +587,7 @@ module.exports = Menu;
           //this.slotGroup.add(slot.txtPaso);
           xIniSl += 220;//Aumento x para siguiente slot          
         }
-        yIniSl += 65;//Aumento y para siguiente slot
+        yIniSl += 55;//Aumento y para siguiente slot
       }
 
       //Se realiza creación de acciones o pasos de acuerdo a la situacion
@@ -1390,6 +1387,8 @@ module.exports = Menu;
       this.crearBoton(0,300,'nivel4',310,350,'');
       this.crearBoton(0,400,'nivel5',205,450,'');
       this.crearBoton(0,500,'nivel6',308,550,'');
+
+      this.overSound = this.game.add.audio('menuoverSound');
     },
 
     update: function() {
@@ -1421,6 +1420,7 @@ module.exports = Menu;
 
     over: function(boton){
       boton.animations.play('over');
+      this.overSound.play();
     },
 
     out: function(boton){
@@ -1462,6 +1462,7 @@ Preload.prototype = {
     this.load.image('alert','assets/images/Botones/alert.png');
     this.load.image('time','assets/images/Botones/time.png');
     this.load.spritesheet('btnPausa', 'assets/images/Botones/btnPausa.png',45,45);
+    this.load.image('btnCerrar', 'assets/images/Botones/btnCerrar.png');
     this.load.image('fondoPausa', 'assets/images/Botones/fondoPausa.png');
     this.load.spritesheet('OpcPausa', 'assets/images/Botones/opcPausa.png',54,49);
     this.load.image('estrella', 'assets/images/Botones/estrella.png');
@@ -1506,7 +1507,10 @@ Preload.prototype = {
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
     /*Audios de juego*/
-    this.load.audio('errorSound', ['assets/audio/error_0.wav']);
+    this.load.audio('menuBgMusic', ['assets/audio/BgLoop/menu.ogg','assets/audio/BgLoop/menu.mp3']);
+
+    this.load.audio('menuoverSound', ['assets/audio/menuOver.ogg','assets/audio/menuOver.mp3']);
+    this.load.audio('errorSound', ['assets/audio/error_0.ogg','assets/audio/error_0.mp3']);
   },
 
   create: function() {

@@ -69,7 +69,7 @@
       this.slotGroup = this.game.add.group();//Se realiza creacion de grupo de slots
       this.accionGroup = this.game.add.group();//Se realiza creacion de grupo de acciones
       this.crearSitua(this.random);//Crear situacion de acuerdo al parametro aleatorio generado
-      this.btnValidar = this.game.add.button(540,320,'btnConfirmar',this.ejecutar,this);
+      this.btnValidar = this.game.add.button(495,335,'btnConfirmar',this.ejecutar,this);
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
 
@@ -157,7 +157,7 @@
           //this.slotGroup.add(slot.txtPaso);
           xIniSl += 220;//Aumento x para siguiente slot          
         }
-        yIniSl += 65;//Aumento y para siguiente slot
+        yIniSl += 55;//Aumento y para siguiente slot
       }
 
       //Se realiza creación de acciones o pasos de acuerdo a la situacion

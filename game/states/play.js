@@ -9,6 +9,8 @@
       this.crearBoton(0,300,'nivel4',310,350,'');
       this.crearBoton(0,400,'nivel5',205,450,'');
       this.crearBoton(0,500,'nivel6',308,550,'');
+
+      this.overSound = this.game.add.audio('menuoverSound');
     },
 
     update: function() {
@@ -40,6 +42,7 @@
 
     over: function(boton){
       boton.animations.play('over');
+      this.overSound.play();
     },
 
     out: function(boton){

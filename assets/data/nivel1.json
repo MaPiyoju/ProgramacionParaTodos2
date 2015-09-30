@@ -251,7 +251,6 @@
             ]
         },
         {
-            "situaImg": "assets/images/nivel1/situacion4.png",
             "situaTxt": "Cómo cambiar una bombilla? ",
             "nPasos": 5,
             "accion": [
@@ -312,7 +311,6 @@
             ]
         },
         {
-            "situaImg": "assets/images/nivel1/situacion4.png",
             "situaTxt": "Cómo lavarse los dientes? ",
             "nPasos": 5,
             "accion": [
@@ -373,7 +371,6 @@
             ]
         },
         {
-            "situaImg": "assets/images/nivel1/situacion4.png",
             "situaTxt": "Cómo ver una pelicula en cine ? ",
             "nPasos": 9,
             "accion": [
