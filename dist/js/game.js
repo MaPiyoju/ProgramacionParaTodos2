@@ -893,7 +893,12 @@ module.exports = Menu;
     gravedad: {min:10,max:30},
     puntaje: 0,
     vidas: 5,
+<<<<<<< HEAD
+    intentos:0,
+    aciertos:0,
+=======
     countBonus: 0,
+>>>>>>> origin/master
 
     init: function(){
       this.maxtime= 60;
@@ -901,7 +906,12 @@ module.exports = Menu;
       this.intro = true;  
       this.puntaje = 0;
       this.vidas = 5;
+<<<<<<< HEAD
+      this.intentos = 0;
+      this.aciertos = 0;
+=======
       this.countBonus = 0;
+>>>>>>> origin/master
     },
 
     create: function(){
@@ -935,6 +945,7 @@ module.exports = Menu;
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(1000, this.updateTimer, this);//Contador de juego
       this.tiempo.loop(3500, this.crearItem, this);//Creacion de items
+      this.tiempo.loop(6000,this.crearItemBonus,this);//Creacion de items dorados
       this.tiempo.loop(15000, this.solicitud, this);//Cambio de solicitud cada 15 segundos
       this.tiempo.start();
 
@@ -1002,7 +1013,7 @@ module.exports = Menu;
     },
 
     solicitud: function(){
-      this.tipoSolicitud = Math.floor(Math.random()*this.levelData.dataTipo.length);
+      this.tipoSolicitud = Math.floor(Math.random()*this.levelData.dataTipo.length - 1);
       this.txtSolicitud.frame = this.tipoSolicitud;
     },
 
@@ -1036,8 +1047,12 @@ module.exports = Menu;
       }
     },
 
+<<<<<<< HEAD
+    crearItem: function(){     
+=======
     crearItem: function(){
       this.countBonus++;
+>>>>>>> origin/master
       for (var i = 0; i < 5; i++){
         var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
         if(random == 1){//En caso de creacion
@@ -1046,6 +1061,12 @@ module.exports = Menu;
           var yItem = -64;//Posicion inicial en Y
           var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
           item.tipo = tipo;//Asignacion de tipo aleatorio
+<<<<<<< HEAD
+          
+          item.anchor.setTo(0.5,0.5);
+          var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
+          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+=======
           //Random para crear item dorado
           item.dorado = false;          
           if((this.countBonus%5) == 0 && i==0){
@@ -1054,6 +1075,7 @@ module.exports = Menu;
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
           item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',(item.dorado ? "*" : "")  + this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
+>>>>>>> origin/master
           item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
@@ -1061,10 +1083,37 @@ module.exports = Menu;
       }
     },
 
+    crearItemBonus: function(){
+      var probBonus = 20 * this.vidas;
+      if(Math.floor(Math.random()*100) > probBonus){
+        var tipo = Math.floor(Math.random() * this.levelData.dataTipo.length);//Numero aleatorio para determinar tipo de data de juego
+        var xItem = Math.floor(Math.random() * (this.game.width - 50)) + 32;//Posiicion de creacion aleatoria en X
+        var yItem = -64;//Posicion inicial en Y
+        var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
+        item.tipo = tipo;//Asignacion de tipo aleatorio
+        item.bonus = true;
+        item.anchor.setTo(0.5,0.5);
+        var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
+        item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',"*" +this.levelData.dataTipo[tipo].exp[txtIndex] +"*"  , 24);//Creacion texto
+        item.texto.anchor.setTo(0.5,0);
+
+        item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
+      }
+    },
+
     recogerItem: function (jugador, item) {
+      this.intentos++;      
       if(this.tipoSolicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
+        this.aciertos++;
+        if(item.bonus == true){
+          this.vidas++;
+          this.updateVidas();//Se actualiza la barra de vida
+        }
         this.puntaje+=20;
       }else{//En caso de ser un elemento diferente al tipo solicitad
+        if(item.bonus == true){
+          this.vidas--;
+        }
         this.vidas--;//Se realiza la eliminacion de una vida
         this.updateVidas();//Se actualiza la barra de vida
       }
@@ -1077,26 +1126,39 @@ module.exports = Menu;
       var thisTemp = this;
       this.vidaGroup.forEach(function(vida){//Se realiza recorrido sobre vidas para asignar o no visibilidad de acuerdo a la cantidad de vidas del jugador
         if(vida.hasOwnProperty('n')){
-          if(vida.n>thisTemp.vidas-1){
-            console.log(vida.n,' - ',(thisTemp.vidas-1));
+          if(vida.n>thisTemp.vidas-1){            
             vida.visible = false;
           }else{
             vida.visible = true;
           }
         }
       });
+      //Se valida si el jugador perdio todas las vidas
+      if(this.vidas == 0){
+        this.showStats();
+        //Detener metodo de update
+        this.tiempo.stop();
+        //Eliminar items restantes en el campo
+        this.itemsGroup.forEach(function(item) {
+          item.texto.destroy();
+          item.kill();
+        });
+      }
     },
 
     updateTimer: function() {
       //Se comprueba que el tiempo de juego haya terminado
       if(this.maxtime == 0){
+
+        this.showStats();
         //Detener metodo de update
         this.tiempo.stop();
         //Eliminar items restantes en el campo
         this.itemsGroup.forEach(function(item) {
+          item.texto.destroy();
           item.kill();
         });
-        this.btnPausa.kill();
+        //this.btnPausa.kill();
       }
 
       var minutos = 0;
@@ -1120,6 +1182,38 @@ module.exports = Menu;
         minutos = '0' + minutos;
    
       this.timer.setText(minutos + ':' +segundos);
+    },
+
+    showStats: function(){      
+      this.btnPausa.kill();//Se retira el boton de pausa
+      //Creacion cuadro retroalimentación final
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal.anchor.setTo(0.5,0.5);
+      this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
+      this.btnMenu.frame = 2;
+      this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
+      this.btnRepetir.frame = 0;
+
+      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', '# de intentos: '+this.intentos.toString()+'\n# de aciertos: '+this.aciertos.toString(), 28);
+      this.txtStats.anchor.setTo(0.5,0.5);
+
+      //Asignacion de porcentaje de nivel
+      var porc = ((this.aciertos/this.intentos) * 100).toFixed();
+      
+      
+      this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', porc.toString() + '%', 40);
+      this.txtPorc.anchor.setTo(0.5,0.5);
+
+      //Asignacion de estrellas
+      if(porc > 0){//1 estrella
+        this.game.add.sprite(221,227,'estrella');
+      }
+      if(porc > 49){//2 estrellas
+        this.game.add.sprite(348,227,'estrella');
+      }
+      if(porc > 99){//3 estrellas
+        this.game.add.sprite(471,227,'estrella');
+      }
     },
 
     pausaJuego: function(game){
