@@ -16,6 +16,13 @@
     cuerpoGroup: null,
     itemGroup: null,
 
+    levelData: [
+      {
+        "exp": "8+5*3"
+      }
+    ],
+    res: 0,
+
     init: function(){
       this.maxtime= 120;
       this.flagpause= false; 
@@ -28,8 +35,8 @@
 
     create: function(){
       //Parseo de datos de juego para su uso
-      this.levelData = JSON.parse(this.game.cache.getText('data'));
-      this.situaLength = this.levelData.dataSitua.length;//Cantidad de situaciones de nivel
+      //this.levelData = JSON.parse(this.game.cache.getText('data'));
+      //this.situaLength = this.levelData.dataSitua.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
@@ -64,6 +71,8 @@
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
       this.comerItem();//Creacion bolas iniciales de gusano
       this.comerItem();//Creacion bolas iniciales de gusano
+
+      this.crearExpresion();
 
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(125, this.updateMov, this);//Actualizacion movimiento jugador
@@ -134,6 +143,13 @@
         this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
         this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);
       }
+    },
+
+    crearExpresion: function(){
+      var random = Math.floor(Math.random()*this.levelData.length);
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData[random].exp, 28);
+      this.res = eval(this.levelData[random].exp);
+      console.log(this.res);
     },
 
     crearItem: function(){

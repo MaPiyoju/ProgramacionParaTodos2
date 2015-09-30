@@ -411,7 +411,7 @@ Menu.prototype = {
     this.sprite = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'intro');
     this.sprite.anchor.setTo(0.5, 0.5);
 
-    this.bgMusic = this.game.add.audio('menuBgMusic',0.25,true);
+    this.bgMusic = this.game.add.audio('menuBgMusic',0.1,true);
     this.bgMusic.play();
   },
 
@@ -893,12 +893,8 @@ module.exports = Menu;
     gravedad: {min:10,max:30},
     puntaje: 0,
     vidas: 5,
-<<<<<<< HEAD
     intentos:0,
     aciertos:0,
-=======
-    countBonus: 0,
->>>>>>> origin/master
 
     init: function(){
       this.maxtime= 60;
@@ -906,12 +902,8 @@ module.exports = Menu;
       this.intro = true;  
       this.puntaje = 0;
       this.vidas = 5;
-<<<<<<< HEAD
       this.intentos = 0;
       this.aciertos = 0;
-=======
-      this.countBonus = 0;
->>>>>>> origin/master
     },
 
     create: function(){
@@ -1047,12 +1039,7 @@ module.exports = Menu;
       }
     },
 
-<<<<<<< HEAD
     crearItem: function(){     
-=======
-    crearItem: function(){
-      this.countBonus++;
->>>>>>> origin/master
       for (var i = 0; i < 5; i++){
         var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
         if(random == 1){//En caso de creacion
@@ -1061,21 +1048,10 @@ module.exports = Menu;
           var yItem = -64;//Posicion inicial en Y
           var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
           item.tipo = tipo;//Asignacion de tipo aleatorio
-<<<<<<< HEAD
           
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
           item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
-=======
-          //Random para crear item dorado
-          item.dorado = false;          
-          if((this.countBonus%5) == 0 && i==0){
-             item.dorado = true;
-          }
-          item.anchor.setTo(0.5,0.5);
-          var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',(item.dorado ? "*" : "")  + this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
->>>>>>> origin/master
           item.texto.anchor.setTo(0.5,0);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
@@ -1239,6 +1215,7 @@ module.exports = Menu;
   };
   
   module.exports = Nivel2;
+
 },{"../prefabs/pause":4}],11:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
@@ -1258,6 +1235,13 @@ module.exports = Menu;
     cuerpoGroup: null,
     itemGroup: null,
 
+    levelData: [
+      {
+        "exp": "8+5*3"
+      }
+    ],
+    res: 0,
+
     init: function(){
       this.maxtime= 120;
       this.flagpause= false; 
@@ -1270,8 +1254,8 @@ module.exports = Menu;
 
     create: function(){
       //Parseo de datos de juego para su uso
-      this.levelData = JSON.parse(this.game.cache.getText('data'));
-      this.situaLength = this.levelData.dataSitua.length;//Cantidad de situaciones de nivel
+      //this.levelData = JSON.parse(this.game.cache.getText('data'));
+      //this.situaLength = this.levelData.dataSitua.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
@@ -1306,6 +1290,8 @@ module.exports = Menu;
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
       this.comerItem();//Creacion bolas iniciales de gusano
       this.comerItem();//Creacion bolas iniciales de gusano
+
+      this.crearExpresion();
 
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(125, this.updateMov, this);//Actualizacion movimiento jugador
@@ -1376,6 +1362,13 @@ module.exports = Menu;
         this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
         this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);
       }
+    },
+
+    crearExpresion: function(){
+      var random = Math.floor(Math.random()*this.levelData.length);
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData[random].exp, 28);
+      this.res = eval(this.levelData[random].exp);
+      console.log(this.res);
     },
 
     crearItem: function(){

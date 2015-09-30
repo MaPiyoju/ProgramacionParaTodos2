@@ -10,7 +10,7 @@ Menu.prototype = {
     this.sprite = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'intro');
     this.sprite.anchor.setTo(0.5, 0.5);
 
-    this.bgMusic = this.game.add.audio('menuBgMusic',0.25,true);
+    this.bgMusic = this.game.add.audio('menuBgMusic',0.1,true);
     this.bgMusic.play();
   },
 
