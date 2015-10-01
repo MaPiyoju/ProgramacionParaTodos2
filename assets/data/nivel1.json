@@ -312,7 +312,7 @@
         },
         {
             "situaTxt": "Cómo lavarse los dientes? ",
-            "nPasos": 5,
+            "nPasos": 6,
             "accion": [
                 {
                     "txt": "Tomar el cepillo dental",
@@ -330,14 +330,19 @@
                     "n": 2
                 },
                 {
-                    "txt": "Enjuagar bien la boca",
+                    "txt": "Lavarse los dientes",
                     "ok": true,
                     "n": 3
+                }
+                {
+                    "txt": "Enjuagar bien la boca",
+                    "ok": true,
+                    "n": 4
                 },
                 {
                     "txt": "Secar la boca del agua",
                     "ok": true,
-                    "n": 4
+                    "n": 5
                 },
                 {
                     "txt": "Limpiar y guardar el cepillo",
@@ -357,10 +362,6 @@
                 },
                 {
                     "txt": "Lavarse las manos",
-                    "ok": false                    
-                },
-                {
-                    "txt": "Cerrar la puerta",
                     "ok": false                    
                 },
                 {
