@@ -3,7 +3,6 @@
 
   function Nivel2() {}
   Nivel2.prototype = {
-
     //Definición de propiedades
     maxtime: 60,
     flagpause: false,
