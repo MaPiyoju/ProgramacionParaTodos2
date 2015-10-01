@@ -7,7 +7,7 @@
   Nivel1.prototype = {
 
     //Definición de propiedades globales de nivel
-    maxtime: 120,
+    maxtime: 300,
     flagpause: false,
     intro:true,
 
