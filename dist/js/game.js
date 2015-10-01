@@ -444,7 +444,7 @@ module.exports = Menu;
   Nivel1.prototype = {
 
     //Definición de propiedades globales de nivel
-    maxtime: 120,
+    maxtime: 300,
     flagpause: false,
     intro:true,
 
@@ -892,9 +892,8 @@ module.exports = Menu;
 
   function Nivel2() {}
   Nivel2.prototype = {
-
     //Definición de propiedades
-    maxtime: 60,
+    maxtime: 120,
     flagpause: false,
     intro:true,
     gravedad: {min:10,max:30},
@@ -1053,7 +1052,7 @@ module.exports = Menu;
           var tipo = Math.floor(Math.random() * this.levelData.dataTipo.length);//Numero aleatorio para determinar tipo de data de juego
           var xItem = Math.floor(Math.random() * (this.game.width - 50)) + 32;//Posiicion de creacion aleatoria en X
           var yItem = -64;//Posicion inicial en Y
-          var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
+          var item = this.itemsGroup.create(xItem, yItem, 'item', 0);//Creacion de item sobre el grupo de items
           item.tipo = tipo;//Asignacion de tipo aleatorio
           
           item.anchor.setTo(0.5,0.5);
@@ -1072,7 +1071,7 @@ module.exports = Menu;
         var tipo = Math.floor(Math.random() * this.levelData.dataTipo.length);//Numero aleatorio para determinar tipo de data de juego
         var xItem = Math.floor(Math.random() * (this.game.width - 50)) + 32;//Posiicion de creacion aleatoria en X
         var yItem = -64;//Posicion inicial en Y
-        var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
+        var item = this.itemsGroup.create(xItem, yItem, 'item',1);//Creacion de item sobre el grupo de items
         item.tipo = tipo;//Asignacion de tipo aleatorio
         item.bonus = true;
         item.anchor.setTo(0.5,0.5);
@@ -1630,11 +1629,11 @@ Preload.prototype = {
     this.load.image('tile_nivel2','assets/images/Nivel2/tile.jpg');
     this.load.image('piso','assets/images/Nivel2/piso.jpg');
     this.load.spritesheet('personaje','assets/images/Nivel2/personaje.png',48,68);
-    this.load.spritesheet('item','assets/images/Nivel2/item.png',85,64);
+    this.load.spritesheet('item','assets/images/Nivel2/elementos.png',48,87);
     this.load.image('fondoVida','assets/images/Nivel2/fondoVida.png');
     this.load.image('vida','assets/images/Nivel2/vida.png');
     this.load.spritesheet('solicitud','assets/images/Nivel2/solicitud.png',107,28);
-
+    this.load.image('final2', 'assets/images/Nivel2/final.png');
     this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
 
     /*Imagenes nivel 3*/
