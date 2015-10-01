@@ -301,7 +301,7 @@ var Tablero = function(game, x, y ,xCuadros , yCuadros, parent){
   this.dimension = 50;
 
   //Fondo de tablero
-  //this.fondoTablero = this.game.add.sprite(x-5,y-4,'fondoTablero');
+  //this.fondoTablero = this.game.add.sprite(x-5,y-4,'tablero');
   //this.add(this.fondoTablero);
 
   //Se dibuja el tablero con base en los valores de entrada
@@ -1282,7 +1282,7 @@ module.exports = Menu;
       this.intro = false;//Se deshabilita el intro de juego
       this.introImg.kill();//Se elimina imagen de intro
 
-      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel1');//Fondo de juego
+      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel3');//Fondo de juego
       //this.random = Math.floor(Math.random() * this.situaLength);//Se realiza la carga de una situación de forma aleatoria
       
       this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
@@ -1637,8 +1637,10 @@ Preload.prototype = {
     this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
 
     /*Imagenes nivel 3*/
+    this.load.image('tile_nivel3','assets/images/Nivel3/tile.jpg');
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
+    this.load.image('tablero','assets/images/Nivel3/tablero.png');
 
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
 

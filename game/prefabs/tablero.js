@@ -13,7 +13,7 @@ var Tablero = function(game, x, y ,xCuadros , yCuadros, parent){
   this.dimension = 50;
 
   //Fondo de tablero
-  //this.fondoTablero = this.game.add.sprite(x-5,y-4,'fondoTablero');
+  //this.fondoTablero = this.game.add.sprite(x-5,y-4,'tablero');
   //this.add(this.fondoTablero);
 
   //Se dibuja el tablero con base en los valores de entrada

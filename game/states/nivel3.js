@@ -57,7 +57,7 @@
       this.intro = false;//Se deshabilita el intro de juego
       this.introImg.kill();//Se elimina imagen de intro
 
-      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel1');//Fondo de juego
+      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel3');//Fondo de juego
       //this.random = Math.floor(Math.random() * this.situaLength);//Se realiza la carga de una situación de forma aleatoria
       
       this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
