@@ -4,7 +4,7 @@
   function Nivel2() {}
   Nivel2.prototype = {
     //Definición de propiedades
-    maxtime: 60,
+    maxtime: 120,
     flagpause: false,
     intro:true,
     gravedad: {min:10,max:30},
@@ -163,7 +163,7 @@
           var tipo = Math.floor(Math.random() * this.levelData.dataTipo.length);//Numero aleatorio para determinar tipo de data de juego
           var xItem = Math.floor(Math.random() * (this.game.width - 50)) + 32;//Posiicion de creacion aleatoria en X
           var yItem = -64;//Posicion inicial en Y
-          var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
+          var item = this.itemsGroup.create(xItem, yItem, 'item', 0);//Creacion de item sobre el grupo de items
           item.tipo = tipo;//Asignacion de tipo aleatorio
           
           item.anchor.setTo(0.5,0.5);
@@ -182,7 +182,7 @@
         var tipo = Math.floor(Math.random() * this.levelData.dataTipo.length);//Numero aleatorio para determinar tipo de data de juego
         var xItem = Math.floor(Math.random() * (this.game.width - 50)) + 32;//Posiicion de creacion aleatoria en X
         var yItem = -64;//Posicion inicial en Y
-        var item = this.itemsGroup.create(xItem, yItem, 'item', tipo * 2);//Creacion de item sobre el grupo de items
+        var item = this.itemsGroup.create(xItem, yItem, 'item',1);//Creacion de item sobre el grupo de items
         item.tipo = tipo;//Asignacion de tipo aleatorio
         item.bonus = true;
         item.anchor.setTo(0.5,0.5);

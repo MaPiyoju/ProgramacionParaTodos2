@@ -59,11 +59,11 @@ Preload.prototype = {
     this.load.image('tile_nivel2','assets/images/Nivel2/tile.jpg');
     this.load.image('piso','assets/images/Nivel2/piso.jpg');
     this.load.spritesheet('personaje','assets/images/Nivel2/personaje.png',48,68);
-    this.load.spritesheet('item','assets/images/Nivel2/item.png',85,64);
+    this.load.spritesheet('item','assets/images/Nivel2/elementos.png',48,87);
     this.load.image('fondoVida','assets/images/Nivel2/fondoVida.png');
     this.load.image('vida','assets/images/Nivel2/vida.png');
     this.load.spritesheet('solicitud','assets/images/Nivel2/solicitud.png',107,28);
-
+    this.load.image('final2', 'assets/images/Nivel2/final.png');
     this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
 
     /*Imagenes nivel 3*/
