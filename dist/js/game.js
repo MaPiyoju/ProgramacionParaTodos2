@@ -346,6 +346,13 @@ Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
   return obj;
 }
 
+Tablero.prototype.setTexto = function(i, j, txt) {
+  var obj = this.game.add.bitmapText(this.x+(i*this.dimension), this.y+(j*this.dimension), 'font', txt, 28);
+  obj.anchor.setTo(0,-0.5);
+  this.add(obj);
+  return obj;
+};
+
 Tablero.prototype.destruir = function() {
  
 };
@@ -1234,13 +1241,8 @@ module.exports = Menu;
     gusanoGroup: null,
     cuerpoGroup: null,
     itemGroup: null,
-
-    levelData: [
-      {
-        "exp": "8+5*3"
-      }
-    ],
     res: 0,
+    pasoActual: 0,
 
     init: function(){
       this.maxtime= 120;
@@ -1250,12 +1252,13 @@ module.exports = Menu;
       this.gusanoGroup = [];
       this.cuerpoGroup = [];
       this.itemGroup = [];
+      this.pasoActual = 0;
     },
 
     create: function(){
       //Parseo de datos de juego para su uso
-      //this.levelData = JSON.parse(this.game.cache.getText('data'));
-      //this.situaLength = this.levelData.dataSitua.length;//Cantidad de situaciones de nivel
+      this.levelData = JSON.parse(this.game.cache.getText('data3'));
+      this.situaLength = this.levelData.dataGusano.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
@@ -1365,40 +1368,85 @@ module.exports = Menu;
     },
 
     crearExpresion: function(){
-      var random = Math.floor(Math.random()*this.levelData.length);
-      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData[random].exp, 28);
-      this.res = eval(this.levelData[random].exp);
-      console.log(this.res);
+      this.pasoActual = 0;
+      this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData.dataGusano[this.random].exp, 28);
+      this.res = eval(this.levelData.dataGusano[this.random].exp);
+      this.nuevoPaso();
     },
 
-    crearItem: function(){
+    nuevoPaso: function(){
+      this.itemGroup.forEach(function(item){
+        item.destroy();
+        item.txt.destroy();
+      });
+      this.itemGroup = [];
+      if(this.pasoActual == this.levelData.dataGusano[this.random].nPasos){
+        this.crearExpresion();
+      }else{
+        var thisTemp = this;
+        var primerosPasos = this.levelData.dataGusano[this.random].pasos.filter(this.filtroPaso,this);
+        primerosPasos.forEach(function(item){
+          thisTemp.crearItem(item);
+        });
+      }
+    },
+
+    filtroPaso: function(obj){
+      if(obj.n == this.pasoActual){
+        return true;
+      }else{
+        return false;
+      }
+    },
+
+    crearItem: function(obj){
       var xRandom = Math.floor(Math.random()*this.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
       var yRandom = Math.floor(Math.random()*this.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
-      this.itemGroup.push(this.tablero.setObjCuadro(xRandom, yRandom, 'itemGusano', null, 0));
+      var item = this.tablero.setObjCuadro(xRandom, yRandom, 'itemGusano', null, 0);
+      if(obj){
+        item.ok = obj.ok;
+        item.txt = this.tablero.setTexto(xRandom,yRandom, obj.txt);
+      }
+      this.itemGroup.push(item);
     },
 
     comerItem: function(cabeza, item){
+      var continuar = true;
       if(item){
+        if(item.ok){
+          this.pasoActual++;
+          this.nuevoPaso();
+        }else{
+          continuar = false;
+        }
         item.destroy();
+        item.txt.destroy();
       }
-      var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].i, this.gusanoGroup[this.gusanoGroup.length-1].j, 'gusano', null, 1);
-      switch(this.movimiento){
-        case 0://En caso de movimiento hacia la derecha
-          this.tablero.setObjCuadro(this.gusano.i-1, this.gusano.j, '', bola, 1);
-          break;
-        case 1://En caso de movimiento hacia la izquierda
-          this.tablero.setObjCuadro(this.gusano.i+1, this.gusano.j, '', bola, 1);
-          break;
-        case 2://En caso de movimiento hacia arriba
-          this.tablero.setObjCuadro(this.gusano.i, this.gusano.j+1, '', bola, 1);
-          break;
-        case 3://En caso de movimiento hacia abajo
-          this.tablero.setObjCuadro(this.gusano.i, this.gusano.j-1, '', bola, 1);
-          break;
+      if(continuar){//En caso de item correcto agrega una bola al cuerpo del gusano
+        var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].i, this.gusanoGroup[this.gusanoGroup.length-1].j, 'gusano', null, 1);
+        switch(this.movimiento){
+          case 0://En caso de movimiento hacia la derecha
+            this.tablero.setObjCuadro(this.gusano.i-1, this.gusano.j, '', bola, 1);
+            break;
+          case 1://En caso de movimiento hacia la izquierda
+            this.tablero.setObjCuadro(this.gusano.i+1, this.gusano.j, '', bola, 1);
+            break;
+          case 2://En caso de movimiento hacia arriba
+            this.tablero.setObjCuadro(this.gusano.i, this.gusano.j+1, '', bola, 1);
+            break;
+          case 3://En caso de movimiento hacia abajo
+            this.tablero.setObjCuadro(this.gusano.i, this.gusano.j-1, '', bola, 1);
+            break;
+        }
+        this.cuerpoGroup.push(bola);
+        this.gusanoGroup.push(bola);
+      }else{//En caso de item erroneo se remueven items del cuerpo del gusano
+        var bola = this.cuerpoGroup[this.cuerpoGroup.length-1];
+        this.cuerpoGroup.pop();
+        this.gusanoGroup.pop();
+        bola.destroy();
       }
-      this.cuerpoGroup.push(bola);
-      this.gusanoGroup.push(bola);
-      this.crearItem();//Creacion nuevo item
     },
 
     chocar: function(cabeza, cuerpo){
@@ -1592,6 +1640,8 @@ Preload.prototype = {
     /*Imagenes nivel 3*/
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
+
+    this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
 
     /*Audios de juego*/
     this.load.audio('menuBgMusic', ['assets/audio/BgLoop/menu.ogg','assets/audio/BgLoop/menu.mp3']);

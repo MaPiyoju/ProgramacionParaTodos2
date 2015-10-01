@@ -70,6 +70,8 @@ Preload.prototype = {
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
 
+    this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
+
     /*Audios de juego*/
     this.load.audio('menuBgMusic', ['assets/audio/BgLoop/menu.ogg','assets/audio/BgLoop/menu.mp3']);
 

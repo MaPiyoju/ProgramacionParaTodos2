@@ -58,6 +58,13 @@ Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
   return obj;
 }
 
+Tablero.prototype.setTexto = function(i, j, txt) {
+  var obj = this.game.add.bitmapText(this.x+(i*this.dimension), this.y+(j*this.dimension), 'font', txt, 28);
+  obj.anchor.setTo(0,-0.5);
+  this.add(obj);
+  return obj;
+};
+
 Tablero.prototype.destruir = function() {
  
 };
