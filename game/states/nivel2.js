@@ -155,7 +155,6 @@
         });
       }
     },
-
     crearItem: function(){     
       for (var i = 0; i < 5; i++){
         var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
