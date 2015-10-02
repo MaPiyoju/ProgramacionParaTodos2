@@ -444,7 +444,7 @@ module.exports = Menu;
   Nivel1.prototype = {
 
     //Definición de propiedades globales de nivel
-    maxtime: 300,
+    maxtime: 360,
     flagpause: false,
     intro:true,
 
@@ -459,7 +459,7 @@ module.exports = Menu;
     msjError: ['Ups, algo no anda bien. Intentalo de nuevo!','Tu algoritmo no cumple con el objetivo solicitado, intentalo de nuevo!','Ups, en tu algoritmo existen pasos que no cumplen o no son necesarios para cumplir con el objetivo'],
 
     init: function(){
-      this.maxtime= 120;
+      this.maxtime= 360;
       this.flagpause= false; 
       this.intro = true;  
       this.nSituaciones=0;
@@ -903,7 +903,7 @@ module.exports = Menu;
     aciertos:0,
 
     init: function(){
-      this.maxtime= 60;
+      this.maxtime= 120;
       this.flagpause= false; 
       this.intro = true;  
       this.puntaje = 0;
@@ -1057,8 +1057,8 @@ module.exports = Menu;
           
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',this.levelData.dataTipo[tipo].exp[txtIndex], 24);//Creacion texto
-          item.texto.anchor.setTo(0.5,0);
+          item.texto = this.game.add.bitmapText(item.x, item.y, 'font',this.levelData.dataTipo[tipo].exp[txtIndex], 16);//Creacion texto
+          item.texto.anchor.setTo(0.5,-1);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
         }
@@ -1076,8 +1076,8 @@ module.exports = Menu;
         item.bonus = true;
         item.anchor.setTo(0.5,0.5);
         var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-        item.texto = this.game.add.bitmapText(item.x, item.y - 25, 'font',"*" +this.levelData.dataTipo[tipo].exp[txtIndex] +"*"  , 24);//Creacion texto
-        item.texto.anchor.setTo(0.5,0);
+        item.texto = this.game.add.bitmapText(item.x, item.y, 'font',"*" +this.levelData.dataTipo[tipo].exp[txtIndex] +"*"  , 16);//Creacion texto
+        item.texto.anchor.setTo(0.5,-1);
 
         item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
       }
@@ -1116,7 +1116,7 @@ module.exports = Menu;
         }
       });
       //Se valida si el jugador perdio todas las vidas
-      if(this.vidas == 0){
+      if(this.vidas <= 0){
         this.showStats();
         //Detener metodo de update
         this.tiempo.stop();
@@ -1169,7 +1169,7 @@ module.exports = Menu;
     showStats: function(){      
       this.btnPausa.kill();//Se retira el boton de pausa
       //Creacion cuadro retroalimentación final
-      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final2');
       this.retroFinal.anchor.setTo(0.5,0.5);
       this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
       this.btnMenu.frame = 2;
@@ -1630,7 +1630,7 @@ Preload.prototype = {
     this.load.image('tile_nivel2','assets/images/Nivel2/tile.jpg');
     this.load.image('piso','assets/images/Nivel2/piso.jpg');
     this.load.spritesheet('personaje','assets/images/Nivel2/personaje.png',48,68);
-    this.load.spritesheet('item','assets/images/Nivel2/elementos.png',48,87);
+    this.load.spritesheet('item','assets/images/Nivel2/elementos.png',87,48);
     this.load.image('fondoVida','assets/images/Nivel2/fondoVida.png');
     this.load.image('vida','assets/images/Nivel2/vida.png');
     this.load.spritesheet('solicitud','assets/images/Nivel2/solicitud.png',107,28);
