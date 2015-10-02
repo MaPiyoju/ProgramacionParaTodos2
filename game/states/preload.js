@@ -64,6 +64,7 @@ Preload.prototype = {
     this.load.image('vida','assets/images/Nivel2/vida.png');
     this.load.spritesheet('solicitud','assets/images/Nivel2/solicitud.png',107,28);
     this.load.image('final2', 'assets/images/Nivel2/final.png');
+    
     this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
 
     /*Imagenes nivel 3*/
