@@ -8,8 +8,7 @@ $("#txtfile").change(function(){
 	data = new FormData();
 
 	data.append('archivo',file);
-});
-		
+});		
 
 function indexElement(result,name){
 	var indice = 0;

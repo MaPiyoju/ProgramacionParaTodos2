@@ -1,7 +1,6 @@
   'use strict';
   var Pausa = require('../prefabs/pause');
   var Alert = require('../prefabs/alert');
-
   function Nivel1() {}
 
   Nivel1.prototype = {
