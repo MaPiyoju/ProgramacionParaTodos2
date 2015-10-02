@@ -7,7 +7,7 @@
   Nivel1.prototype = {
 
     //Definición de propiedades globales de nivel
-    maxtime: 300,
+    maxtime: 360,
     flagpause: false,
     intro:true,
 
@@ -22,7 +22,7 @@
     msjError: ['Ups, algo no anda bien. Intentalo de nuevo!','Tu algoritmo no cumple con el objetivo solicitado, intentalo de nuevo!','Ups, en tu algoritmo existen pasos que no cumplen o no son necesarios para cumplir con el objetivo'],
 
     init: function(){
-      this.maxtime= 120;
+      this.maxtime= 360;
       this.flagpause= false; 
       this.intro = true;  
       this.nSituaciones=0;
