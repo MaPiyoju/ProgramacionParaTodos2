@@ -68,7 +68,7 @@
       this.comerItem();//Creacion bolas iniciales de gusano
       this.comerItem();//Creacion bolas iniciales de gusano
 
-      this.crearExpresion();
+      this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(125, this.updateMov, this);//Actualizacion movimiento jugador
@@ -142,25 +142,25 @@
     },
 
     crearExpresion: function(){
-      this.pasoActual = 0;
-      this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);
-      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData.dataGusano[this.random].exp, 28);
-      this.res = eval(this.levelData.dataGusano[this.random].exp);
-      this.nuevoPaso();
+      this.pasoActual = 0;//Reseteo de pasos de evaluacion a 0
+      this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de jeugo
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData.dataGusano[this.random].exp, 28);//Texto de expresion
+      this.res = eval(this.levelData.dataGusano[this.random].exp);//Resultado de expresion
+      this.nuevoPaso();//Creacion primer paso
     },
 
     nuevoPaso: function(){
-      this.itemGroup.forEach(function(item){
+      this.itemGroup.forEach(function(item){//Se realiza limpieza de pasos en tablero de juego
         item.destroy();
         item.txt.destroy();
       });
       this.itemGroup = [];
-      if(this.pasoActual == this.levelData.dataGusano[this.random].nPasos){
-        this.crearExpresion();
-      }else{
+      if(this.pasoActual == this.levelData.dataGusano[this.random].nPasos){//En caso de ser el ultimo paso
+        this.crearExpresion();//Se realiza creacion de nueva expresion
+      }else{//En caso de ser paso de expresion
         var thisTemp = this;
-        var primerosPasos = this.levelData.dataGusano[this.random].pasos.filter(this.filtroPaso,this);
-        primerosPasos.forEach(function(item){
+        var primerosPasos = this.levelData.dataGusano[this.random].pasos.filter(this.filtroPaso,this);//Filtro de pasos de acuerdo a paso actual
+        primerosPasos.forEach(function(item){//Creacion de items en tablero de juego
           thisTemp.crearItem(item);
         });
       }
@@ -177,8 +177,8 @@
     crearItem: function(obj){
       var xRandom = Math.floor(Math.random()*this.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
       var yRandom = Math.floor(Math.random()*this.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
-      var item = this.tablero.setObjCuadro(xRandom, yRandom, 'itemGusano', null, 0);
-      if(obj){
+      var item = this.tablero.setObjCuadro(xRandom, yRandom, 'itemGusano', null, 0);//Creacion item en tablero de juego
+      if(obj){//ASignacion de propiedades
         item.ok = obj.ok;
         item.txt = this.tablero.setTexto(xRandom,yRandom, obj.txt);
       }
@@ -188,13 +188,13 @@
     comerItem: function(cabeza, item){
       var continuar = true;
       if(item){
-        if(item.ok){
+        if(item.ok){//En caso de item correcto de aceurdo al paso
           this.pasoActual++;
           this.nuevoPaso();
-        }else{
+        }else{//En caso de error 
           continuar = false;
         }
-        item.destroy();
+        item.destroy();//Eliminacion del item de tablero de juego
         item.txt.destroy();
       }
       if(continuar){//En caso de item correcto agrega una bola al cuerpo del gusano
@@ -224,6 +224,7 @@
     },
 
     chocar: function(cabeza, cuerpo){
+      console.log(this.cuerpoGroup);
       this.showStats();//Mostrar estadisticas
       //Detener metodo de update
       this.tiempo.stop();
