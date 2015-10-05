@@ -12,13 +12,14 @@ window.onload = function () {
   game.state.add('nivel1', require('./states/nivel1'));
   game.state.add('nivel2', require('./states/nivel2'));
   game.state.add('nivel3', require('./states/nivel3'));
+  game.state.add('nivel4', require('./states/nivel4'));
   game.state.add('play', require('./states/play'));
   game.state.add('preload', require('./states/preload'));
   
 
   game.state.start('boot');
 };
-},{"./states/boot":6,"./states/gameover":7,"./states/menu":8,"./states/nivel1":9,"./states/nivel2":10,"./states/nivel3":11,"./states/play":12,"./states/preload":13}],2:[function(require,module,exports){
+},{"./states/boot":6,"./states/gameover":7,"./states/menu":8,"./states/nivel1":9,"./states/nivel2":10,"./states/nivel3":11,"./states/nivel4":12,"./states/play":13,"./states/preload":14}],2:[function(require,module,exports){
   'use strict';
 
   // Create our pause panel extending Phaser.Group
@@ -438,7 +439,6 @@ module.exports = Menu;
   'use strict';
   var Pausa = require('../prefabs/pause');
   var Alert = require('../prefabs/alert');
-
   function Nivel1() {}
 
   Nivel1.prototype = {
@@ -1044,7 +1044,6 @@ module.exports = Menu;
         });
       }
     },
-
     crearItem: function(){     
       for (var i = 0; i < 5; i++){
         var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
@@ -1511,6 +1510,8 @@ module.exports = Menu;
   
   module.exports = Nivel3;
 },{"../prefabs/alert":2,"../prefabs/pause":4,"../prefabs/tablero":5}],12:[function(require,module,exports){
+module.exports=require(11)
+},{"../prefabs/alert":2,"../prefabs/pause":4,"../prefabs/tablero":5}],13:[function(require,module,exports){
   'use strict';
   function Play() {}
   Play.prototype = {
@@ -1568,7 +1569,7 @@ module.exports = Menu;
   };
   
   module.exports = Play;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 
 'use strict';
 function Preload() {
