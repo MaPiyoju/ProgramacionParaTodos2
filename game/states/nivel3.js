@@ -71,7 +71,7 @@
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
-      this.tiempo.loop(125, this.updateMov, this);//Actualizacion movimiento jugador
+      this.tiempo.loop(/*125*/500, this.updateMov, this);//Actualizacion movimiento jugador
       this.tiempo.start();
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
@@ -113,31 +113,77 @@
             this.gusano.i = -1;
           }
           this.tablero.setObjCuadro(this.gusano.i+1,this.gusano.j,'',this.gusano,0);
+          this.gusano.angle = 180;
           break;
         case 1://Movimiento hacia la izquierda
           if(this.gusano.i == 0){//Limite de tablero
             this.gusano.i = this.tablero.xCuadros;
           }
           this.tablero.setObjCuadro(this.gusano.i-1,this.gusano.j,'',this.gusano,0);
+          this.gusano.angle = 0;
           break;
         case 2://Movimiento hacia arriba
           if(this.gusano.j == 0){//Limite de tablero
             this.gusano.j = this.tablero.yCuadros;
           }
           this.tablero.setObjCuadro(this.gusano.i,this.gusano.j-1,'',this.gusano,0);
+          this.gusano.angle = 90;
           break;
         case 3://Movimiento hacie abajo
           if(this.gusano.j == this.tablero.yCuadros - 1){//Limite de tablero
             this.gusano.j = -1;
           }
           this.tablero.setObjCuadro(this.gusano.i,this.gusano.j+1,'',this.gusano,0);
+          this.gusano.angle = -90;
           break;
       }
+      this.gusano.lastangle = this.gusano.angle;
       //Movimiento cuerpo gusano
       for(var i=1;i<this.gusanoGroup.length;i++){//Empieza en 1 para omitir la cabeza de gusano
         this.gusanoGroup[i].lasti = this.gusanoGroup[i].i;
         this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
+        this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;
         this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);
+        this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;
+        if(this.gusanoGroup[i+1]){
+          if(this.gusanoGroup[i].angle != this.gusanoGroup[i].lastangle){
+            this.gusanoGroup[i].frame = 2;
+            switch(this.gusanoGroup[i].angle){
+              case 180://En caso de direccion derecha
+                if(this.gusanoGroup[i+1].angle == 90){
+                  this.gusanoGroup[i].angle = -90;
+                }else{
+                  this.gusanoGroup[i].angle = 180;
+                }
+                break;
+              case 0://En caso de direccion izquierda
+                if(this.gusanoGroup[i+1].angle == 90){
+                  this.gusanoGroup[i].angle = 0;
+                }else{
+                  this.gusanoGroup[i].angle = -90;
+                }
+                break;
+              case 90://En caso de direccion arriba
+                if(this.gusanoGroup[i+1].angle == 0){
+                  this.gusanoGroup[i].angle = 180;
+                }else{
+                  this.gusanoGroup[i].angle = 90;
+                }
+                break;
+              case -90://En caso de direccion abajo
+                if(this.gusanoGroup[i+1].angle == 0){
+                  this.gusanoGroup[i].angle = -90;
+                }else{
+                  this.gusanoGroup[i].angle = 0;
+                }
+                break;
+            }
+          }else{
+            this.gusanoGroup[i].frame = 1;
+          }
+        }else{
+          this.gusanoGroup[i].frame = 1;
+        }
       }
     },
 
@@ -216,15 +262,18 @@
         this.cuerpoGroup.push(bola);
         this.gusanoGroup.push(bola);
       }else{//En caso de item erroneo se remueven items del cuerpo del gusano
-        var bola = this.cuerpoGroup[this.cuerpoGroup.length-1];
-        this.cuerpoGroup.pop();
-        this.gusanoGroup.pop();
-        bola.destroy();
+        if(this.gusanoGroup.length > 1){//En caso de contar con bolas para destruir
+          var bola = this.cuerpoGroup[this.cuerpoGroup.length-1];
+          this.cuerpoGroup.pop();
+          this.gusanoGroup.pop();
+          bola.destroy();
+        }else{
+          this.chocar();
+        }
       }
     },
 
     chocar: function(cabeza, cuerpo){
-      console.log(this.cuerpoGroup);
       this.showStats();//Mostrar estadisticas
       //Detener metodo de update
       this.tiempo.stop();

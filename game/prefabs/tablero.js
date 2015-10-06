@@ -13,8 +13,8 @@ var Tablero = function(game, x, y ,xCuadros , yCuadros, parent){
   this.dimension = 50;
 
   //Fondo de tablero
-  //this.fondoTablero = this.game.add.sprite(x-5,y-4,'tablero');
-  //this.add(this.fondoTablero);
+  this.fondoTablero = this.game.add.sprite(x-30,y-28,'tablero');
+  this.add(this.fondoTablero);
 
   //Se dibuja el tablero con base en los valores de entrada
   for(var i=0;i<xCuadros;i++){
@@ -34,8 +34,8 @@ Tablero.prototype.update = function() {
 
 Tablero.prototype.dibujarCuadro = function(x,y,dimension) {
   var cuadro = this.game.add.graphics( 0, 0 );
-  cuadro.beginFill(0x272822, 1);
-  cuadro.lineStyle(1, 0xffffff);
+  //cuadro.beginFill(0x272822, 1);
+  //cuadro.lineStyle(1, 0xffffff);
   cuadro.bounds = new PIXI.Rectangle(x, y, dimension, dimension);
   cuadro.drawRect(x, y, dimension, dimension);
   this.add(cuadro);
@@ -43,15 +43,16 @@ Tablero.prototype.dibujarCuadro = function(x,y,dimension) {
 
 Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
   if(obj != ''){//Creacion objeto nuevo en tablero de juego
-    var obj = new Entidad(this.game,this.x+(i*this.dimension),this.y+(j*this.dimension),obj,frame);
+    var obj = new Entidad(this.game,this.x+(i*this.dimension)+(this.dimension/2),this.y+(j*this.dimension)+(this.dimension/2),obj,frame);
+    obj.anchor.setTo(0.5,0.5);
     obj.i = i;
     obj.j = j;
     this.add(obj);
   }else{//Actualizacion posicion objeto en tablero de juego
-    sprite.x = this.x+(i*this.dimension);
+    sprite.x = this.x+(i*this.dimension)+(this.dimension/2);
     sprite.i = i;
     sprite.propiedades[0].val = i;//Se actualiza el valor en propiedades
-    sprite.y = this.y+(j*this.dimension);
+    sprite.y = this.y+(j*this.dimension)+(this.dimension/2);
     sprite.j = j;
     sprite.propiedades[1].val = j;//Se actualiza el valor en propiedades
   }
