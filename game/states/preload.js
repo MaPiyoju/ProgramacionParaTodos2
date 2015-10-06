@@ -20,6 +20,7 @@ Preload.prototype = {
     this.load.bitmapFont('font1', 'assets/fonts/font1/font1.png', 'assets/fonts/font1/font1.fnt');
     this.load.bitmapFont('font', 'assets/fonts/font/font.png', 'assets/fonts/font/font.fnt');
     this.load.bitmapFont('font_white', 'assets/fonts/font_white/font_white.png', 'assets/fonts/font_white/font_white.fnt');
+    this.load.bitmapFont('fontData', 'assets/fonts/fontData/fontData.png', 'assets/fonts/fontData/fontData.fnt');
 
     /*Botones e imagenes generales*/
     this.load.image('btnContinuar','assets/images/Botones/btnContinuar.png');

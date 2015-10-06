@@ -167,7 +167,7 @@
           
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-          item.texto = this.game.add.bitmapText(item.x, item.y, 'font',this.levelData.dataTipo[tipo].exp[txtIndex], 16);//Creacion texto
+          item.texto = this.game.add.bitmapText(item.x, item.y, 'fontData',this.levelData.dataTipo[tipo].exp[txtIndex], 16);//Creacion texto
           item.texto.anchor.setTo(0.5,-1);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
@@ -186,7 +186,7 @@
         item.bonus = true;
         item.anchor.setTo(0.5,0.5);
         var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
-        item.texto = this.game.add.bitmapText(item.x, item.y, 'font',"*" +this.levelData.dataTipo[tipo].exp[txtIndex] +"*"  , 16);//Creacion texto
+        item.texto = this.game.add.bitmapText(item.x, item.y, 'fontData',"*" +this.levelData.dataTipo[tipo].exp[txtIndex] +"*"  , 16);//Creacion texto
         item.texto.anchor.setTo(0.5,-1);
 
         item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
