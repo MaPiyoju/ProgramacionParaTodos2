@@ -81,6 +81,7 @@ Preload.prototype = {
 
     this.load.audio('menuoverSound', ['assets/audio/menuOver.ogg','assets/audio/menuOver.mp3']);
     this.load.audio('errorSound', ['assets/audio/error_0.ogg','assets/audio/error_0.mp3']);
+    this.load.audio('itemOkSound', ['assets/audio/item.ogg','assets/audio/item.mp3']);
   },
 
   create: function() {

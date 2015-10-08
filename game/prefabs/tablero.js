@@ -35,7 +35,7 @@ Tablero.prototype.update = function() {
 Tablero.prototype.dibujarCuadro = function(x,y,dimension) {
   var cuadro = this.game.add.graphics( 0, 0 );
   //cuadro.beginFill(0x272822, 1);
-  //cuadro.lineStyle(1, 0xffffff);
+  cuadro.lineStyle(1, 0xffffff);
   cuadro.bounds = new PIXI.Rectangle(x, y, dimension, dimension);
   cuadro.drawRect(x, y, dimension, dimension);
   this.add(cuadro);
