@@ -42,12 +42,14 @@
     this.btnAyuda.fixedToCamera = true;
     this.btnAyuda.frame = 1;
     this.add(this.btnAyuda);
-
     
     //Se establece la posicion fuera de los limites de juego
     this.x = 0;
     this.y = -160;
     this.game.input.onDown.add(this.reset,this);
+
+    //Se incluyen audios de juego
+    this.btnSound = this.game.add.audio('btnSound');
   };
 
   Pause.prototype = Object.create(Phaser.Group.prototype);
@@ -71,6 +73,7 @@
      if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
            //Opcion Reiniciar
           if(this.game.paused){
+            this.btnSound.play();
             this.game.paused = false;
             this.hide();                  
             this.game.state.clearCurrentState();
@@ -83,6 +86,7 @@
       }else if(game.x > (this.game.width/2) -30 && game.x < (this.game.width/2) + 15 && game.y > y1 && game.y < y2 ){
           //Opcion Inicio
            if(this.game.paused){
+            this.btnSound.play();
             this.game.paused = false;
             this.hide();                  
             this.game.state.clearCurrentState();
@@ -91,6 +95,7 @@
       }else if(game.x > (this.game.width/2) + 60 && game.x < (this.game.width/2) + 105 && game.y > y1 && game.y < y2 ){
           //Opcion ayuda
            if(this.game.paused){
+            this.btnSound.play();
             var frame  = 0;            
               switch(game.game.state.current){
                 case 'nivel1':                 

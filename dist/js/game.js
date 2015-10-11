@@ -190,12 +190,14 @@ module.exports = Entidad;
     this.btnAyuda.fixedToCamera = true;
     this.btnAyuda.frame = 1;
     this.add(this.btnAyuda);
-
     
     //Se establece la posicion fuera de los limites de juego
     this.x = 0;
     this.y = -160;
     this.game.input.onDown.add(this.reset,this);
+
+    //Se incluyen audios de juego
+    this.btnSound = this.game.add.audio('btnSound');
   };
 
   Pause.prototype = Object.create(Phaser.Group.prototype);
@@ -219,6 +221,7 @@ module.exports = Entidad;
      if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
            //Opcion Reiniciar
           if(this.game.paused){
+            this.btnSound.play();
             this.game.paused = false;
             this.hide();                  
             this.game.state.clearCurrentState();
@@ -231,6 +234,7 @@ module.exports = Entidad;
       }else if(game.x > (this.game.width/2) -30 && game.x < (this.game.width/2) + 15 && game.y > y1 && game.y < y2 ){
           //Opcion Inicio
            if(this.game.paused){
+            this.btnSound.play();
             this.game.paused = false;
             this.hide();                  
             this.game.state.clearCurrentState();
@@ -239,6 +243,7 @@ module.exports = Entidad;
       }else if(game.x > (this.game.width/2) + 60 && game.x < (this.game.width/2) + 105 && game.y > y1 && game.y < y2 ){
           //Opcion ayuda
            if(this.game.paused){
+            this.btnSound.play();
             var frame  = 0;            
               switch(game.game.state.current){
                 case 'nivel1':                 
@@ -1254,6 +1259,10 @@ module.exports = Menu;
       this.itemGroup = [];
       this.pasoActual = 0;
       this.habilMov = true;
+
+      //Se incluyen audios de juego
+      this.btnSound = this.game.add.audio('btnSound');
+      this.feedSound = this.game.add.audio('feedSound');
     },
 
     create: function(){
@@ -1274,6 +1283,7 @@ module.exports = Menu;
       var y2 = 550;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
         if(this.intro){
+          this.btnSound.play();
           this.empezar();
         }
       }
@@ -1285,17 +1295,15 @@ module.exports = Menu;
       this.introImg.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel3');//Fondo de juego
-      //this.random = Math.floor(Math.random() * this.situaLength);//Se realiza la carga de una situación de forma aleatoria
-      
       this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
       this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano', null, 0);
-      this.gusano.hitArea = new Phaser.Circle(0, 0, 15);
-      this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
+      //this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
       this.comerItem();//Creacion bolas iniciales de gusano
       this.comerItem();//Creacion bolas iniciales de gusano
 
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', '', 28);//Texto de expresion
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
@@ -1338,6 +1346,7 @@ module.exports = Menu;
     },
 
     updateMov: function(){
+      this.nuevaBola = false;
       this.gusano.lasti = this.gusano.i;//Posicion actual X cabeza para siguiente elemento
       this.gusano.lastj = this.gusano.j;//Posicion actual Y cabeza para siguiente elemento
       //Movimiento cabeza de gusano
@@ -1423,12 +1432,8 @@ module.exports = Menu;
 
     crearExpresion: function(){
       this.pasoActual = 0;//Reseteo de pasos de evaluacion a 0
-      this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de jeugo
-      if(this.txtExp){
-        this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];
-      }else{
-        this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData.dataGusano[this.random].exp[this.pasoActual], 28);//Texto de expresion        
-      }
+      this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de juego
+      this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];//Asignacion texto de expresion
       this.res = eval(this.levelData.dataGusano[this.random].exp);//Resultado de expresion
       this.nuevoPaso();//Creacion primer paso
     },
@@ -1474,6 +1479,7 @@ module.exports = Menu;
       var continuar = true;
       if(item){
         if(item.ok){//En caso de item correcto de aceurdo al paso
+          this.feedSound.play();
           this.pasoActual++;
           this.nuevoPaso();
         }else{//En caso de error 
@@ -1487,6 +1493,7 @@ module.exports = Menu;
         bola.angle = this.gusanoGroup[this.gusanoGroup.length-1].lastangle;
         this.cuerpoGroup.push(bola);
         this.gusanoGroup.push(bola);
+        this.nuevaBola = true;        
       }else{//En caso de item erroneo se remueven items del cuerpo del gusano
         if(this.gusanoGroup.length > 1){//En caso de contar con bolas para destruir
           var bola = this.cuerpoGroup[this.cuerpoGroup.length-1];
@@ -1500,11 +1507,11 @@ module.exports = Menu;
     },
 
     chocar: function(cabeza, cuerpo){
-      console.log('Cabeza: ',cabeza);
-      console.log('Cuerpo: ',cuerpo);
-      this.showStats();//Mostrar estadisticas
-      //Detener metodo de update
-      this.tiempo.stop();
+      if(!this.nuevaBola){
+        this.showStats();//Mostrar estadisticas
+        //Detener metodo de update
+        this.tiempo.stop();
+      }
     },
 
     showStats: function(){
@@ -1512,8 +1519,8 @@ module.exports = Menu;
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
       //Creacion cuadro retroalimentación final
-      //this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
-      //this.retroFinal.anchor.setTo(0.5,0.5);
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal.anchor.setTo(0.5,0.5);
       this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
       this.btnMenu.frame = 2;
       this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
@@ -1545,6 +1552,7 @@ module.exports = Menu;
       var y1 = 10;
       var y2 = 55;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+        this.btnSound.play();
         if(this.game.paused == false){
           //Se muestra panel de pausa
           if(this.flagpause==false){
@@ -1864,6 +1872,7 @@ module.exports = Menu;
       this.crearBoton(0,500,'nivel6',308,550,'');
 
       this.overSound = this.game.add.audio('menuoverSound');
+      this.btnSound = this.game.add.audio('btnMenuSound');
     },
 
     update: function() {
@@ -1890,6 +1899,7 @@ module.exports = Menu;
     },
 
     clickListener: function(boton) {
+      this.btnSound.play();
       this.game.state.start(boton.nivel);
     },
 
@@ -1990,9 +2000,13 @@ Preload.prototype = {
     /*Audios de juego*/
     this.load.audio('menuBgMusic', ['assets/audio/BgLoop/menu.ogg','assets/audio/BgLoop/menu.mp3']);
 
-    this.load.audio('menuoverSound', ['assets/audio/menuOver.ogg','assets/audio/menuOver.mp3']);
-    this.load.audio('errorSound', ['assets/audio/error_0.ogg','assets/audio/error_0.mp3']);
-    this.load.audio('itemOkSound', ['assets/audio/item.ogg','assets/audio/item.mp3']);
+    this.load.audio('menuoverSound', ['assets/audio/menuOver/menuOver.ogg','assets/audio/menuOver/menuOver.mp3']);
+    this.load.audio('errorSound', ['assets/audio/error/error_0.ogg','assets/audio/error/error_0.mp3']);
+    this.load.audio('itemOkSound', ['assets/audio/item/item.ogg','assets/audio/item/item.mp3']);
+
+    this.load.audio('btnMenuSound', ['assets/audio/btnMenu/btnMenu.ogg','assets/audio/btnMenu/btnMenu.mp3']);
+    this.load.audio('btnSound', ['assets/audio/btn/boton.ogg','assets/audio/btn/boton.mp3']);
+    this.load.audio('feedSound', ['assets/audio/feed/feed.ogg','assets/audio/feed/feed.MP3']);
   },
 
   create: function() {

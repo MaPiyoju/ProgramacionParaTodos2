@@ -11,6 +11,7 @@
       this.crearBoton(0,500,'nivel6',308,550,'');
 
       this.overSound = this.game.add.audio('menuoverSound');
+      this.btnSound = this.game.add.audio('btnMenuSound');
     },
 
     update: function() {
@@ -37,6 +38,7 @@
     },
 
     clickListener: function(boton) {
+      this.btnSound.play();
       this.game.state.start(boton.nivel);
     },
 
