@@ -17,6 +17,7 @@
     itemGroup: null,
     res: 0,
     pasoActual: 0,
+    habilMov: true,
 
     init: function(){
       this.maxtime= 120;
@@ -27,6 +28,7 @@
       this.cuerpoGroup = [];
       this.itemGroup = [];
       this.pasoActual = 0;
+      this.habilMov = true;
     },
 
     create: function(){
@@ -62,6 +64,7 @@
       
       this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
       this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano', null, 0);
+      this.gusano.hitArea = new Phaser.Circle(0, 0, 15);
       this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
@@ -71,7 +74,7 @@
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
-      this.tiempo.loop(/*125*/500, this.updateMov, this);//Actualizacion movimiento jugador
+      this.tiempo.loop(/*500*/125, this.updateMov, this);//Actualizacion movimiento jugador
       this.tiempo.start();
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
@@ -91,14 +94,20 @@
         this.game.physics.arcade.overlap(this.gusano, this.itemGroup, this.comerItem, null, this);//Se define metodo llamado de colision para item - cabeza
         this.game.physics.arcade.overlap(this.gusano, this.cuerpoGroup, this.chocar, null, this);//Se define metodo llamado de colision para cuerpo - cabeza
         //Definicion movimiento de jugador por medio de cursores de movimiento(Flechas teclado)
-        if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
-          this.movimiento = 0;
-        }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
-          this.movimiento = 1;
-        }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
-          this.movimiento = 2;
-        }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
-          this.movimiento = 3;
+        if(this.habilMov){
+          if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
+            this.movimiento = 0;
+            this.habilMov =false;
+          }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
+            this.movimiento = 1;
+            this.habilMov =false;
+          }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
+            this.movimiento = 2;
+            this.habilMov =false;
+          }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
+            this.movimiento = 3;
+            this.habilMov =false;
+          }          
         }
       }
     },
@@ -137,52 +146,52 @@
           this.gusano.angle = -90;
           break;
       }
+      this.habilMov = true;
       this.gusano.lastangle = this.gusano.angle;
       //Movimiento cuerpo gusano
       for(var i=1;i<this.gusanoGroup.length;i++){//Empieza en 1 para omitir la cabeza de gusano
         this.gusanoGroup[i].lasti = this.gusanoGroup[i].i;
         this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
-        this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;
-        this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);
-        this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;
-        if(this.gusanoGroup[i+1]){
+        if(this.gusanoGroup[i].anguloTemp){//Control de giro a la derecha para control de angulo de animacion
+          this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;  
+        }
+        this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;//Angulo de asignacion siguiente objeto
+        this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);//Nueva posicion 
+        this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;//Angulo inicial
+        if(this.gusanoGroup[i+1]){//Control de giros y asignacion de codos de giro
           if(this.gusanoGroup[i].angle != this.gusanoGroup[i].lastangle){
-            this.gusanoGroup[i].frame = 2;
-            switch(this.gusanoGroup[i].angle){
-              case 180://En caso de direccion derecha
-                if(this.gusanoGroup[i+1].angle == 90){
-                  this.gusanoGroup[i].angle = -90;
-                }else{
-                  this.gusanoGroup[i].angle = 180;
-                }
-                break;
-              case 0://En caso de direccion izquierda
-                if(this.gusanoGroup[i+1].angle == 90){
-                  this.gusanoGroup[i].angle = 0;
-                }else{
-                  this.gusanoGroup[i].angle = -90;
-                }
-                break;
-              case 90://En caso de direccion arriba
-                if(this.gusanoGroup[i+1].angle == 0){
-                  this.gusanoGroup[i].angle = 180;
-                }else{
+            this.gusanoGroup[i].frame = 2;//Frame codo de giro            
+            if(this.gusanoGroup[i].angle == -180){
+              this.gusanoGroup[i].angleAngle = 180;
+            }else{
+              this.gusanoGroup[i].angleAngle = undefined;
+            }
+            if((this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angle) || (this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angleAngle)){//Giros direccion derecha              
+              this.gusanoGroup[i].anguloTemp = true;//Control giro derecha
+              switch(this.gusanoGroup[i].angle){//Asignacion angulo de giro
+                case 0:
                   this.gusanoGroup[i].angle = 90;
-                }
-                break;
-              case -90://En caso de direccion abajo
-                if(this.gusanoGroup[i+1].angle == 0){
+                  break;
+                case 90:
+                  this.gusanoGroup[i].angle = 180;
+                  break;
+                case -180:
                   this.gusanoGroup[i].angle = -90;
-                }else{
+                  break;
+                case -90:
                   this.gusanoGroup[i].angle = 0;
-                }
-                break;
+                  break;
+              }
+            }else{
+              this.gusanoGroup[i].anguloTemp = false;
             }
           }else{
             this.gusanoGroup[i].frame = 1;
+            this.gusanoGroup[i].anguloTemp = false;
           }
         }else{
           this.gusanoGroup[i].frame = 1;
+          this.gusanoGroup[i].anguloTemp = false;
         }
       }
     },
@@ -190,7 +199,11 @@
     crearExpresion: function(){
       this.pasoActual = 0;//Reseteo de pasos de evaluacion a 0
       this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de jeugo
-      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData.dataGusano[this.random].exp, 28);//Texto de expresion
+      if(this.txtExp){
+        this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];
+      }else{
+        this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData.dataGusano[this.random].exp[this.pasoActual], 28);//Texto de expresion        
+      }
       this.res = eval(this.levelData.dataGusano[this.random].exp);//Resultado de expresion
       this.nuevoPaso();//Creacion primer paso
     },
@@ -209,6 +222,7 @@
         primerosPasos.forEach(function(item){//Creacion de items en tablero de juego
           thisTemp.crearItem(item);
         });
+        this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];
       }
     },
 
@@ -244,21 +258,8 @@
         item.txt.destroy();
       }
       if(continuar){//En caso de item correcto agrega una bola al cuerpo del gusano
-        var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].i, this.gusanoGroup[this.gusanoGroup.length-1].j, 'gusano', null, 1);
-        switch(this.movimiento){
-          case 0://En caso de movimiento hacia la derecha
-            this.tablero.setObjCuadro(this.gusano.i-1, this.gusano.j, '', bola, 1);
-            break;
-          case 1://En caso de movimiento hacia la izquierda
-            this.tablero.setObjCuadro(this.gusano.i+1, this.gusano.j, '', bola, 1);
-            break;
-          case 2://En caso de movimiento hacia arriba
-            this.tablero.setObjCuadro(this.gusano.i, this.gusano.j+1, '', bola, 1);
-            break;
-          case 3://En caso de movimiento hacia abajo
-            this.tablero.setObjCuadro(this.gusano.i, this.gusano.j-1, '', bola, 1);
-            break;
-        }
+        var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].lasti, this.gusanoGroup[this.gusanoGroup.length-1].lastj, 'gusano', null, 1);
+        bola.angle = this.gusanoGroup[this.gusanoGroup.length-1].lastangle;
         this.cuerpoGroup.push(bola);
         this.gusanoGroup.push(bola);
       }else{//En caso de item erroneo se remueven items del cuerpo del gusano
@@ -274,6 +275,8 @@
     },
 
     chocar: function(cabeza, cuerpo){
+      console.log('Cabeza: ',cabeza);
+      console.log('Cuerpo: ',cuerpo);
       this.showStats();//Mostrar estadisticas
       //Detener metodo de update
       this.tiempo.stop();
@@ -284,8 +287,8 @@
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
       //Creacion cuadro retroalimentación final
-      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
-      this.retroFinal.anchor.setTo(0.5,0.5);
+      //this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      //this.retroFinal.anchor.setTo(0.5,0.5);
       this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
       this.btnMenu.frame = 2;
       this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
