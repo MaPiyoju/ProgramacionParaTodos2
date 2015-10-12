@@ -76,6 +76,23 @@ Preload.prototype = {
 
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
 
+
+    /*Imagenes nivel 6*/
+    this.load.image('tile_nivel6', 'assets/images/Nivel6/tile.png');
+    this.load.image('introN6', 'assets/images/Nivel6/intro.jpg');
+    this.load.image('btnfor','assets/images/Nivel6/btnfor.png');
+    this.load.image('btnwhile','assets/images/Nivel6/btnwhile.png');
+    this.load.image('slotciclo','assets/images/Nivel6/slot.png');    
+    this.load.image('accion_large6','assets/images/Nivel6/accion_large.png');
+    this.load.image('accion_small6','assets/images/Nivel6/accion_small.png');
+    this.load.image('condicion6','assets/images/Nivel6/condicion.png');
+    this.load.spritesheet('situacion6.1','assets/images/Nivel6/animSalto.png',401,273);
+    this.load.spritesheet('situacion6_1','assets/images/Nivel6/animSaltoBien.png',401,273);
+    this.load.spritesheet('situacion6_1_Inv','assets/images/Nivel6/animSaltoMal.png',401,273);
+    this.load.image('btnEjecutar6','assets/images/Nivel6/btnEjecutar.png');
+    this.load.image('fondoPasos6','assets/images/Nivel6/fondoPasos.png');
+    this.load.image('fondosituacion','assets/images/Nivel6/fondosituacion.png');
+
     /*Audios de juego*/
     this.load.audio('menuBgMusic', ['assets/audio/BgLoop/menu.ogg','assets/audio/BgLoop/menu.mp3']);
 
