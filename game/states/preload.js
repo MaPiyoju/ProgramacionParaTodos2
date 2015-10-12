@@ -80,12 +80,13 @@ Preload.prototype = {
     this.load.audio('menuBgMusic', ['assets/audio/BgLoop/menu.ogg','assets/audio/BgLoop/menu.mp3']);
 
     this.load.audio('menuoverSound', ['assets/audio/menuOver/menuOver.ogg','assets/audio/menuOver/menuOver.mp3']);
-    this.load.audio('errorSound', ['assets/audio/error/error_0.ogg','assets/audio/error/error_0.mp3']);
-    this.load.audio('itemOkSound', ['assets/audio/item/item.ogg','assets/audio/item/item.mp3']);
-
     this.load.audio('btnMenuSound', ['assets/audio/btnMenu/btnMenu.ogg','assets/audio/btnMenu/btnMenu.mp3']);
     this.load.audio('btnSound', ['assets/audio/btn/boton.ogg','assets/audio/btn/boton.mp3']);
-    this.load.audio('feedSound', ['assets/audio/feed/feed.ogg','assets/audio/feed/feed.MP3']);
+    
+    this.load.audio('errorSound', ['assets/audio/error/error_0.ogg','assets/audio/error/error_0.mp3']);
+    this.load.audio('itemOkSound', ['assets/audio/item/item.ogg','assets/audio/item/item.mp3']);    
+    this.load.audio('grabSound', ['assets/audio/grab/grab.ogg','assets/audio/grab/grab.mp3']);
+    this.load.audio('soltarSound', ['assets/audio/soltar/soltar.ogg','assets/audio/soltar/soltar.mp3']);
   },
 
   create: function() {
