@@ -73,6 +73,7 @@ Preload.prototype = {
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
     this.load.image('tablero','assets/images/Nivel3/tablero.png');
+    this.load.image('tablero_t','assets/images/Nivel3/tablero_t.png');
 
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
 
@@ -106,6 +107,7 @@ Preload.prototype = {
     this.load.audio('itemOkSound', ['assets/audio/item/item.ogg','assets/audio/item/item.mp3']);    
     this.load.audio('grabSound', ['assets/audio/grab/grab.ogg','assets/audio/grab/grab.mp3']);
     this.load.audio('soltarSound', ['assets/audio/soltar/soltar.ogg','assets/audio/soltar/soltar.mp3']);
+    this.load.audio('feedSound', ['assets/audio/feed/feed.ogg','assets/audio/feed/feed.mp3']);
   },
 
   create: function() {

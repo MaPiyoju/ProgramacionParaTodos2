@@ -30,6 +30,9 @@
 
       //Se incluyen audios de juego
       this.errorSound = this.game.add.audio('errorSound');
+      this.grabSound = this.game.add.audio('grabSound');
+      this.soltarSound = this.game.add.audio('soltarSound');
+      this.btnSound = this.game.add.audio('btnSound');
     },
 
     create: function(){
@@ -50,6 +53,7 @@
       var y2 = 550;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
         if(this.intro){
+          this.btnSound.play();
           this.empezar();
         }
       }
@@ -250,6 +254,7 @@
 
     clickItem: function(item){
       if(!this.alert.visible && this.maxtime > 0){
+        this.grabSound.play();
         this.itemSelec = true;//Se habilita la seleccion de item para movimiento
         this.textoItem = item.texto;//Se establece el texto del item seleccionado para movimiento
         item.movimiento = true;//Se habilita el movimiento del item
@@ -304,6 +309,8 @@
           item.texto.anchor.setTo(0.5,0.5);
           item.texto.x = item.xPos;//Se retorna la posicion inicial X del texto
           item.texto.y = item.yPos;//Se retorna la posicion inicial Y del elemento
+        }else{
+          this.soltarSound.play();
         }
       }
     },
@@ -431,6 +438,7 @@
       var y1 = 10;
       var y2 = 55;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+        this.btnSound.play();
         if(this.game.paused == false){
           //Se muestra panel de pausa
           if(this.flagpause==false){

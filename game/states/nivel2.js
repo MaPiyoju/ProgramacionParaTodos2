@@ -23,6 +23,9 @@
       this.intentos = 0;
       this.aciertos = 0;
       this.lastSituacion = -1;
+
+      //Audios de nivel
+      this.btnSound = this.game.add.audio('btnSound');
     },
 
     create: function(){
@@ -42,7 +45,8 @@
       var y1 = 480;
       var y2 = 550;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
-        if(this.intro){          
+        if(this.intro){  
+          this.btnSound.play();        
           this.empezar();
         }
       }
@@ -167,6 +171,7 @@
         });
       }
     },
+
     crearItem: function(){     
       for (var i = 0; i < 5; i++){
         var random = Math.floor(Math.random()*2);//Probabilidad de creacion de item de 50%
@@ -326,6 +331,7 @@
       var y1 = 10;
       var y2 = 55;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+        this.btnSound.play();
         if(this.game.paused == false){
           //Se muestra panel de pausa
           if(this.flagpause==false){

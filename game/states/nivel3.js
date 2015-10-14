@@ -73,7 +73,9 @@
       this.comerItem();//Creacion bolas iniciales de gusano
       this.comerItem();//Creacion bolas iniciales de gusano
 
-      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', '', 28);//Texto de expresion
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 565, 'font', '', 28);//Texto de expresion
+      this.txtExp.anchor.setTo(0.5,0.5);
+      this.txtExp.align = "center";
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
