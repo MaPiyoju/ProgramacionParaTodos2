@@ -1730,9 +1730,9 @@ module.exports = Menu;
   var Alert = require('../prefabs/alert');
   var Tablero = require('../prefabs/tablero');
 
-  function Nivel3() {}
+  function Nivel4() {}
 
-  Nivel3.prototype = {
+  Nivel4.prototype = {
 
     //Definición de propiedades globales de nivel
     maxtime: 120,
@@ -1744,6 +1744,7 @@ module.exports = Menu;
     itemGroup: null,
     res: 0,
     pasoActual: 0,
+    habilMov: true,
 
     init: function(){
       this.maxtime= 120;
@@ -1754,11 +1755,16 @@ module.exports = Menu;
       this.cuerpoGroup = [];
       this.itemGroup = [];
       this.pasoActual = 0;
+      this.habilMov = true;
+
+      //Se incluyen audios de juego
+      this.btnSound = this.game.add.audio('btnSound');
+      this.feedSound = this.game.add.audio('feedSound');
     },
 
     create: function(){
       //Parseo de datos de juego para su uso
-      this.levelData = JSON.parse(this.game.cache.getText('data3'));
+      this.levelData = JSON.parse(this.game.cache.getText('data4'));
       this.situaLength = this.levelData.dataGusano.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
@@ -1774,6 +1780,7 @@ module.exports = Menu;
       var y2 = 550;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
         if(this.intro){
+          this.btnSound.play();
           this.empezar();
         }
       }
@@ -1785,20 +1792,21 @@ module.exports = Menu;
       this.introImg.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel3');//Fondo de juego
-      //this.random = Math.floor(Math.random() * this.situaLength);//Se realiza la carga de una situación de forma aleatoria
-      
       this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
       this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano', null, 0);
-      this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
+      //this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
       this.comerItem();//Creacion bolas iniciales de gusano
       this.comerItem();//Creacion bolas iniciales de gusano
 
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 565, 'font', '', 28);//Texto de expresion
+      this.txtExp.anchor.setTo(0.5,0.5);
+      this.txtExp.align = "center";
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
-      this.tiempo.loop(125, this.updateMov, this);//Actualizacion movimiento jugador
+      this.tiempo.loop(/*500*/125, this.updateMov, this);//Actualizacion movimiento jugador
       this.tiempo.start();
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
@@ -1818,19 +1826,26 @@ module.exports = Menu;
         this.game.physics.arcade.overlap(this.gusano, this.itemGroup, this.comerItem, null, this);//Se define metodo llamado de colision para item - cabeza
         this.game.physics.arcade.overlap(this.gusano, this.cuerpoGroup, this.chocar, null, this);//Se define metodo llamado de colision para cuerpo - cabeza
         //Definicion movimiento de jugador por medio de cursores de movimiento(Flechas teclado)
-        if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
-          this.movimiento = 0;
-        }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
-          this.movimiento = 1;
-        }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
-          this.movimiento = 2;
-        }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
-          this.movimiento = 3;
+        if(this.habilMov){
+          if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
+            this.movimiento = 0;
+            this.habilMov =false;
+          }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
+            this.movimiento = 1;
+            this.habilMov =false;
+          }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
+            this.movimiento = 2;
+            this.habilMov =false;
+          }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
+            this.movimiento = 3;
+            this.habilMov =false;
+          }          
         }
       }
     },
 
     updateMov: function(){
+      this.nuevaBola = false;
       this.gusano.lasti = this.gusano.i;//Posicion actual X cabeza para siguiente elemento
       this.gusano.lastj = this.gusano.j;//Posicion actual Y cabeza para siguiente elemento
       //Movimiento cabeza de gusano
@@ -1840,38 +1855,84 @@ module.exports = Menu;
             this.gusano.i = -1;
           }
           this.tablero.setObjCuadro(this.gusano.i+1,this.gusano.j,'',this.gusano,0);
+          this.gusano.angle = 180;
           break;
         case 1://Movimiento hacia la izquierda
           if(this.gusano.i == 0){//Limite de tablero
             this.gusano.i = this.tablero.xCuadros;
           }
           this.tablero.setObjCuadro(this.gusano.i-1,this.gusano.j,'',this.gusano,0);
+          this.gusano.angle = 0;
           break;
         case 2://Movimiento hacia arriba
           if(this.gusano.j == 0){//Limite de tablero
             this.gusano.j = this.tablero.yCuadros;
           }
           this.tablero.setObjCuadro(this.gusano.i,this.gusano.j-1,'',this.gusano,0);
+          this.gusano.angle = 90;
           break;
         case 3://Movimiento hacie abajo
           if(this.gusano.j == this.tablero.yCuadros - 1){//Limite de tablero
             this.gusano.j = -1;
           }
           this.tablero.setObjCuadro(this.gusano.i,this.gusano.j+1,'',this.gusano,0);
+          this.gusano.angle = -90;
           break;
       }
+      this.habilMov = true;
+      this.gusano.lastangle = this.gusano.angle;
       //Movimiento cuerpo gusano
       for(var i=1;i<this.gusanoGroup.length;i++){//Empieza en 1 para omitir la cabeza de gusano
         this.gusanoGroup[i].lasti = this.gusanoGroup[i].i;
         this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
-        this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);
+        if(this.gusanoGroup[i].anguloTemp){//Control de giro a la derecha para control de angulo de animacion
+          this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;  
+        }
+        this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;//Angulo de asignacion siguiente objeto
+        this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);//Nueva posicion 
+        this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;//Angulo inicial
+        if(this.gusanoGroup[i+1]){//Control de giros y asignacion de codos de giro
+          if(this.gusanoGroup[i].angle != this.gusanoGroup[i].lastangle){
+            this.gusanoGroup[i].frame = 2;//Frame codo de giro            
+            if(this.gusanoGroup[i].angle == -180){
+              this.gusanoGroup[i].angleAngle = 180;
+            }else{
+              this.gusanoGroup[i].angleAngle = undefined;
+            }
+            if((this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angle) || (this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angleAngle)){//Giros direccion derecha              
+              this.gusanoGroup[i].anguloTemp = true;//Control giro derecha
+              switch(this.gusanoGroup[i].angle){//Asignacion angulo de giro
+                case 0:
+                  this.gusanoGroup[i].angle = 90;
+                  break;
+                case 90:
+                  this.gusanoGroup[i].angle = 180;
+                  break;
+                case -180:
+                  this.gusanoGroup[i].angle = -90;
+                  break;
+                case -90:
+                  this.gusanoGroup[i].angle = 0;
+                  break;
+              }
+            }else{
+              this.gusanoGroup[i].anguloTemp = false;
+            }
+          }else{
+            this.gusanoGroup[i].frame = 1;
+            this.gusanoGroup[i].anguloTemp = false;
+          }
+        }else{
+          this.gusanoGroup[i].frame = 1;
+          this.gusanoGroup[i].anguloTemp = false;
+        }
       }
     },
 
     crearExpresion: function(){
       this.pasoActual = 0;//Reseteo de pasos de evaluacion a 0
-      this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de jeugo
-      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 20, 'font', this.levelData.dataGusano[this.random].exp, 28);//Texto de expresion
+      this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de juego
+      this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];//Asignacion texto de expresion
       this.res = eval(this.levelData.dataGusano[this.random].exp);//Resultado de expresion
       this.nuevoPaso();//Creacion primer paso
     },
@@ -1890,6 +1951,7 @@ module.exports = Menu;
         primerosPasos.forEach(function(item){//Creacion de items en tablero de juego
           thisTemp.crearItem(item);
         });
+        this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];
       }
     },
 
@@ -1916,6 +1978,7 @@ module.exports = Menu;
       var continuar = true;
       if(item){
         if(item.ok){//En caso de item correcto de aceurdo al paso
+          this.feedSound.play();
           this.pasoActual++;
           this.nuevoPaso();
         }else{//En caso de error 
@@ -1925,36 +1988,29 @@ module.exports = Menu;
         item.txt.destroy();
       }
       if(continuar){//En caso de item correcto agrega una bola al cuerpo del gusano
-        var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].i, this.gusanoGroup[this.gusanoGroup.length-1].j, 'gusano', null, 1);
-        switch(this.movimiento){
-          case 0://En caso de movimiento hacia la derecha
-            this.tablero.setObjCuadro(this.gusano.i-1, this.gusano.j, '', bola, 1);
-            break;
-          case 1://En caso de movimiento hacia la izquierda
-            this.tablero.setObjCuadro(this.gusano.i+1, this.gusano.j, '', bola, 1);
-            break;
-          case 2://En caso de movimiento hacia arriba
-            this.tablero.setObjCuadro(this.gusano.i, this.gusano.j+1, '', bola, 1);
-            break;
-          case 3://En caso de movimiento hacia abajo
-            this.tablero.setObjCuadro(this.gusano.i, this.gusano.j-1, '', bola, 1);
-            break;
-        }
+        var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].lasti, this.gusanoGroup[this.gusanoGroup.length-1].lastj, 'gusano', null, 1);
+        bola.angle = this.gusanoGroup[this.gusanoGroup.length-1].lastangle;
         this.cuerpoGroup.push(bola);
         this.gusanoGroup.push(bola);
+        this.nuevaBola = true;        
       }else{//En caso de item erroneo se remueven items del cuerpo del gusano
-        var bola = this.cuerpoGroup[this.cuerpoGroup.length-1];
-        this.cuerpoGroup.pop();
-        this.gusanoGroup.pop();
-        bola.destroy();
+        if(this.gusanoGroup.length > 1){//En caso de contar con bolas para destruir
+          var bola = this.cuerpoGroup[this.cuerpoGroup.length-1];
+          this.cuerpoGroup.pop();
+          this.gusanoGroup.pop();
+          bola.destroy();
+        }else{
+          this.chocar();
+        }
       }
     },
 
     chocar: function(cabeza, cuerpo){
-      console.log(this.cuerpoGroup);
-      this.showStats();//Mostrar estadisticas
-      //Detener metodo de update
-      this.tiempo.stop();
+      if(!this.nuevaBola){
+        this.showStats();//Mostrar estadisticas
+        //Detener metodo de update
+        this.tiempo.stop();
+      }
     },
 
     showStats: function(){
@@ -1995,6 +2051,7 @@ module.exports = Menu;
       var y1 = 10;
       var y2 = 55;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+        this.btnSound.play();
         if(this.game.paused == false){
           //Se muestra panel de pausa
           if(this.flagpause==false){
@@ -2011,7 +2068,7 @@ module.exports = Menu;
     }
   };
   
-  module.exports = Nivel3;
+  module.exports = Nivel4;
 },{"../prefabs/alert":2,"../prefabs/pause":4,"../prefabs/tablero":5}],14:[function(require,module,exports){
 
   'use strict';
@@ -2680,6 +2737,8 @@ Preload.prototype = {
     this.load.image('tablero_t','assets/images/Nivel3/tablero_t.png');
 
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
+
+    this.load.text('data4','assets/data/nivel4.json');//Datos nivel 4
 
 
     /*Imagenes nivel 6*/

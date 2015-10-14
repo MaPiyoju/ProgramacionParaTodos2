@@ -77,6 +77,8 @@ Preload.prototype = {
 
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
 
+    this.load.text('data4','assets/data/nivel4.json');//Datos nivel 4
+
 
     /*Imagenes nivel 6*/
     this.load.image('tile_nivel6', 'assets/images/Nivel6/tile.png');
