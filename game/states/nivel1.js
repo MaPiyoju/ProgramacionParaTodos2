@@ -145,7 +145,7 @@
       for(var i=0;i<fila;i++){
         var xIniSl = 350;//Definicion posicion x Inicial para slot
         for(var j=0;j<2;j++){
-          if(!par && i == 1 && (j == (fila-1))){//En caso de ser numero impar de pasos, no se realiza la creacion del ultimo slot
+          if(!par && j == 1 && (i == (fila-1))){//En caso de ser numero impar de pasos, no se realiza la creacion del ultimo slot
             break;
           }
           var slot = this.game.add.sprite(xIniSl,yIniSl,'slot');//Creacion slot

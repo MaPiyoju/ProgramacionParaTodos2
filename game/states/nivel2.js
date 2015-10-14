@@ -12,6 +12,7 @@
     vidas: 5,
     intentos:0,
     aciertos:0,
+    lastSituacion: -1,
 
     init: function(){
       this.maxtime= 120;
@@ -21,6 +22,7 @@
       this.vidas = 5;
       this.intentos = 0;
       this.aciertos = 0;
+      this.lastSituacion = -1;
     },
 
     create: function(){
@@ -122,7 +124,17 @@
     },
 
     solicitud: function(){
-      this.tipoSolicitud = Math.floor(Math.random()*this.levelData.dataTipo.length - 1);
+      var repetido= true;
+      while(repetido){        
+        this.tipoSolicitud = Math.floor(Math.random()*(this.levelData.dataTipo.length - 1));
+
+        if(this.tipoSolicitud == this.lastSituacion){
+          repetido = true;
+        }else {
+          repetido = false;
+        }
+      }
+      this.lastSituacion = this.tipoSolicitud;
       this.txtSolicitud.frame = this.tipoSolicitud;
     },
 
@@ -168,7 +180,7 @@
           item.anchor.setTo(0.5,0.5);
           var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
           item.texto = this.game.add.bitmapText(item.x, item.y, 'fontData',this.levelData.dataTipo[tipo].exp[txtIndex], 16);//Creacion texto
-          item.texto.anchor.setTo(0.5,-1);
+          item.texto.anchor.setTo(0.5,-0.8);
 
           item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
         }
@@ -187,13 +199,13 @@
         item.anchor.setTo(0.5,0.5);
         var txtIndex = Math.floor(Math.random()*this.levelData.dataTipo[tipo].exp.length);//Indice texto aleatorio de acuerdo al tipo en data de juego
         item.texto = this.game.add.bitmapText(item.x, item.y, 'fontData',"*" +this.levelData.dataTipo[tipo].exp[txtIndex] +"*"  , 16);//Creacion texto
-        item.texto.anchor.setTo(0.5,-1);
+        item.texto.anchor.setTo(0.5,-0.8);
 
         item.body.gravity.y = Math.floor(Math.random()*this.gravedad.max)+this.gravedad.min;//Se agrega gravedad al objeto
       }
     },
 
-    recogerItem: function (jugador, item) {
+    recogerItem: function (jugador, item) {      
       this.intentos++;      
       if(this.tipoSolicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
         this.aciertos++;

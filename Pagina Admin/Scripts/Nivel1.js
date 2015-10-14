@@ -33,7 +33,7 @@ miapp.controller('ControllerNiv1', function () {
 	this.acciones = [];
 	this.SelectSitua = function(indice){
 		this.txtDescripcion = this.Situaciones.dataSitua[indice].situaTxt;
-		this.acciones =  this.Situaciones.dataSitua[indice].accion;
+		this.acciones =  this.Situaciones.dataSitua[indice].accion + 1;
 	};
 
 	this.AddSituacion = function(){
@@ -41,7 +41,7 @@ miapp.controller('ControllerNiv1', function () {
 			this.Situaciones.dataSitua.push({
 				"situaImg": "assets/images/Nivel1/" + filename,
 				"situaTxt": this.txtDescripcion,
-				"nPasos": this.acciones.length + 1,
+				"nPasos": this.acciones.length,
 				"accion": this.acciones
 			});						
 			
