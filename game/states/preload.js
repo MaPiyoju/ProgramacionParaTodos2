@@ -93,6 +93,8 @@ Preload.prototype = {
     this.load.image('fondoPasos6','assets/images/Nivel6/fondoPasos.png');
     this.load.image('fondosituacion','assets/images/Nivel6/fondosituacion.png');
 
+    this.load.text('data6','assets/data/nivel6.json');//Datos nivel 3
+
     /*Audios de juego*/
     this.load.audio('menuBgMusic', ['assets/audio/BgLoop/menu.ogg','assets/audio/BgLoop/menu.mp3']);
 
@@ -124,6 +126,22 @@ Preload.prototype = {
           thisTemp.cont++;
         }
       });
+
+      /*Carga de imagenes para situaciones de acuerdo a documento JSON con datos del nivel 6*/
+      this.level6Data = JSON.parse(this.game.cache.getText('data6'));//Parseo de datos
+      this.cont = 1;//Contador para nombrar imagenes
+      thisTemp = this;
+      this.level6Data.dataSitua.forEach(function(data){
+        if(data.ImageUrl){
+          var key = 'niv6_situa'+thisTemp.cont;
+          thisTemp.load.spritesheet(key, data.ImageUrl,401,273);
+          thisTemp.load.spritesheet(key+"_Correct", data.ImageCorrect,401,273);
+          thisTemp.load.spritesheet(key+"_Error", data.ImageError,401,273);
+          
+          thisTemp.cont++;
+        }
+      });
+      
       this.ready2 = true;
       this.game.load.start();//Carga nuevas imagenes
 

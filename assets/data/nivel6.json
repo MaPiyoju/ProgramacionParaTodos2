@@ -1,0 +1,172 @@
+{
+	"dataSitua":[
+		{
+			"texto":"Hola, quiero romper el record de saltar\nla cuerda, para esto necesito saltar 30\nveces sin parar, ayudame a formar un\nciclo que me permita romper el record.",
+			"ImageUrl":"assets/images/Nivel6/animSalto.png",
+			"ImageCorrect" :"assets/images/Nivel6/animSaltoBien.png",
+			"ImageError" : "assets/images/Nivel6/animSaltoMal.png",
+			"Cifor":
+			{
+				"Slot": [
+					{
+						"texto": "var i = 0; i <= 30; i++",
+						"ok":true
+					},
+					{
+						"texto": "var i = 0; i >= 30; i++",
+						"ok":false
+					},
+					{
+						"texto": "var i = 0; i <= 30; i--",
+						"ok":false
+					}
+				],
+				"SlotAccion":[
+					{
+						"texto": "Saltar();",
+						"ok":true
+					},
+					{
+						"texto": "Cantar();",
+						"ok":false
+					},
+					{
+						"texto": "Caminar();",
+						"ok":false
+					},
+					{
+						"texto": "Hablar();",
+						"ok":false
+					},
+					{
+						"texto": "Disparar();",
+						"ok":false
+					}
+				]
+			},
+			"Ciwhile":			
+			{
+				"Slot": [
+					{
+						"texto": "Saltos <= 30",
+						"ok":true
+					},
+					{
+						"texto": "Saltos >= 30",
+						"ok":false
+					},
+					{
+						"texto": "Saltos == 30",
+						"ok":false
+					}
+				],
+				"SlotAccion":[
+					{
+						"texto": "Saltos=Saltos +1;\nSaltar()",
+						"ok":true
+					},
+					{
+						"texto": "Caminar=Saltos + 1;\nSaltar()",
+						"ok":false
+					},
+					{
+						"texto": "Saltos=Saltos +1;\nCaminar()",
+						"ok":false
+					},
+					{
+						"texto": "Saltar()",
+						"ok":false
+					},
+					{
+						"texto": "Disparos=Disparos +1;\nDisparar()",
+						"ok":false
+					}
+				]
+			}
+		},
+		{
+			"texto":"Hola, necesito pasar al otro lado del camino\n pero por este camino pasan muchas estampidas\n ayuda a cudrar la condicion para poder pasar\n cuando no este pasando una estampida.",
+			"ImageUrl":"assets/images/Nivel6/animSalto.png",
+			"ImageCorrect" :"assets/images/Nivel6/animSaltoBien.png",
+			"ImageError" : "assets/images/Nivel6/animSaltoMal.png",
+			"Cifor":
+			{
+				"Slot": [
+					{
+						"texto": "var i = 0; i <= 30; i++",
+						"ok":true
+					},
+					{
+						"texto": "var i = 0; i >= 30; i++",
+						"ok":false
+					},
+					{
+						"texto": "var i = 0; i <= 30; i--",
+						"ok":false
+					}
+				],
+				"SlotAccion":[
+					{
+						"texto": "Saltar();",
+						"ok":true
+					},
+					{
+						"texto": "Cantar();",
+						"ok":false
+					},
+					{
+						"texto": "Caminar();",
+						"ok":false
+					},
+					{
+						"texto": "Hablar();",
+						"ok":false
+					},
+					{
+						"texto": "Disparar();",
+						"ok":false
+					}
+				]
+			},
+			"Ciwhile":			
+			{
+				"Slot": [
+					{
+						"texto": "Saltos <= 30",
+						"ok":true
+					},
+					{
+						"texto": "Saltos >= 30",
+						"ok":false
+					},
+					{
+						"texto": "Saltos == 30",
+						"ok":false
+					}
+				],
+				"SlotAccion":[
+					{
+						"texto": "Saltos=Saltos +1;\nSaltar()",
+						"ok":true
+					},
+					{
+						"texto": "Caminar=Saltos + 1;\nSaltar()",
+						"ok":false
+					},
+					{
+						"texto": "Saltos=Saltos +1;\nCaminar()",
+						"ok":false
+					},
+					{
+						"texto": "Saltar()",
+						"ok":false
+					},
+					{
+						"texto": "Disparos=Disparos +1;\nDisparar()",
+						"ok":false
+					}
+				]
+			}
+		}
+	]	
+}
