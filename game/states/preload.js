@@ -110,6 +110,8 @@ Preload.prototype = {
     this.load.audio('grabSound', ['assets/audio/grab/grab.ogg','assets/audio/grab/grab.mp3']);
     this.load.audio('soltarSound', ['assets/audio/soltar/soltar.ogg','assets/audio/soltar/soltar.mp3']);
     this.load.audio('feedSound', ['assets/audio/feed/feed.ogg','assets/audio/feed/feed.mp3']);
+    this.load.audio('malSound', ['assets/audio/mal/mal.ogg','assets/audio/mal/mal.mp3']);
+    this.load.audio('cambioSound', ['assets/audio/cambio/cambio.ogg','assets/audio/cambio/cambio.mp3']);
   },
 
   create: function() {

@@ -33,6 +33,7 @@
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
       this.feedSound = this.game.add.audio('feedSound');
+      this.malSound = this.game.add.audio('malSound');
     },
 
     create: function(){
@@ -255,6 +256,7 @@
           this.pasoActual++;
           this.nuevoPaso();
         }else{//En caso de error 
+          this.malSound.play();
           continuar = false;
         }
         item.destroy();//Eliminacion del item de tablero de juego

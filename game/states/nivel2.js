@@ -26,6 +26,9 @@
 
       //Audios de nivel
       this.btnSound = this.game.add.audio('btnSound');
+      this.cambioSound = this.game.add.audio('cambioSound');
+      this.feedSound = this.game.add.audio('feedSound');
+      this.malSound = this.game.add.audio('malSound');
     },
 
     create: function(){
@@ -140,6 +143,7 @@
       }
       this.lastSituacion = this.tipoSolicitud;
       this.txtSolicitud.frame = this.tipoSolicitud;
+      this.cambioSound.play();
     },
 
     update: function() {
@@ -214,12 +218,14 @@
       this.intentos++;      
       if(this.tipoSolicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
         this.aciertos++;
+        this.feedSound.play();
         if(item.bonus == true){
           this.vidas++;
           this.updateVidas();//Se actualiza la barra de vida
         }
         this.puntaje+=20;
       }else{//En caso de ser un elemento diferente al tipo solicitad
+        this.malSound.play();
         if(item.bonus == true){
           this.vidas--;
         }

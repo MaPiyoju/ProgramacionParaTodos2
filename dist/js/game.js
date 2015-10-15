@@ -282,11 +282,13 @@ module.exports = Entidad;
 
   /*Metodos generales para retorno a menu y repetir nivel para llamado externo*/
   Pause.prototype.menuBtn = function(this_, game) {
+    this.btnSound.play();
     this_.game.state.clearCurrentState();
     game.game.state.start("play");
   };
   
   Pause.prototype.repetirBtn = function(this_,game) {
+    this.btnSound.play();
     this.game.state.clearCurrentState();    
     game.game.state.start(game.game.state.current);
   };
@@ -1055,6 +1057,9 @@ module.exports = Menu;
 
       //Audios de nivel
       this.btnSound = this.game.add.audio('btnSound');
+      this.cambioSound = this.game.add.audio('cambioSound');
+      this.feedSound = this.game.add.audio('feedSound');
+      this.malSound = this.game.add.audio('malSound');
     },
 
     create: function(){
@@ -1169,6 +1174,7 @@ module.exports = Menu;
       }
       this.lastSituacion = this.tipoSolicitud;
       this.txtSolicitud.frame = this.tipoSolicitud;
+      this.cambioSound.play();
     },
 
     update: function() {
@@ -1243,12 +1249,14 @@ module.exports = Menu;
       this.intentos++;      
       if(this.tipoSolicitud == item.tipo){//Se comprueba que el item seleccionado sea el mismo tipo de la solicitud
         this.aciertos++;
+        this.feedSound.play();
         if(item.bonus == true){
           this.vidas++;
           this.updateVidas();//Se actualiza la barra de vida
         }
         this.puntaje+=20;
       }else{//En caso de ser un elemento diferente al tipo solicitad
+        this.malSound.play();
         if(item.bonus == true){
           this.vidas--;
         }
@@ -1415,6 +1423,7 @@ module.exports = Menu;
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
       this.feedSound = this.game.add.audio('feedSound');
+      this.malSound = this.game.add.audio('malSound');
     },
 
     create: function(){
@@ -1637,6 +1646,7 @@ module.exports = Menu;
           this.pasoActual++;
           this.nuevoPaso();
         }else{//En caso de error 
+          this.malSound.play();
           continuar = false;
         }
         item.destroy();//Eliminacion del item de tablero de juego
@@ -2771,6 +2781,8 @@ Preload.prototype = {
     this.load.audio('grabSound', ['assets/audio/grab/grab.ogg','assets/audio/grab/grab.mp3']);
     this.load.audio('soltarSound', ['assets/audio/soltar/soltar.ogg','assets/audio/soltar/soltar.mp3']);
     this.load.audio('feedSound', ['assets/audio/feed/feed.ogg','assets/audio/feed/feed.mp3']);
+    this.load.audio('malSound', ['assets/audio/mal/mal.ogg','assets/audio/mal/mal.mp3']);
+    this.load.audio('cambioSound', ['assets/audio/cambio/cambio.ogg','assets/audio/cambio/cambio.mp3']);
   },
 
   create: function() {

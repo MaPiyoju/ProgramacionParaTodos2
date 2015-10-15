@@ -133,11 +133,13 @@
 
   /*Metodos generales para retorno a menu y repetir nivel para llamado externo*/
   Pause.prototype.menuBtn = function(this_, game) {
+    this.btnSound.play();
     this_.game.state.clearCurrentState();
     game.game.state.start("play");
   };
   
   Pause.prototype.repetirBtn = function(this_,game) {
+    this.btnSound.play();
     this.game.state.clearCurrentState();    
     game.game.state.start(game.game.state.current);
   };
