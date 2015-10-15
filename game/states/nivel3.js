@@ -34,6 +34,7 @@
       this.btnSound = this.game.add.audio('btnSound');
       this.feedSound = this.game.add.audio('feedSound');
       this.malSound = this.game.add.audio('malSound');
+      this.cambioSound = this.game.add.audio('cambioSound');
     },
 
     create: function(){
@@ -204,6 +205,7 @@
     },
 
     crearExpresion: function(){
+      this.cambioSound.play();
       this.pasoActual = 0;//Reseteo de pasos de evaluacion a 0
       this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de juego
       this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];//Asignacion texto de expresion
@@ -293,7 +295,7 @@
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
       //Creacion cuadro retroalimentación final
-      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final3');
       this.retroFinal.anchor.setTo(0.5,0.5);
       this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
       this.btnMenu.frame = 2;
@@ -304,6 +306,8 @@
       this.txtStats.anchor.setTo(0.5,0.5);
 
       this.porcentaje = 0;
+      this.total = this.tablero.xCuadros * this.tablero.yCuadros;
+      this.porcentaje = Math.floor((this.gusanoGroup.length * 100)/this.total);
       
       this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
       this.txtPorc.anchor.setTo(0.5,0.5);

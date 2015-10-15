@@ -62,7 +62,7 @@ Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
 }
 
 Tablero.prototype.setTexto = function(i, j, txt) {
-  var obj = this.game.add.bitmapText(this.x+(i*this.dimension), this.y+(j*this.dimension), 'font', txt, 28);
+  var obj = this.game.add.bitmapText(this.x+(i*this.dimension), this.y+(j*this.dimension), 'font', txt, 22);
   obj.anchor.setTo(0,-0.5);
   this.add(obj);
   return obj;

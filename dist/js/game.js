@@ -359,7 +359,7 @@ Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
 }
 
 Tablero.prototype.setTexto = function(i, j, txt) {
-  var obj = this.game.add.bitmapText(this.x+(i*this.dimension), this.y+(j*this.dimension), 'font', txt, 28);
+  var obj = this.game.add.bitmapText(this.x+(i*this.dimension), this.y+(j*this.dimension), 'font', txt, 22);
   obj.anchor.setTo(0,-0.5);
   this.add(obj);
   return obj;
@@ -1424,6 +1424,7 @@ module.exports = Menu;
       this.btnSound = this.game.add.audio('btnSound');
       this.feedSound = this.game.add.audio('feedSound');
       this.malSound = this.game.add.audio('malSound');
+      this.cambioSound = this.game.add.audio('cambioSound');
     },
 
     create: function(){
@@ -1594,6 +1595,7 @@ module.exports = Menu;
     },
 
     crearExpresion: function(){
+      this.cambioSound.play();
       this.pasoActual = 0;//Reseteo de pasos de evaluacion a 0
       this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de juego
       this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];//Asignacion texto de expresion
@@ -1683,7 +1685,7 @@ module.exports = Menu;
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
       //Creacion cuadro retroalimentación final
-      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final3');
       this.retroFinal.anchor.setTo(0.5,0.5);
       this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
       this.btnMenu.frame = 2;
@@ -1694,6 +1696,8 @@ module.exports = Menu;
       this.txtStats.anchor.setTo(0.5,0.5);
 
       this.porcentaje = 0;
+      this.total = this.tablero.xCuadros * this.tablero.yCuadros;
+      this.porcentaje = Math.floor((this.gusanoGroup.length * 100)/this.total);
       
       this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
       this.txtPorc.anchor.setTo(0.5,0.5);
@@ -1770,11 +1774,13 @@ module.exports = Menu;
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
       this.feedSound = this.game.add.audio('feedSound');
+      this.malSound = this.game.add.audio('malSound');
+      this.cambioSound = this.game.add.audio('cambioSound');
     },
 
     create: function(){
       //Parseo de datos de juego para su uso
-      this.levelData = JSON.parse(this.game.cache.getText('data4'));
+      this.levelData = JSON.parse(this.game.cache.getText('data3'));
       this.situaLength = this.levelData.dataGusano.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
@@ -1940,6 +1946,7 @@ module.exports = Menu;
     },
 
     crearExpresion: function(){
+      this.cambioSound.play();
       this.pasoActual = 0;//Reseteo de pasos de evaluacion a 0
       this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de juego
       this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];//Asignacion texto de expresion
@@ -1992,6 +1999,7 @@ module.exports = Menu;
           this.pasoActual++;
           this.nuevoPaso();
         }else{//En caso de error 
+          this.malSound.play();
           continuar = false;
         }
         item.destroy();//Eliminacion del item de tablero de juego
@@ -2028,7 +2036,7 @@ module.exports = Menu;
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
       //Creacion cuadro retroalimentación final
-      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final1');
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final3');
       this.retroFinal.anchor.setTo(0.5,0.5);
       this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
       this.btnMenu.frame = 2;
@@ -2039,6 +2047,8 @@ module.exports = Menu;
       this.txtStats.anchor.setTo(0.5,0.5);
 
       this.porcentaje = 0;
+      this.total = this.tablero.xCuadros * this.tablero.yCuadros;
+      this.porcentaje = Math.floor((this.gusanoGroup.length * 100)/this.total);
       
       this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
       this.txtPorc.anchor.setTo(0.5,0.5);
@@ -2745,6 +2755,7 @@ Preload.prototype = {
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
     this.load.image('tablero','assets/images/Nivel3/tablero.png');
     this.load.image('tablero_t','assets/images/Nivel3/tablero_t.png');
+    this.load.image('final3','assets/images/Nivel3/final.png');
 
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
 
