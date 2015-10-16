@@ -39,7 +39,7 @@
 
     create: function(){
       //Parseo de datos de juego para su uso
-      this.levelData = JSON.parse(this.game.cache.getText('data3'));
+      this.levelData = JSON.parse(this.game.cache.getText('data4'));
       this.situaLength = this.levelData.dataGusano.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
