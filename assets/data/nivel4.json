@@ -2,38 +2,33 @@
   "dataGusano": [
     {
       "exp": [
-        "8+5*3",
-        "8+15"
+        "2x + y",
+        "2x + y"
       ],
       "nPasos": 2,
       "pasos": [
         {
-          "txt":"8+5",
-          "ok":false,
-          "n": 0
-        },
-        {
-          "txt":"5*3",
+          "txt":"2 * x",
           "ok":true,
           "n": 0
         },
         {
-          "txt":"8*3",
+          "txt":"x + y",
           "ok":false,
           "n": 0
         },
         {
-          "txt":"8+15",
+          "txt":"2 + x",
+          "ok":false,
+          "n": 0
+        },
+        {
+          "txt":"2x + y",
           "ok":true,
           "n": 1
         },
         {
-          "txt":"15*8",
-          "ok":false,
-          "n": 1
-        },
-        {
-          "txt":"15",
+          "txt":"x + y",
           "ok":false,
           "n": 1
         }

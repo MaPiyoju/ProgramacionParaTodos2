@@ -81,7 +81,7 @@
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
-      this.tiempo.loop(/*500*/125, this.updateMov, this);//Actualizacion movimiento jugador
+      this.tiempo.loop(/*500*/200, this.updateMov, this);//Actualizacion movimiento jugador
       this.tiempo.start();
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta

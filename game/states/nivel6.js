@@ -35,6 +35,12 @@
       this.nCorrectas=0;
       this.nIntentos=0;
       this.nSituaciones = 0;
+
+      //Se incluyen audios de juego
+      this.errorSound = this.game.add.audio('errorSound');
+      this.grabSound = this.game.add.audio('grabSound');
+      this.soltarSound = this.game.add.audio('soltarSound');
+      this.btnSound = this.game.add.audio('btnSound');
     },
 
   	create: function() {
@@ -50,13 +56,14 @@
       this.game.add.bitmapText(55, 170, 'font', 'Espero que la estes\npasando bien, y estes\npreparado para este\nnivel. En esta ocasión\naprenderemos estructuras\ncíclicas, deberas formar\nciclos que permitan\ndar solución a diversas\nsituaciones. Recuerda\nanalizar cuidadosamente\ncada opción para dar\nla mejor respuesta y\nasí superar cada reto\n\nComencemos!', 24);
   	},
 
-    iniciarJuego : function(game){
+    iniciarJuego : function(game){      
       var x1 = 115;
       var x2 = 264;
       var y1 = 480;
       var y2 = 550;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
-        if(this.intro){          
+        if(this.intro){  
+          this.btnSound.play();        
           this.empezar();
         }
       }
@@ -223,6 +230,7 @@
       var y1 = 10;
       var y2 = 55;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+        this.btnSound.play();
         if(this.game.paused == false){
           //Se muestra panel de pausa
           if(this.flagpause==false){
@@ -292,7 +300,7 @@
        
         //Se valida la condicion de ciclo
         //si la condicion es correcta se pasa a la siguiente situacion
-        if(condicionCorrecta){
+        if(condicionCorrecta){          
           this.nCorrectas++;
           //Se ejecuta la animacion 
           this.situacion.visible = false;
@@ -319,6 +327,7 @@
           });
           this.SituacionCorrecta.animations.play('anima');
         }else{
+           this.errorSound.play();
           //Se ejecuta la animacion 
           this.situacion.visible = false;   
           if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
@@ -343,6 +352,7 @@
     },
 
     listenerwhile:function(){
+      this.btnSound.play();
       //Se restablece el tiempo          
       this.tiempo.start();
       //Ocultamos los botones del ciclo for y while
@@ -388,6 +398,7 @@
     },
 
     listenerfor:function(){
+      this.btnSound.play();
       //Se restablece el tiempo     
       this.tiempo.start();
       //Ocultamos los botones del ciclo for y while
@@ -434,9 +445,11 @@
     },
     
     clickItem : function(item){
+      this.grabSound.play();
       this.itemX = item.x;
       this.itemY = item.y;
-      item.movimiento = true;      
+      item.movimiento = true; 
+      item.anchor.setTo(0.5,0.5);     
     },
 
     releaseItem:function(item){
@@ -444,6 +457,7 @@
         item.movimiento = false;
         //Se define cuadro imaginario para las acciones
         if(item.tipo == 0 && item.body.y >= (this.slot.body.y + 40) && item.body.y <= (this.slot.body.y + 104) && item.body.x >= (this.slot.body.x + 38) && item.body.x <= (this.slot.body.x + 270) ){
+          this.soltarSound.play();
           if(!this.slotAccion_1){
             //Creamos el item el cual encaja en el slot de la accion          
             var itemEncajado = this.items.create( (this.slot.body.x + 146),(this.slot.body.y + 93),'accion_large6');
@@ -480,6 +494,7 @@
           //indicamos que el primer slot se ha ocupado
           this.slotAccion_1 = true;
         }else if(item.tipo == 1 && item.body.y >= (this.slot.body.y + 7) && item.body.y <= (this.slot.body.y + 40) && item.body.x >= (this.slot.body.x + 68) && item.body.x <= (this.slot.body.x + 220) ){
+          this.soltarSound.play();
           if(!this.slotCiclo){
             //Creamos el item el cual encaja en el slot de la accion          
             var itemEncajado = this.items.create( (this.slot.body.x + 126),(this.slot.body.y + 29),'condicion6');
