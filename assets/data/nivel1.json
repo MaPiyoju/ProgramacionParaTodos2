@@ -66,18 +66,19 @@
         {
             "situaImg": "assets/images/nivel1/situacion2.png",
             "situaTxt": "Cómo pedir prestado un libro en biblioteca? ",
-            "nPasos": 7,
+            "nPasos": 6,
             "accion": [
                 {
-                    "txt": "Saber qué libro solicitar",
+                    "txt": "Dirigirse a la biblioteca",
                     "ok": true,
                     "n": 0
                 },
                 {
-                    "txt": "Dirigirse a la biblioteca",
+                    "txt": "Saber qué libro solicitar",
                     "ok": true,
                     "n": 1
                 },
+                ,
                 {
                     "txt": "Buscar el libro",
                     "ok": true,
@@ -89,19 +90,18 @@
                     "n": 3
                 },
                 {
-                    "txt": "Entregar tu credencial",
+                    "txt": "Entregar la credencial",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Registrar que libro te llevas y cuando lo regresas",
+                    "txt": "Registrar el libro que llevas",
                     "ok": true,
                     "n": 5
                 },
                 {
-                    "txt": "Dirigirse a el servicio de préstamo",
-                    "ok": true,
-                    "n": 6
+                    "txt": "Alistar la maleta",
+                    "ok": true,                    
                 },
                 {
                     "txt": "Esperar el bus",
@@ -189,7 +189,7 @@
         {
             "situaImg": "assets/images/nivel1/situacion4.png",
             "situaTxt": "Cómo cambiar una llanta? ",
-            "nPasos": 8,
+            "nPasos": 7,
             "accion": [
                 {
                     "txt": "Revisar que llanta fue",
@@ -200,36 +200,35 @@
                     "txt": "Colocar el gato hidraulico",
                     "ok": true,
                     "n": 1
-                },
+                },                
                 {
-                    "txt": "Sacar la llave de cruz",
+                    "txt": "Quitar los tornillos",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Quitar los tornillos",
+                    "txt": "Sacar la llanta",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Sacar la llanta",
+                    "txt": "Poner el Repuesto",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Poner el Repuesto",
+                    "txt": "Poner los tornillos",
                     "ok": true,
                     "n": 5
                 },
                 {
-                    "txt": "Poner los tornillos",
+                    "txt": "Quitar el gato hidraulico",
                     "ok": true,
                     "n": 6
                 },
                 {
-                    "txt": "Quitar el gato hidraulico",
-                    "ok": true,
-                    "n": 7
+                    "txt": "Ponchar la llanta",
+                    "ok": false
                 },
                 {
                     "txt": "Encender el carro",
@@ -312,7 +311,7 @@
         },
         {
             "situaTxt": "Cómo lavarse los dientes? ",
-            "nPasos": 6,
+            "nPasos": 7,
             "accion": [
                 {
                     "txt": "Tomar el cepillo dental",
@@ -346,7 +345,8 @@
                 },
                 {
                     "txt": "Limpiar y guardar el cepillo",
-                    "ok": false                    
+                    "ok": true,
+                    "n": 6                    
                 },
                 {
                     "txt": "Lavarse la cara",
@@ -395,17 +395,17 @@
                     "n": 3
                 },
                 {
-                    "txt": "Dirigirse a la sala de la pelicula",
+                    "txt": "Dirigirse a la sala",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Entregar ticket en la entrada",
+                    "txt": "Entregar ticket",
                     "ok": true ,
                     "n": 5                   
                 },
                 {
-                    "txt": "Hubicarse en los puestos",
+                    "txt": "Ubicarse en los puestos",
                     "ok": true,
                     "n": 6                    
                 },
