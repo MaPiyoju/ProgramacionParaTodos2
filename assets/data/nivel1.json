@@ -78,7 +78,6 @@
                     "ok": true,
                     "n": 1
                 },
-                ,
                 {
                     "txt": "Buscar el libro",
                     "ok": true,
@@ -101,7 +100,7 @@
                 },
                 {
                     "txt": "Alistar la maleta",
-                    "ok": true,                    
+                    "ok": true                    
                 },
                 {
                     "txt": "Esperar el bus",
@@ -274,7 +273,7 @@
                     "n": 3
                 },
                 {
-                    "txt": "Encender la interruptor",
+                    "txt": "Encender el interruptor ",
                     "ok": true,
                     "n": 4
                 },
@@ -405,7 +404,7 @@
                     "n": 5                   
                 },
                 {
-                    "txt": "Ubicarse en los puestos",
+                    "txt": "Ubicarse en los puestos ",
                     "ok": true,
                     "n": 6                    
                 },
