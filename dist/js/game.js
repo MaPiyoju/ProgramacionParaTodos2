@@ -299,7 +299,7 @@ module.exports = Entidad;
 
 var Entidad = require('../prefabs/entidad');
 
-var Tablero = function(game, x, y ,xCuadros , yCuadros, parent){
+var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, parent){
   Phaser.Group.call(this, game, parent);  
 
   /*Definicion de propiedades*/
@@ -310,7 +310,7 @@ var Tablero = function(game, x, y ,xCuadros , yCuadros, parent){
   this.dimension = 50;
 
   //Fondo de tablero
-  this.fondoTableroF = this.game.add.sprite(x,y,'tablero_t');
+  this.fondoTableroF = this.game.add.sprite(x,y,tablero);
   this.fondoTablero = this.game.add.sprite(x-30,y-28,'tablero');
   this.add(this.fondoTableroF);
   this.add(this.fondoTablero);
@@ -358,11 +358,17 @@ Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
   return obj;
 }
 
-Tablero.prototype.setTexto = function(i, j, txt) {
-  var obj = this.game.add.bitmapText(this.x+(i*this.dimension), this.y+(j*this.dimension), 'font', txt, 22);
-  obj.anchor.setTo(0,-0.5);
-  this.add(obj);
-  return obj;
+Tablero.prototype.setTexto = function(i, j, txt, obj_) {
+  if(obj_){
+    obj_.x = this.x+(i*this.dimension)+(this.dimension/2);
+    obj_.y = this.y+(j*this.dimension);
+  }else{
+    var obj = this.game.add.bitmapText(this.x+(i*this.dimension)+(this.dimension/2), this.y+(j*this.dimension), 'fontData', txt, 22);
+    obj.align = "center";
+    obj.anchor.setTo(0.5,-0.5);
+    this.add(obj);
+    return obj;
+  }
 };
 
 Tablero.prototype.destruir = function() {
@@ -1457,7 +1463,7 @@ module.exports = Menu;
       this.introImg.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel3');//Fondo de juego
-      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
+      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_3');//Creacion de tablero de movimiento
       this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano', null, 0);
       //this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
@@ -1471,7 +1477,7 @@ module.exports = Menu;
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
-      this.tiempo.loop(/*500*/125, this.updateMov, this);//Actualizacion movimiento jugador
+      this.tiempo.loop(/*500*/180, this.updateMov, this);//Actualizacion movimiento jugador
       this.tiempo.start();
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
@@ -1603,6 +1609,24 @@ module.exports = Menu;
       this.nuevoPaso();//Creacion primer paso
     },
 
+    nuevoCuerpo: function(){
+      this.cuerpoGroup.forEach(function(item){//Se realiza limpieza de bolas de gusano de posibles expresiones anteriores
+        item.destroy();
+        if(item.hasOwnProperty('txt')){
+          item.txt.destroy();
+        }
+      });
+      this.cuerpoGroup = [];
+      for(var i=1;i<this.gusanoGroup.length;i++){//Limpieza grupo gusano
+        this.gusanoGroup[i].destroy();
+        if(this.gusanoGroup[i].hasOwnProperty('txt')){
+          this.gusanoGroup[i].txt.destroy();
+        }
+      }
+      this.gusanoGroup = [this.gusano];
+      this.comerItem();//Creacion bola inicial de gusano
+    },
+
     nuevoPaso: function(){
       this.itemGroup.forEach(function(item){//Se realiza limpieza de pasos en tablero de juego
         item.destroy();
@@ -1632,6 +1656,21 @@ module.exports = Menu;
     crearItem: function(obj){
       var xRandom = Math.floor(Math.random()*this.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
       var yRandom = Math.floor(Math.random()*this.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
+      var continuar = true;
+      while(continuar){
+        var sale = true;
+        var thisTemp = this;
+        this.itemGroup.forEach(function(item){
+          if(item.i == xRandom && item.j == yRandom){
+            xRandom = Math.floor(Math.random()*thisTemp.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
+            yRandom = Math.floor(Math.random()*thisTemp.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
+            sale = false;
+          }
+        });
+        if(sale){
+          continuar = false;
+        }
+      }
       var item = this.tablero.setObjCuadro(xRandom, yRandom, 'itemGusano', null, 0);//Creacion item en tablero de juego
       if(obj){//ASignacion de propiedades
         item.ok = obj.ok;
@@ -1681,6 +1720,12 @@ module.exports = Menu;
     },
 
     showStats: function(){
+      this.porcentaje = 0;
+      this.total = this.tablero.xCuadros * this.tablero.yCuadros;
+      this.porcentaje = Math.floor((this.gusanoGroup.length * 100)/this.total);
+
+      this.nuevoCuerpo();
+
       this.btnPausa.kill();//Se retira el boton de pausa
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
@@ -1694,10 +1739,6 @@ module.exports = Menu;
 
       this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', '', 28);
       this.txtStats.anchor.setTo(0.5,0.5);
-
-      this.porcentaje = 0;
-      this.total = this.tablero.xCuadros * this.tablero.yCuadros;
-      this.porcentaje = Math.floor((this.gusanoGroup.length * 100)/this.total);
       
       this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
       this.txtPorc.anchor.setTo(0.5,0.5);
@@ -1706,10 +1747,10 @@ module.exports = Menu;
       if(this.porcentaje > 0){//1 estrella
         this.game.add.sprite(221,227,'estrella');
       }
-      if(this.porcentaje > 49){//2 estrellas
+      if(this.porcentaje > 24){//2 estrellas
         this.game.add.sprite(348,227,'estrella');
       }
-      if(this.porcentaje > 99){//3 estrellas
+      if(this.porcentaje > 50){//3 estrellas
         this.game.add.sprite(471,227,'estrella');
       }
     },    
@@ -1759,6 +1800,7 @@ module.exports = Menu;
     res: 0,
     pasoActual: 0,
     habilMov: true,
+    bien: 0,
 
     init: function(){
       this.maxtime= 120;
@@ -1770,6 +1812,7 @@ module.exports = Menu;
       this.itemGroup = [];
       this.pasoActual = 0;
       this.habilMov = true;
+      this.bien = 0;
 
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
@@ -1780,7 +1823,7 @@ module.exports = Menu;
 
     create: function(){
       //Parseo de datos de juego para su uso
-      this.levelData = JSON.parse(this.game.cache.getText('data3'));
+      this.levelData = JSON.parse(this.game.cache.getText('data4'));
       this.situaLength = this.levelData.dataGusano.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
@@ -1807,14 +1850,12 @@ module.exports = Menu;
       this.intro = false;//Se deshabilita el intro de juego
       this.introImg.kill();//Se elimina imagen de intro
 
-      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel3');//Fondo de juego
-      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
-      this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano', null, 0);
+      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
+      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_4');//Creacion de tablero de movimiento
+      this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano_4', null, 0);
       //this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
-      this.comerItem();//Creacion bolas iniciales de gusano
-      this.comerItem();//Creacion bolas iniciales de gusano
 
       this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 565, 'font', '', 28);//Texto de expresion
       this.txtExp.anchor.setTo(0.5,0.5);
@@ -1822,7 +1863,7 @@ module.exports = Menu;
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
-      this.tiempo.loop(/*500*/125, this.updateMov, this);//Actualizacion movimiento jugador
+      this.tiempo.loop(/*500*/180, this.updateMov, this);//Actualizacion movimiento jugador
       this.tiempo.start();
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
@@ -1905,11 +1946,20 @@ module.exports = Menu;
           this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;  
         }
         this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;//Angulo de asignacion siguiente objeto
-        this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);//Nueva posicion 
+        if(this.gusanoGroup[i].hasOwnProperty('txt')){
+          this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],3);//Nueva posicion (para texto) 
+          this.tablero.setTexto(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i].txt);//Nueva posicion 
+        }else{
+          this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);//Nueva posicion 
+        }
         this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;//Angulo inicial
         if(this.gusanoGroup[i+1]){//Control de giros y asignacion de codos de giro
           if(this.gusanoGroup[i].angle != this.gusanoGroup[i].lastangle){
-            this.gusanoGroup[i].frame = 2;//Frame codo de giro            
+            if(this.gusanoGroup[i].hasOwnProperty('txt')){
+              this.gusanoGroup[i].frame = 4;//Frame codo de giro(para texto)
+            }else{
+              this.gusanoGroup[i].frame = 2;//Frame codo de giro 
+            }
             if(this.gusanoGroup[i].angle == -180){
               this.gusanoGroup[i].angleAngle = 180;
             }else{
@@ -1935,23 +1985,52 @@ module.exports = Menu;
               this.gusanoGroup[i].anguloTemp = false;
             }
           }else{
-            this.gusanoGroup[i].frame = 1;
+            if(this.gusanoGroup[i].hasOwnProperty('txt')){
+              this.gusanoGroup[i].frame = 3;
+            }else{
+              this.gusanoGroup[i].frame = 1;
+            }
             this.gusanoGroup[i].anguloTemp = false;
           }
         }else{
-          this.gusanoGroup[i].frame = 1;
+          if(this.gusanoGroup[i].hasOwnProperty('txt')){
+            this.gusanoGroup[i].frame = 3;
+          }else{
+            this.gusanoGroup[i].frame = 1;
+          }
           this.gusanoGroup[i].anguloTemp = false;
         }
       }
     },
 
     crearExpresion: function(){
+      this.nuevoCuerpo();
       this.cambioSound.play();
       this.pasoActual = 0;//Reseteo de pasos de evaluacion a 0
       this.random = Math.floor(Math.random()*this.levelData.dataGusano.length);//Expresion aleatoria de data de juego
       this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];//Asignacion texto de expresion
       this.res = eval(this.levelData.dataGusano[this.random].exp);//Resultado de expresion
       this.nuevoPaso();//Creacion primer paso
+    },
+
+    nuevoCuerpo: function(){
+      this.cuerpoGroup.forEach(function(item){//Se realiza limpieza de bolas de gusano de posibles expresiones anteriores
+        item.destroy();
+        if(item.hasOwnProperty('txt')){
+          item.txt.destroy();
+        }
+      });
+      this.cuerpoGroup = [];
+      for(var i=1;i<this.gusanoGroup.length;i++){//Limpieza grupo gusano
+        this.gusanoGroup[i].destroy();
+        if(this.gusanoGroup[i].hasOwnProperty('txt')){
+          this.gusanoGroup[i].txt.destroy();
+        }
+      }
+      this.gusanoGroup = [this.gusano];
+      for(var i=0;i<this.bien;i++){
+        this.comerItem();//Creacion bola inicial de gusano
+      }
     },
 
     nuevoPaso: function(){
@@ -1961,6 +2040,7 @@ module.exports = Menu;
       });
       this.itemGroup = [];
       if(this.pasoActual == this.levelData.dataGusano[this.random].nPasos){//En caso de ser el ultimo paso
+        this.bien++;
         this.crearExpresion();//Se realiza creacion de nueva expresion
       }else{//En caso de ser paso de expresion
         var thisTemp = this;
@@ -1968,21 +2048,37 @@ module.exports = Menu;
         primerosPasos.forEach(function(item){//Creacion de items en tablero de juego
           thisTemp.crearItem(item);
         });
-        this.txtExp.text = this.levelData.dataGusano[this.random].exp[this.pasoActual];
       }
     },
 
     filtroPaso: function(obj){
-      if(obj.n == this.pasoActual){
-        return true;
-      }else{
-        return false;
+      console.log(obj.n,' - ',this.pasoActual);
+      for(var i=0;i<obj.n.length;i++){
+        if(obj.n[i] == this.pasoActual){
+          return true;
+        }
       }
+      return false;
     },
 
     crearItem: function(obj){
       var xRandom = Math.floor(Math.random()*this.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
       var yRandom = Math.floor(Math.random()*this.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
+      var continuar = true;
+      while(continuar){
+        var sale = true;
+        var thisTemp = this;
+        this.itemGroup.forEach(function(item){
+          if(item.i == xRandom && item.j == yRandom){
+            xRandom = Math.floor(Math.random()*thisTemp.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
+            yRandom = Math.floor(Math.random()*thisTemp.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
+            sale = false;
+          }
+        });
+        if(sale){
+          continuar = false;
+        }
+      }
       var item = this.tablero.setObjCuadro(xRandom, yRandom, 'itemGusano', null, 0);//Creacion item en tablero de juego
       if(obj){//ASignacion de propiedades
         item.ok = obj.ok;
@@ -1993,33 +2089,42 @@ module.exports = Menu;
 
     comerItem: function(cabeza, item){
       var continuar = true;
+      var txtItem = null;
       if(item){
         if(item.ok){//En caso de item correcto de aceurdo al paso
-          this.feedSound.play();
-          this.pasoActual++;
-          this.nuevoPaso();
+          txtItem = item.txt.text;
         }else{//En caso de error 
           this.malSound.play();
           continuar = false;
         }
-        item.destroy();//Eliminacion del item de tablero de juego
-        item.txt.destroy();
       }
       if(continuar){//En caso de item correcto agrega una bola al cuerpo del gusano
-        var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].lasti, this.gusanoGroup[this.gusanoGroup.length-1].lastj, 'gusano', null, 1);
+        var bola = this.tablero.setObjCuadro(this.gusanoGroup[this.gusanoGroup.length-1].lasti, this.gusanoGroup[this.gusanoGroup.length-1].lastj, 'gusano_4', null, 1);
         bola.angle = this.gusanoGroup[this.gusanoGroup.length-1].lastangle;
+        if(txtItem != null){
+          bola.txt = this.tablero.setTexto(this.gusanoGroup[this.gusanoGroup.length-1].lasti,this.gusanoGroup[this.gusanoGroup.length-1].lastj, txtItem);
+        }
         this.cuerpoGroup.push(bola);
         this.gusanoGroup.push(bola);
         this.nuevaBola = true;        
       }else{//En caso de item erroneo se remueven items del cuerpo del gusano
         if(this.gusanoGroup.length > 1){//En caso de contar con bolas para destruir
-          var bola = this.cuerpoGroup[this.cuerpoGroup.length-1];
+          /*var bola = this.cuerpoGroup[this.cuerpoGroup.length-1];
           this.cuerpoGroup.pop();
           this.gusanoGroup.pop();
-          bola.destroy();
+          bola.destroy();*/
         }else{
           this.chocar();
         }
+      }
+      if(item){
+        if(item.ok){//En caso de item correcto de aceurdo al paso          
+          this.feedSound.play();
+          this.pasoActual++;
+          this.nuevoPaso();
+        }
+        item.destroy();//Eliminacion del item de tablero de juego
+        item.txt.destroy();
       }
     },
 
@@ -2032,6 +2137,7 @@ module.exports = Menu;
     },
 
     showStats: function(){
+      this.nuevoCuerpo();
       this.btnPausa.kill();//Se retira el boton de pausa
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
@@ -2057,10 +2163,10 @@ module.exports = Menu;
       if(this.porcentaje > 0){//1 estrella
         this.game.add.sprite(221,227,'estrella');
       }
-      if(this.porcentaje > 49){//2 estrellas
+      if(this.porcentaje > 24){//2 estrellas
         this.game.add.sprite(348,227,'estrella');
       }
-      if(this.porcentaje > 99){//3 estrellas
+      if(this.porcentaje > 50){//3 estrellas
         this.game.add.sprite(471,227,'estrella');
       }
     },    
@@ -2127,6 +2233,12 @@ module.exports = Menu;
       this.nCorrectas=0;
       this.nIntentos=0;
       this.nSituaciones = 0;
+
+      //Se incluyen audios de juego
+      this.errorSound = this.game.add.audio('errorSound');
+      this.grabSound = this.game.add.audio('grabSound');
+      this.soltarSound = this.game.add.audio('soltarSound');
+      this.btnSound = this.game.add.audio('btnSound');
     },
 
   	create: function() {
@@ -2142,13 +2254,14 @@ module.exports = Menu;
       this.game.add.bitmapText(55, 170, 'font', 'Espero que la estes\npasando bien, y estes\npreparado para este\nnivel. En esta ocasión\naprenderemos estructuras\ncíclicas, deberas formar\nciclos que permitan\ndar solución a diversas\nsituaciones. Recuerda\nanalizar cuidadosamente\ncada opción para dar\nla mejor respuesta y\nasí superar cada reto\n\nComencemos!', 24);
   	},
 
-    iniciarJuego : function(game){
+    iniciarJuego : function(game){      
       var x1 = 115;
       var x2 = 264;
       var y1 = 480;
       var y2 = 550;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
-        if(this.intro){          
+        if(this.intro){  
+          this.btnSound.play();        
           this.empezar();
         }
       }
@@ -2315,6 +2428,7 @@ module.exports = Menu;
       var y1 = 10;
       var y2 = 55;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+        this.btnSound.play();
         if(this.game.paused == false){
           //Se muestra panel de pausa
           if(this.flagpause==false){
@@ -2384,7 +2498,7 @@ module.exports = Menu;
        
         //Se valida la condicion de ciclo
         //si la condicion es correcta se pasa a la siguiente situacion
-        if(condicionCorrecta){
+        if(condicionCorrecta){          
           this.nCorrectas++;
           //Se ejecuta la animacion 
           this.situacion.visible = false;
@@ -2411,6 +2525,7 @@ module.exports = Menu;
           });
           this.SituacionCorrecta.animations.play('anima');
         }else{
+           this.errorSound.play();
           //Se ejecuta la animacion 
           this.situacion.visible = false;   
           if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
@@ -2435,6 +2550,7 @@ module.exports = Menu;
     },
 
     listenerwhile:function(){
+      this.btnSound.play();
       //Se restablece el tiempo          
       this.tiempo.start();
       //Ocultamos los botones del ciclo for y while
@@ -2480,6 +2596,7 @@ module.exports = Menu;
     },
 
     listenerfor:function(){
+      this.btnSound.play();
       //Se restablece el tiempo     
       this.tiempo.start();
       //Ocultamos los botones del ciclo for y while
@@ -2526,9 +2643,11 @@ module.exports = Menu;
     },
     
     clickItem : function(item){
+      this.grabSound.play();
       this.itemX = item.x;
       this.itemY = item.y;
-      item.movimiento = true;      
+      item.movimiento = true; 
+      item.anchor.setTo(0.5,0.5);     
     },
 
     releaseItem:function(item){
@@ -2536,6 +2655,7 @@ module.exports = Menu;
         item.movimiento = false;
         //Se define cuadro imaginario para las acciones
         if(item.tipo == 0 && item.body.y >= (this.slot.body.y + 40) && item.body.y <= (this.slot.body.y + 104) && item.body.x >= (this.slot.body.x + 38) && item.body.x <= (this.slot.body.x + 270) ){
+          this.soltarSound.play();
           if(!this.slotAccion_1){
             //Creamos el item el cual encaja en el slot de la accion          
             var itemEncajado = this.items.create( (this.slot.body.x + 146),(this.slot.body.y + 93),'accion_large6');
@@ -2572,6 +2692,7 @@ module.exports = Menu;
           //indicamos que el primer slot se ha ocupado
           this.slotAccion_1 = true;
         }else if(item.tipo == 1 && item.body.y >= (this.slot.body.y + 7) && item.body.y <= (this.slot.body.y + 40) && item.body.x >= (this.slot.body.x + 68) && item.body.x <= (this.slot.body.x + 220) ){
+          this.soltarSound.play();
           if(!this.slotCiclo){
             //Creamos el item el cual encaja en el slot de la accion          
             var itemEncajado = this.items.create( (this.slot.body.x + 126),(this.slot.body.y + 29),'condicion6');
@@ -2754,13 +2875,15 @@ Preload.prototype = {
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
     this.load.image('tablero','assets/images/Nivel3/tablero.png');
-    this.load.image('tablero_t','assets/images/Nivel3/tablero_t.png');
+    this.load.image('tablero_3','assets/images/Nivel3/tablero_3.png');
     this.load.image('final3','assets/images/Nivel3/final.png');
-
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
-
+    
+    /*Imagenes nivel 4*/
+    this.load.image('tile_nivel4','assets/images/Nivel4/tile.jpg');
+    this.load.spritesheet('gusano_4','assets/images/Nivel4/gusano.png',50,50);
+    this.load.image('tablero_4','assets/images/Nivel4/tablero_4.png');
     this.load.text('data4','assets/data/nivel4.json');//Datos nivel 4
-
 
     /*Imagenes nivel 6*/
     this.load.image('tile_nivel6', 'assets/images/Nivel6/tile.png');

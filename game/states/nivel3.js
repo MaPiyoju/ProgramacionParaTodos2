@@ -67,7 +67,7 @@
       this.introImg.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel3');//Fondo de juego
-      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10);//Creacion de tablero de movimiento
+      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_3');//Creacion de tablero de movimiento
       this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano', null, 0);
       //this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
@@ -81,7 +81,7 @@
       this.crearExpresion();//Primera expresion a evaluar
 
       this.tiempo = this.game.time.create(false);
-      this.tiempo.loop(/*500*/200, this.updateMov, this);//Actualizacion movimiento jugador
+      this.tiempo.loop(/*500*/180, this.updateMov, this);//Actualizacion movimiento jugador
       this.tiempo.start();
 
       this.alert = new Alert(this.game);//Creacion onjeto de alerta
@@ -213,6 +213,24 @@
       this.nuevoPaso();//Creacion primer paso
     },
 
+    nuevoCuerpo: function(){
+      this.cuerpoGroup.forEach(function(item){//Se realiza limpieza de bolas de gusano de posibles expresiones anteriores
+        item.destroy();
+        if(item.hasOwnProperty('txt')){
+          item.txt.destroy();
+        }
+      });
+      this.cuerpoGroup = [];
+      for(var i=1;i<this.gusanoGroup.length;i++){//Limpieza grupo gusano
+        this.gusanoGroup[i].destroy();
+        if(this.gusanoGroup[i].hasOwnProperty('txt')){
+          this.gusanoGroup[i].txt.destroy();
+        }
+      }
+      this.gusanoGroup = [this.gusano];
+      this.comerItem();//Creacion bola inicial de gusano
+    },
+
     nuevoPaso: function(){
       this.itemGroup.forEach(function(item){//Se realiza limpieza de pasos en tablero de juego
         item.destroy();
@@ -242,6 +260,21 @@
     crearItem: function(obj){
       var xRandom = Math.floor(Math.random()*this.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
       var yRandom = Math.floor(Math.random()*this.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
+      var continuar = true;
+      while(continuar){
+        var sale = true;
+        var thisTemp = this;
+        this.itemGroup.forEach(function(item){
+          if(item.i == xRandom && item.j == yRandom){
+            xRandom = Math.floor(Math.random()*thisTemp.tablero.xCuadros);//Posicion X aleatoria para nuevo elemento
+            yRandom = Math.floor(Math.random()*thisTemp.tablero.yCuadros);//Posicion Y aleatoria para nuevo elemento
+            sale = false;
+          }
+        });
+        if(sale){
+          continuar = false;
+        }
+      }
       var item = this.tablero.setObjCuadro(xRandom, yRandom, 'itemGusano', null, 0);//Creacion item en tablero de juego
       if(obj){//ASignacion de propiedades
         item.ok = obj.ok;
@@ -291,6 +324,12 @@
     },
 
     showStats: function(){
+      this.porcentaje = 0;
+      this.total = this.tablero.xCuadros * this.tablero.yCuadros;
+      this.porcentaje = Math.floor((this.gusanoGroup.length * 100)/this.total);
+
+      this.nuevoCuerpo();
+
       this.btnPausa.kill();//Se retira el boton de pausa
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
@@ -304,10 +343,6 @@
 
       this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', '', 28);
       this.txtStats.anchor.setTo(0.5,0.5);
-
-      this.porcentaje = 0;
-      this.total = this.tablero.xCuadros * this.tablero.yCuadros;
-      this.porcentaje = Math.floor((this.gusanoGroup.length * 100)/this.total);
       
       this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
       this.txtPorc.anchor.setTo(0.5,0.5);
@@ -316,10 +351,10 @@
       if(this.porcentaje > 0){//1 estrella
         this.game.add.sprite(221,227,'estrella');
       }
-      if(this.porcentaje > 49){//2 estrellas
+      if(this.porcentaje > 24){//2 estrellas
         this.game.add.sprite(348,227,'estrella');
       }
-      if(this.porcentaje > 99){//3 estrellas
+      if(this.porcentaje > 50){//3 estrellas
         this.game.add.sprite(471,227,'estrella');
       }
     },    

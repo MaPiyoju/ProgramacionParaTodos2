@@ -2,7 +2,7 @@
 
 var Entidad = require('../prefabs/entidad');
 
-var Tablero = function(game, x, y ,xCuadros , yCuadros, parent){
+var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, parent){
   Phaser.Group.call(this, game, parent);  
 
   /*Definicion de propiedades*/
@@ -13,7 +13,7 @@ var Tablero = function(game, x, y ,xCuadros , yCuadros, parent){
   this.dimension = 50;
 
   //Fondo de tablero
-  this.fondoTableroF = this.game.add.sprite(x,y,'tablero_t');
+  this.fondoTableroF = this.game.add.sprite(x,y,tablero);
   this.fondoTablero = this.game.add.sprite(x-30,y-28,'tablero');
   this.add(this.fondoTableroF);
   this.add(this.fondoTablero);
@@ -61,11 +61,17 @@ Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
   return obj;
 }
 
-Tablero.prototype.setTexto = function(i, j, txt) {
-  var obj = this.game.add.bitmapText(this.x+(i*this.dimension), this.y+(j*this.dimension), 'fontData', txt, 22);
-  obj.anchor.setTo(0,-0.5);
-  this.add(obj);
-  return obj;
+Tablero.prototype.setTexto = function(i, j, txt, obj_) {
+  if(obj_){
+    obj_.x = this.x+(i*this.dimension)+(this.dimension/2);
+    obj_.y = this.y+(j*this.dimension);
+  }else{
+    var obj = this.game.add.bitmapText(this.x+(i*this.dimension)+(this.dimension/2), this.y+(j*this.dimension), 'fontData', txt, 22);
+    obj.align = "center";
+    obj.anchor.setTo(0.5,-0.5);
+    this.add(obj);
+    return obj;
+  }
 };
 
 Tablero.prototype.destruir = function() {

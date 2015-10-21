@@ -73,13 +73,15 @@ Preload.prototype = {
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
     this.load.image('tablero','assets/images/Nivel3/tablero.png');
-    this.load.image('tablero_t','assets/images/Nivel3/tablero_t.png');
+    this.load.image('tablero_3','assets/images/Nivel3/tablero_3.png');
     this.load.image('final3','assets/images/Nivel3/final.png');
-
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
-
+    
+    /*Imagenes nivel 4*/
+    this.load.image('tile_nivel4','assets/images/Nivel4/tile.jpg');
+    this.load.spritesheet('gusano_4','assets/images/Nivel4/gusano.png',50,50);
+    this.load.image('tablero_4','assets/images/Nivel4/tablero_4.png');
     this.load.text('data4','assets/data/nivel4.json');//Datos nivel 4
-
 
     /*Imagenes nivel 6*/
     this.load.image('tile_nivel6', 'assets/images/Nivel6/tile.png');

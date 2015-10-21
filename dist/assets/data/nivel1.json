@@ -401,22 +401,22 @@
                 },
                 {
                     "txt": "Entregar ticket en la entrada",
-                    "ok": false ,
+                    "ok": true ,
                     "n": 5                   
                 },
                 {
                     "txt": "Hubicarse en los puestos",
-                    "ok": false,
+                    "ok": true,
                     "n": 6                    
                 },
                 {
                     "txt": "Esperar que empice la pelicula",
-                    "ok": false,
+                    "ok": true,
                     "n": 7                    
                 },
                 {
                     "txt": "Mirar la pelicula",
-                    "ok": false,
+                    "ok": true,
                     "n": 8                    
                 },
                 {

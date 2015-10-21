@@ -2,35 +2,225 @@
   "dataGusano": [
     {
       "exp": [
-        "2x + y",
-        "2x + y"
+        "X es un multiplo de 3, 4 0 5"
       ],
-      "nPasos": 2,
+      "nPasos": 17,
       "pasos": [
         {
-          "txt":"2 * x",
+          "txt":"X",
           "ok":true,
-          "n": 0
+          "n": [0,6,12]
         },
         {
-          "txt":"x + y",
-          "ok":false,
-          "n": 0
-        },
-        {
-          "txt":"2 + x",
-          "ok":false,
-          "n": 0
-        },
-        {
-          "txt":"2x + y",
+          "txt":"MOD",
           "ok":true,
-          "n": 1
+          "n": [1,7,13]
         },
         {
-          "txt":"x + y",
+          "txt":"/",
           "ok":false,
-          "n": 1
+          "n": [1,7,13]
+        },
+        {
+          "txt":"DIV",
+          "ok":false,
+          "n": [1,7,13]
+        },
+        {
+          "txt":"3",
+          "ok":true,
+          "n": [2]
+        },
+        {
+          "txt":"=",
+          "ok":true,
+          "n": [3,9,15]
+        },
+        {
+          "txt":"<>",
+          "ok":false,
+          "n": [3,9,15]
+        },
+        {
+          "txt":"0",
+          "ok":true,
+          "n": [4,10,16]
+        },
+        {
+          "txt":"v",
+          "ok":true,
+          "n": [5,11]
+        },
+        {
+          "txt":"^",
+          "ok":false,
+          "n": [5,11]
+        },
+        {
+          "txt":"NOT",
+          "ok":false,
+          "n": [5,11]
+        },
+        {
+          "txt":"4",
+          "ok":true,
+          "n": [8]
+        },
+        {
+          "txt":"5",
+          "ok":true,
+          "n": [14]
+        }
+      ]
+    },
+    {
+      "exp": [
+        "X es un número par y positivo"
+      ],
+      "nPasos": 9,
+      "pasos": [
+        {
+          "txt":"X",
+          "ok":true,
+          "n": [0,6]
+        },
+        {
+          "txt":"MOD",
+          "ok":true,
+          "n": [1]
+        },
+        {
+          "txt":"DIV",
+          "ok":false,
+          "n": [1]
+        },
+        {
+          "txt":"/",
+          "ok":false,
+          "n": [1]
+        },
+        {
+          "txt":"2",
+          "ok":true,
+          "n": [2]
+        },
+        {
+          "txt":"=",
+          "ok":true,
+          "n": [3]
+        },
+        {
+          "txt":"<>",
+          "ok":false,
+          "n": [3]
+        },
+        {
+          "txt":"0",
+          "ok":true,
+          "n": [4,8]
+        },
+        {
+          "txt":"^",
+          "ok":true,
+          "n": [5]
+        },
+        {
+          "txt":"v",
+          "ok":false,
+          "n": [5]
+        },
+        {
+          "txt":">",
+          "ok":true,
+          "n": [7]
+        },
+        {
+          "txt":">=",
+          "ok":false,
+          "n": [7]
+        },
+        {
+          "txt":"<",
+          "ok":false,
+          "n": [7]
+        }
+      ]
+    },
+    {
+      "exp": [
+        "X es un número de 4 cifras"
+      ],
+      "nPasos": 15,
+      "pasos": [
+        {
+          "txt":"X",
+          "ok":true,
+          "n": [0,4,8,12]
+        },
+        {
+          "txt":">=",
+          "ok":true,
+          "n": [1,13]
+        },
+        {
+          "txt":">",
+          "ok":false,
+          "n": [1,13]
+        },
+        {
+          "txt":"1000",
+          "ok":true,
+          "n": [2]
+        },
+        {
+          "txt":"^",
+          "ok":true,
+          "n": [3,11]
+        },
+        {
+          "txt":"v",
+          "ok":false,
+          "n": [3,11]
+        },
+        {
+          "txt":"<=",
+          "ok":true,
+          "n": [5,9]
+        },
+        {
+          "txt":"<",
+          "ok":false,
+          "n": [5,9]
+        },
+        {
+          "txt":"=",
+          "ok":false,
+          "n": [5,9]
+        },
+        {
+          "txt":"9999",
+          "ok":true,
+          "n": [6]
+        },
+        {
+          "txt":"v",
+          "ok":true,
+          "n": [7]
+        },
+        {
+          "txt":"^",
+          "ok":false,
+          "n": [7]
+        },
+        {
+          "txt":"-1000",
+          "ok":true,
+          "n": [10]
+        },
+        {
+          "txt":"-9999",
+          "ok":true,
+          "n": [14]
         }
       ]
     }
