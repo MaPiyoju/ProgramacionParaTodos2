@@ -279,14 +279,48 @@
           //Se realiza limpieza de variable
           delete oldSlot.valido;
           delete oldSlot.accion;
-          delete item.slot;
         }
 
         var sobreSlot = false;//Variable de control posicion sobre slot
         //Se valida el elemento contra cada slot validando posiciones correctas
+        var thisTemp = this;
         this.slotGroup.forEach(function(slot){
           if(item.x > slot.x && item.x < (slot.x + slot.width)){
-            if(item.y > slot.y && item.y < (slot.y + slot.height)){
+            if(item.y > slot.y && item.y < (slot.y + slot.height)){              
+              if(slot.accion != null){
+                //Se realiza una busqueda del item que se encuentra en el slot
+                thisTemp.accionGroup.forEach(function(oldAccion){
+                  if(item.slot != null){
+                    //si el nuevo item viene de un slot anterior
+                    var oldSlot = thisTemp.slotGroup.getAt(item.slot);//Se obtiene el objeto de slot 
+                    if(oldAccion.slot == slot.nPaso){
+                      oldAccion.slot = oldSlot.nPaso;
+                      oldAccion.anchor.setTo(0,0);
+                      oldAccion.x = oldSlot.x;//Se establece la posicion X del elemento sobre el slot
+                      oldAccion.y = oldSlot.y;//Se establece la posicion Y del elemento sobre el slot                    
+                      oldAccion.texto.x = oldSlot.x + (oldAccion.width/2);//Se establece la posicion en X para el texto sobre el slot
+                      oldAccion.texto.y = oldSlot.y + (oldAccion.height/2);//Se establece la posicoin en Y para el texto sobre el slot                    
+                      oldAccion.texto.anchor.setTo(0.5,0.5);
+                      
+                      oldSlot.valido = oldAccion.ok?true:false;//Se establece el slot como valido o no de acuerdo a la accion relacionada
+                      oldSlot.accion = oldAccion.ok?oldAccion.nPaso:0;//Se designa el numero de paso sobre el slot de acuerdo a la accion
+                    }
+                  }else
+                  {
+                    if(oldAccion.slot == slot.nPaso){
+                      //El item que se encuentra en el slot pasara a la posicion del item nuevo
+                      delete oldAccion.slot;
+                      oldAccion.anchor.setTo(0.5,0.5);
+                      oldAccion.x = oldAccion.xPos;//Se establece la posicion X del elemento sobre el slot
+                      oldAccion.y = oldAccion.yPos;//Se establece la posicion Y del elemento sobre el slot                    
+                      oldAccion.texto.x = oldAccion.xPos;//Se establece la posicion en X para el texto sobre el slot
+                      oldAccion.texto.y = oldAccion.yPos ;//Se establece la posicoin en Y para el texto sobre el slot                    
+                      oldAccion.texto.anchor.setTo(0.5,0.5);
+                    }
+                  }
+                });
+              }            
+
               sobreSlot = true;
               item.slot = slot.nPaso;
               item.anchor.setTo(0,0);
@@ -303,6 +337,7 @@
         });
 
         if(!sobreSlot){//En caso de liberar el item sin posicionarlo sobre ningun slot
+          delete item.slot;
           item.anchor.setTo(0.5,0.5);//Eje de objeto retorna al centro
           item.x = item.xPos;//Se retorna la posicion inicial X del elemento
           item.y = item.yPos;//Se retorna la posicion inicial Y del elemento
