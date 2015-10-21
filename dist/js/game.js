@@ -1439,7 +1439,7 @@ module.exports = Menu;
       this.situaLength = this.levelData.dataGusano.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
-      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
+      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN3');//Imagen intro de juego
       this.game.input.onDown.add(this.iniciarJuego,this);
       this.game.add.bitmapText(60, 150, 'font', 'Bienvenido,', 24);
     },
@@ -1827,7 +1827,7 @@ module.exports = Menu;
       this.situaLength = this.levelData.dataGusano.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
-      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
+      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN4');//Imagen intro de juego
       this.game.input.onDown.add(this.iniciarJuego,this);
       this.game.add.bitmapText(60, 150, 'font', 'Bienvenido,', 24);
     },
@@ -2745,7 +2745,7 @@ module.exports = Menu;
   Play.prototype = {
     create: function() {
       this.btns = this.game.add.group();
-      this.crearBoton(0,0,'nivel1',195,50,'');
+      this.crearBoton(0,0,'nivel1',200,50,'Hola!, en este nivel aprenderas');
       this.crearBoton(0,100,'nivel2',305,150,'');
       this.crearBoton(0,200,'nivel3',205,250,'');
       this.crearBoton(0,300,'nivel4',310,350,'');
@@ -2871,6 +2871,7 @@ Preload.prototype = {
     this.load.text('data2','assets/data/nivel2.json');//Datos nivel 2
 
     /*Imagenes nivel 3*/
+    this.load.image('introN3','assets/images/Nivel3/intro.jpg');
     this.load.image('tile_nivel3','assets/images/Nivel3/tile.jpg');
     this.load.spritesheet('gusano','assets/images/Nivel3/gusano.png',50,50);
     this.load.image('itemGusano','assets/images/Nivel3/item.png');
@@ -2880,6 +2881,7 @@ Preload.prototype = {
     this.load.text('data3','assets/data/nivel3.json');//Datos nivel 3
     
     /*Imagenes nivel 4*/
+    this.load.image('introN4','assets/images/Nivel4/intro.jpg');
     this.load.image('tile_nivel4','assets/images/Nivel4/tile.jpg');
     this.load.spritesheet('gusano_4','assets/images/Nivel4/gusano.png',50,50);
     this.load.image('tablero_4','assets/images/Nivel4/tablero_4.png');

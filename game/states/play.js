@@ -3,7 +3,7 @@
   Play.prototype = {
     create: function() {
       this.btns = this.game.add.group();
-      this.crearBoton(0,0,'nivel1',195,50,'');
+      this.crearBoton(0,0,'nivel1',200,50,'Hola!, en este nivel aprenderas');
       this.crearBoton(0,100,'nivel2',305,150,'');
       this.crearBoton(0,200,'nivel3',205,250,'');
       this.crearBoton(0,300,'nivel4',310,350,'');
