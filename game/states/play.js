@@ -3,12 +3,12 @@
   Play.prototype = {
     create: function() {
       this.btns = this.game.add.group();
-      this.crearBoton(0,0,'nivel1',215,50,'Hola, en este nivel aprenderás lo básico frente a algoritmos por medio de diversos ejecicios. Intentalo! ',true);
-      this.crearBoton(0,100,'nivel2',215,150,'Necesitas mejorar tus conocimientos sobre tipos de datos?, aquí esta todo lo que necesitas! ',true);
-      this.crearBoton(0,200,'nivel3',215,250,'Sumergete en el manejo y evaluación adecuada de expresiones por medio de este divertido juego! ',true);
-      this.crearBoton(0,300,'nivel4',215,350,'Ya sabes como evaluar una expresión? Ahora aprende como construirla. Ponte a prueba con este juego! ',true);
-      this.crearBoton(0,400,'nivel5',215,450,'',false);
-      this.crearBoton(0,500,'nivel6',215,550,'',false);
+      this.crearBoton(0,0,'nivel1',205,50,'Hola, en este nivel aprenderás lo básico frente a algoritmos por medio de diversos ejecicios. Intentalo! ',true);
+      this.crearBoton(0,100,'nivel2',205,150,'Necesitas mejorar tus conocimientos sobre tipos de datos?, aquí esta todo lo que necesitas! ',true);
+      this.crearBoton(0,200,'nivel3',205,250,'Sumergete en el manejo y evaluación adecuada de expresiones por medio de este divertido juego! ',true);
+      this.crearBoton(0,300,'nivel4',205,350,'Ya sabes como evaluar una expresión? Ahora aprende como construirla. Ponte a prueba con este juego! ',true);
+      this.crearBoton(0,400,'nivel5',205,450,'',false);
+      this.crearBoton(0,500,'nivel6',205,550,'',false);
 
       this.overSound = this.game.add.audio('menuoverSound');
       this.btnSound = this.game.add.audio('btnMenuSound');
@@ -27,9 +27,9 @@
           if(boton.texto){
             boton.texto.revive();
           }else{
-            boton.texto = this.game.add.bitmapText(txt_x, txt_y, 'font', txt, 20);
+            boton.texto = this.game.add.bitmapText(txt_x, txt_y, 'fontData', txt, 20);
             boton.texto.anchor.setTo(0.5,0.5);
-            boton.texto.maxWidth = 280;
+            boton.texto.maxWidth = 300;
           }
           boton.texto.anchor.setTo(0,0.5);
         }, this);
