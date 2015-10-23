@@ -43,7 +43,7 @@
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
       this.game.input.onDown.add(this.iniciarJuego,this);
-      this.game.add.bitmapText(60, 150, 'font', 'Bienvenido,', 24);
+      this.game.add.bitmapText(60, 150, 'font', 'Bienvenido, en este nivel ', 24);
     },
 
     iniciarJuego : function(game){

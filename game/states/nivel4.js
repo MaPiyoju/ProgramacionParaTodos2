@@ -51,8 +51,8 @@
     },
 
     iniciarJuego : function(game){
-      var x1 = 115;
-      var x2 = 264;
+      var x1 = 531;
+      var x2 = 680;
       var y1 = 480;
       var y2 = 550;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
@@ -332,7 +332,7 @@
           this.gusanoGroup.pop();
           bola.destroy();*/
         }else{
-          this.chocar();
+          //this.chocar();
         }
       }
       if(item){

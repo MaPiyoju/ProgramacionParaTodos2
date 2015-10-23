@@ -37,14 +37,14 @@
 
       this.game.world.setBounds(0, 0, 800, 600);
       //Fondo de juego
-      this.game.add.tileSprite(0, 0,800,600, 'introN1');
+      this.game.add.tileSprite(0, 0,800,600, 'introN2');
       this.game.input.onDown.add(this.iniciarJuego,this);
       this.game.add.bitmapText(60, 150, 'font', 'Bienvenido, ', 24);
     },
 
     iniciarJuego : function(game){
-      var x1 = 115;
-      var x2 = 264;
+      var x1 = 531;
+      var x2 = 680;
       var y1 = 480;
       var y2 = 550;
       if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){

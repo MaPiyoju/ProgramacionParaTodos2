@@ -3,12 +3,12 @@
   Play.prototype = {
     create: function() {
       this.btns = this.game.add.group();
-      this.crearBoton(0,0,'nivel1',200,50,'Hola!, en este nivel aprenderas');
-      this.crearBoton(0,100,'nivel2',305,150,'');
-      this.crearBoton(0,200,'nivel3',205,250,'');
-      this.crearBoton(0,300,'nivel4',310,350,'');
-      this.crearBoton(0,400,'nivel5',205,450,'');
-      this.crearBoton(0,500,'nivel6',308,550,'');
+      this.crearBoton(0,0,'nivel1',215,50,'Hola, en este nivel aprenderás lo básico frente a algoritmos por medio de diversos ejecicios. Intentalo! ',true);
+      this.crearBoton(0,100,'nivel2',215,150,'Necesitas mejorar tus conocimientos sobre tipos de datos?, aquí esta todo lo que necesitas! ',true);
+      this.crearBoton(0,200,'nivel3',215,250,'Sumergete en el manejo y evaluación adecuada de expresiones por medio de este divertido juego! ',true);
+      this.crearBoton(0,300,'nivel4',215,350,'Ya sabes como evaluar una expresión? Ahora aprende como construirla. Ponte a prueba con este juego! ',true);
+      this.crearBoton(0,400,'nivel5',215,450,'',false);
+      this.crearBoton(0,500,'nivel6',215,550,'',false);
 
       this.overSound = this.game.add.audio('menuoverSound');
       this.btnSound = this.game.add.audio('btnMenuSound');
@@ -18,22 +18,26 @@
 
     },
 
-    crearBoton: function(x,y,llave,txt_x,txt_y,txt){
+    crearBoton: function(x,y,llave,txt_x,txt_y,txt, animOk){
       var boton = this.game.add.sprite(x, y,llave,0);
       boton.nivel = llave;
       var anim = boton.animations.add('over', [0,1,2,3,4,5,6], 10, false);
-      anim.onComplete.add(function() {
-        if(boton.texto){
-          boton.texto.revive();
-        }else{
-          boton.texto = this.game.add.bitmapText(txt_x, txt_y, 'font', txt, 20);
-        }
-        boton.texto.anchor.setTo(0,0.5);
-      }, this);
-      boton.inputEnabled = true;
-      boton.events.onInputDown.add(this.clickListener, this);
+      if(animOk){
+        anim.onComplete.add(function() {
+          if(boton.texto){
+            boton.texto.revive();
+          }else{
+            boton.texto = this.game.add.bitmapText(txt_x, txt_y, 'font', txt, 20);
+            boton.texto.anchor.setTo(0.5,0.5);
+            boton.texto.maxWidth = 280;
+          }
+          boton.texto.anchor.setTo(0,0.5);
+        }, this);
+        boton.inputEnabled = true;
+        boton.events.onInputDown.add(this.clickListener, this);
+      }
       boton.events.onInputOver.add(this.over, this);
-      boton.events.onInputOut.add(this.out, this);
+      boton.events.onInputOut.add(this.out, this);      
       this.btns.add(boton);
     },
 

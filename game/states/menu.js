@@ -12,6 +12,7 @@ Menu.prototype = {
 
     this.bgMusic = this.game.add.audio('menuBgMusic',0.1,true);
     this.bgMusic.play();
+    this.btnSound = this.game.add.audio('btnMenuSound');
   },
 
   restartGame: function() {
@@ -19,6 +20,7 @@ Menu.prototype = {
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
+      this.btnSound.play();
       this.game.state.start('play');
     }
   }
