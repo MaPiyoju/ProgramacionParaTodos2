@@ -623,7 +623,9 @@ module.exports = Menu;
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN1');//Imagen intro de juego
       this.game.input.onDown.add(this.iniciarJuego,this);
-      this.game.add.bitmapText(60, 150, 'font', 'Bienvenido, en este nivel ', 24);
+      this.txtIntro = this.game.add.bitmapText(195, 300, 'fontData', 'Bienvenido, en este nivel aprenderás las bases para el manejo de algoritmos. Por medio de diversas situaciones cotidianas o aplicadas a problemas deberás conformar algoritmos que los resuelvan.\n\nSuerte!', 24);
+      this.txtIntro.anchor.setTo(0.5,0.5);
+      this.txtIntro.maxWidth = 250;
     },
 
     iniciarJuego : function(game){
@@ -1113,7 +1115,9 @@ module.exports = Menu;
       //Fondo de juego
       this.game.add.tileSprite(0, 0,800,600, 'introN2');
       this.game.input.onDown.add(this.iniciarJuego,this);
-      this.game.add.bitmapText(60, 150, 'font', 'Bienvenido, ', 24);
+      this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico,\n\nSuerte!', 24);
+      this.txtIntro.anchor.setTo(0.5,0.5);
+      this.txtIntro.maxWidth = 250;
     },
 
     iniciarJuego : function(game){
