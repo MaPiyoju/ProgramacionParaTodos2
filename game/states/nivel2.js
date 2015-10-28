@@ -39,7 +39,7 @@
       //Fondo de juego
       this.game.add.tileSprite(0, 0,800,600, 'introN2');
       this.game.input.onDown.add(this.iniciarJuego,this);
-      this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico,\n\nSuerte!', 24);
+      this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico, en este nivel deberas relacionar los diferentes datos que van cayendo frente al tipo de dato solicitado.\n\nAdelante!', 24);
       this.txtIntro.anchor.setTo(0.5,0.5);
       this.txtIntro.maxWidth = 250;
     },
