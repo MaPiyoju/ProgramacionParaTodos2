@@ -9,7 +9,7 @@
     this.add(this.fondo);
 
     //Se define el texto de alerta
-    this.txtInfo = this.game.add.bitmapText(this.game.world.centerX,this.game.world.centerY-100,'font','',30);//Texto para retroalimentacion de nivel
+    this.txtInfo = this.game.add.bitmapText(this.game.world.centerX,this.game.world.centerY-100,'fontData','',30);//Texto para retroalimentacion de nivel
     this.txtInfo.anchor.setTo(0.5,0.5);
     this.txtInfo.maxWidth = 400;
     this.txtInfo.align = "center";
