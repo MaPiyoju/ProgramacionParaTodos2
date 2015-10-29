@@ -7,6 +7,7 @@
     maxtime: 120,
     flagpause: false,
     intro:true,
+    introStep:0,
     gravedad: {min:10,max:30},
     puntaje: 0,
     vidas: 5,
@@ -17,7 +18,8 @@
     init: function(){
       this.maxtime= 120;
       this.flagpause= false; 
-      this.intro = true;  
+      this.intro = true; 
+      this.introStep = 0; 
       this.puntaje = 0;
       this.vidas = 5;
       this.intentos = 0;
@@ -37,7 +39,8 @@
 
       this.game.world.setBounds(0, 0, 800, 600);
       //Fondo de juego
-      this.game.add.tileSprite(0, 0,800,600, 'introN2');
+      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN2');
+      this.introImg2 = null;
       this.game.input.onDown.add(this.iniciarJuego,this);
       this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico, en este nivel deberas relacionar los diferentes datos que van cayendo frente al tipo de dato solicitado.\n\nAdelante!', 24);
       this.txtIntro.anchor.setTo(0.5,0.5);
@@ -49,15 +52,28 @@
       var x2 = 680;
       var y1 = 480;
       var y2 = 550;
-      if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
-        if(this.intro){  
-          this.btnSound.play();        
-          this.empezar();
+      if(this.intro){
+        switch(this.introStep){
+          case 0:
+            if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+              this.btnSound.play();
+              this.introStep++;
+              this.introImg.kill();//Se elimina imagen de intro
+              this.introImg2 = this.game.add.sprite(0,0,'ayudaGeneral',1);
+            }          
+            break;
+          case 1:
+            this.btnSound.play();
+            this.empezar();
+            break;
         }
       }
     },
 
     empezar: function() {
+      this.intro = false;//Se deshabilita el intro de juego
+      this.introImg2.kill();//Se elimina imagen de intro
+
       //Habilitacion de fisicas
       this.physics = this.game.physics.startSystem(Phaser.Physics.ARCADE);
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
@@ -128,8 +144,6 @@
       this.pnlPausa = new Pausa(this.game);
       this.game.add.existing(this.pnlPausa);
       this.game.input.onDown.add(this.pausaJuego,this);
-      //Se indica que sale del intro
-      this.intro = false;
     },
 
     solicitud: function(){
