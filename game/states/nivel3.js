@@ -21,7 +21,7 @@
     habilMov: true,
     countErrors: 0,
 
-    msjError: ['Ups, recuerda que la prioridad de los operadoes es importante','Recuerda la prioridad de los operadores:\n- ()\n- div , mod , * , /\n - , +, -','Cuando en la expresión se presenta dos operadores de la misma prioridad se resuelve de izquierda a derecha'],
+    msjError: ['Ups, recuerda que la prioridad de los operadoes es importante','Recuerda la prioridad de los operadores:\n- ( ) [ ]\n- div , mod , * , /\n - , +, -','Cuando la expresión presenta dos operadores de la misma prioridad se resuelve de izquierda a derecha'],
     
     init: function(){
       this.maxtime= 120;

@@ -11,6 +11,7 @@
     maxtime: 120,
     flagpause: false,
     intro:true,
+    introStep:0,
     movimiento: 0,
     gusanoGroup: null,
     cuerpoGroup: null,
@@ -21,12 +22,13 @@
     bien: 0,
     countErrors: 0,
 
-    msjError: ['Ups, recuerda que la prioridad de los operadoes es importante','Recuerda la prioridad de los operadores:\n- ()\n- div , mod , * , /\n - , +, -','Cuando en la expresión se presenta dos operadores de la misma prioridad se resuelve de izquierda a derecha'],
+    msjError: ['Recuerda analizar a profundidad  el problema que se te esta presentando','No olvides usar los operadores correspondientes a la solicitud','Existen muchas formas de dar solución a un mismo problema, sin embargo aqui solo podrás seguir un camino'],
 
     init: function(){
       this.maxtime= 120;
       this.flagpause= false; 
       this.intro = true;
+      this.introStep = 0; 
       this.movimiento = 0;
       this.gusanoGroup = [];
       this.cuerpoGroup = [];
@@ -50,6 +52,7 @@
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN4');//Imagen intro de juego
+      this.introImg2 = null;
       this.game.input.onDown.add(this.iniciarJuego,this);
       this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico, en este nivel deberas relacionar los diferentes datos que van cayendo frente al tipo de dato solicitado.\n\nAdelante!', 24);
       this.txtIntro.anchor.setTo(0.5,0.5);
@@ -61,10 +64,20 @@
       var x2 = 680;
       var y1 = 480;
       var y2 = 550;
-      if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
-        if(this.intro){
-          this.btnSound.play();
-          this.empezar();
+      if(this.intro){
+        switch(this.introStep){
+          case 0:
+            if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+              this.btnSound.play();
+              this.introStep++;
+              this.introImg.kill();//Se elimina imagen de intro
+              this.introImg2 = this.game.add.sprite(0,0,'ayudaGeneral',3);
+            }          
+            break;
+          case 1:
+            this.btnSound.play();
+            this.empezar();
+            break;
         }
       }
     },
@@ -72,7 +85,7 @@
     empezar: function(){
       this.physics = this.game.physics.startSystem(Phaser.Physics.ARCADE);//Habilitacion de fisicas
       this.intro = false;//Se deshabilita el intro de juego
-      this.introImg.kill();//Se elimina imagen de intro
+      this.introImg2.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
       this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_4');//Creacion de tablero de movimiento
