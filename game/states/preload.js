@@ -80,6 +80,7 @@ Preload.prototype = {
     this.load.image('introN4','assets/images/Nivel4/intro.jpg');
     this.load.image('tile_nivel4','assets/images/Nivel4/tile.jpg');
     this.load.spritesheet('gusano_4','assets/images/Nivel4/gusano.png',50,50);
+    this.load.image('tablero_','assets/images/Nivel4/tablero.png');
     this.load.image('tablero_4','assets/images/Nivel4/tablero_4.png');
     this.load.text('data4','assets/data/nivel4.json');//Datos nivel 4
 

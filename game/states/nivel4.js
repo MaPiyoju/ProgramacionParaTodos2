@@ -88,7 +88,7 @@
       this.introImg2.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
-      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_4');//Creacion de tablero de movimiento
+      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_4', 'tablero_');//Creacion de tablero de movimiento
       this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano_4', null, 0);
       //this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control

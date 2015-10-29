@@ -2,7 +2,7 @@
 
 var Entidad = require('../prefabs/entidad');
 
-var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, parent){
+var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, tableroMarco, parent){
   Phaser.Group.call(this, game, parent);  
 
   /*Definicion de propiedades*/
@@ -14,7 +14,7 @@ var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, parent){
 
   //Fondo de tablero
   this.fondoTableroF = this.game.add.sprite(x,y,tablero);
-  this.fondoTablero = this.game.add.sprite(x-30,y-28,'tablero');
+  this.fondoTablero = this.game.add.sprite(x-30,y-28,tableroMarco);
   this.add(this.fondoTableroF);
   this.add(this.fondoTablero);
 

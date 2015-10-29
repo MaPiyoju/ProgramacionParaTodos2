@@ -299,7 +299,7 @@ module.exports = Entidad;
 
 var Entidad = require('../prefabs/entidad');
 
-var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, parent){
+var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, tableroMarco, parent){
   Phaser.Group.call(this, game, parent);  
 
   /*Definicion de propiedades*/
@@ -311,7 +311,7 @@ var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, parent){
 
   //Fondo de tablero
   this.fondoTableroF = this.game.add.sprite(x,y,tablero);
-  this.fondoTablero = this.game.add.sprite(x-30,y-28,'tablero');
+  this.fondoTablero = this.game.add.sprite(x-30,y-28,tableroMarco);
   this.add(this.fondoTableroF);
   this.add(this.fondoTablero);
 
@@ -1550,7 +1550,7 @@ module.exports = Menu;
       this.introImg2.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel3');//Fondo de juego
-      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_3');//Creacion de tablero de movimiento
+      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_3', 'tablero');//Creacion de tablero de movimiento
       this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano', null, 0);
       //this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
@@ -1965,7 +1965,7 @@ module.exports = Menu;
       this.introImg2.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
-      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_4');//Creacion de tablero de movimiento
+      this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_4', 'tablero_');//Creacion de tablero de movimiento
       this.gusano = this.tablero.setObjCuadro(Math.floor(Math.random()*this.tablero.xCuadros), Math.floor(Math.random()*this.tablero.yCuadros), 'gusano_4', null, 0);
       //this.game.physics.arcade.enable(this.gusano);//Habilitacion de fisicas sobre cabeza de gusano
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
@@ -3009,6 +3009,7 @@ Preload.prototype = {
     this.load.image('introN4','assets/images/Nivel4/intro.jpg');
     this.load.image('tile_nivel4','assets/images/Nivel4/tile.jpg');
     this.load.spritesheet('gusano_4','assets/images/Nivel4/gusano.png',50,50);
+    this.load.image('tablero_','assets/images/Nivel4/tablero.png');
     this.load.image('tablero_4','assets/images/Nivel4/tablero_4.png');
     this.load.text('data4','assets/data/nivel4.json');//Datos nivel 4
 
