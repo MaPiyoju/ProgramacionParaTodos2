@@ -54,7 +54,7 @@
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN4');//Imagen intro de juego
       this.introImg2 = null;
       this.game.input.onDown.add(this.iniciarJuego,this);
-      this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico, en este nivel deberas relacionar los diferentes datos que van cayendo frente al tipo de dato solicitado.\n\nAdelante!', 24);
+      this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'En este nivel tendrás la oportunidad de trabajar en la construcción de expresiones, deberás analizar correctamente cada solicitud y conformar pedazo a pedazo una expresión que le de solución.\n\nSuerte!', 24);
       this.txtIntro.anchor.setTo(0.5,0.5);
       this.txtIntro.maxWidth = 250;
     },
@@ -94,8 +94,9 @@
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
 
-      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 565, 'font', '', 28);//Texto de expresion
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 565, 'font', '', 24);//Texto de expresion
       this.txtExp.anchor.setTo(0.5,0.5);
+      this.txtExp.maxWidth = 500;
       this.txtExp.align = "center";
       this.crearExpresion();//Primera expresion a evaluar
 

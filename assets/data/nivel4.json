@@ -471,189 +471,74 @@
     },
     {
       "exp": [
-        "X es un número de 4 cifras"
+        "La edad de maria es el triple de la de carlos(x) Exprese la suma de sus edades "
       ],
-      "nPasos": 15,
+      "nPasos": 3,
       "pasos": [
         {
-          "txt":"X",
+          "txt":"x",
           "ok":true,
-          "n": [0,4,8,12]
-        },
-        {
-          "txt":"4",
-          "ok":false,
-          "n": [0,4]
+          "n": [0]
         },
         {
           "txt":"2",
           "ok":false,
-          "n": [8,12]
+          "n": [0]
         },
         {
-          "txt":"Y",
+          "txt":"*",
           "ok":false,
-          "n": [0,4,8,12]
+          "n": [0]
         },
         {
-          "txt":">",
+          "txt":"x+3",
           "ok":false,
-          "n": [0,4,8,12]
+          "n": [0]
         },
         {
-          "txt":">=",
+          "txt":"+",
           "ok":true,
-          "n": [1,13]
+          "n": [1]
         },
         {
-          "txt":"=",
+          "txt":"-",
           "ok":false,
-          "n": [1,13]
+          "n": [1]
+        },
+        {
+          "txt":"/",
+          "ok":false,
+          "n": [1]
         },
         {
           "txt":"<>",
           "ok":false,
-          "n": [1,13]
+          "n": [1]
         },
         {
-          "txt":"MOD",
-          "ok":false,
-          "n": [1,13]
-        },
-        {
-          "txt":"1000",
+          "txt":"3x",
           "ok":true,
           "n": [2]
         },
         {
-          "txt":"999",
+          "txt":"2x",
           "ok":false,
           "n": [2]
         },
         {
-          "txt":"-1000",
+          "txt":"6x",
           "ok":false,
           "n": [2]
         },
         {
-          "txt":"0000",
+          "txt":"x+3",
           "ok":false,
           "n": [2]
         },
         {
-          "txt":"^",
-          "ok":true,
-          "n": [3,11]
-        },
-        {
-          "txt":"v",
+          "txt":"x+3",
           "ok":false,
-          "n": [3,11]
-        },
-        {
-          "txt":"=",
-          "ok":false,
-          "n": [3,11]
-        },
-        {
-          "txt":"<>",
-          "ok":false,
-          "n": [3,11]
-        },
-        {
-          "txt":"<=",
-          "ok":true,
-          "n": [5,9]
-        },
-        {
-          "txt":"=",
-          "ok":false,
-          "n": [5,9]
-        },
-        {
-          "txt":"^",
-          "ok":false,
-          "n": [5,9]
-        },
-        {
-          "txt":"<>",
-          "ok":false,
-          "n": [5,9]
-        },
-        {
-          "txt":"9999",
-          "ok":true,
-          "n": [6]
-        },
-        {
-          "txt":"-9999",
-          "ok":false,
-          "n": [6]
-        },
-        {
-          "txt":"0000",
-          "ok":false,
-          "n": [6]
-        },
-        {
-          "txt":"10000",
-          "ok":false,
-          "n": [6]
-        },
-        {
-          "txt":"v",
-          "ok":true,
-          "n": [7]
-        },
-        {
-          "txt":"^",
-          "ok":false,
-          "n": [7]
-        },
-        {
-          "txt":"==",
-          "ok":false,
-          "n": [7]
-        },
-        {
-          "txt":">=",
-          "ok":false,
-          "n": [7]
-        },
-        {
-          "txt":"-1000",
-          "ok":true,
-          "n": [10]
-        },
-        {
-          "txt":"1000",
-          "ok":false,
-          "n": [10]
-        },
-        {
-          "txt":"999",
-          "ok":false,
-          "n": [10]
-        },
-        {
-          "txt":"9999",
-          "ok":true,
-          "n": [10]
-        },
-        {
-          "txt":"-9999",
-          "ok":true,
-          "n": [14]
-        },
-        {
-          "txt":"9999",
-          "ok":false,
-          "n": [14]
-        },
-        {
-          "txt":"-1000",
-          "ok":false,
-          "n": [14]
+          "n": [2]
         }
       ]
     }

@@ -52,7 +52,7 @@
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN3');//Imagen intro de juego
       this.introImg2 = null;
       this.game.input.onDown.add(this.iniciarJuego,this);      
-      this.txtIntro = this.game.add.bitmapText(195, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico, en este nivel deberas relacionar los diferentes datos que van cayendo frente al tipo de dato solicitado.\n\nAdelante!', 24);  
+      this.txtIntro = this.game.add.bitmapText(195, 300, 'fontData', 'Bienvenido, en este nivel empezaremos con el manejo de expresiones, especificamente la evaluación de las mismas, Para ello, deberas evaluar cada expresión presentada de forma correcta.\n\nAdelante!', 24);  
       this.txtIntro.anchor.setTo(0.5,0.5);  
       this.txtIntro.maxWidth = 250;  
     },

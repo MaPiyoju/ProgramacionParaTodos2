@@ -1485,7 +1485,7 @@ module.exports = Menu;
     habilMov: true,
     countErrors: 0,
 
-    msjError: ['Ups, recuerda que la prioridad de los operadoes es importante','Recuerda la prioridad de los operadores:\n- ()\n- div , mod , * , /\n - , +, -','Cuando en la expresión se presenta dos operadores de la misma prioridad se resuelve de izquierda a derecha'],
+    msjError: ['Ups, recuerda que la prioridad de los operadoes es importante','Recuerda la prioridad de los operadores:\n- ( ) [ ]\n- div , mod , * , /\n - , +, -','Cuando la expresión presenta dos operadores de la misma prioridad se resuelve de izquierda a derecha'],
     
     init: function(){
       this.maxtime= 120;
@@ -1516,7 +1516,7 @@ module.exports = Menu;
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN3');//Imagen intro de juego
       this.introImg2 = null;
       this.game.input.onDown.add(this.iniciarJuego,this);      
-      this.txtIntro = this.game.add.bitmapText(195, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico, en este nivel deberas relacionar los diferentes datos que van cayendo frente al tipo de dato solicitado.\n\nAdelante!', 24);  
+      this.txtIntro = this.game.add.bitmapText(195, 300, 'fontData', 'Bienvenido, en este nivel empezaremos con el manejo de expresiones, especificamente la evaluación de las mismas, Para ello, deberas evaluar cada expresión presentada de forma correcta.\n\nAdelante!', 24);  
       this.txtIntro.anchor.setTo(0.5,0.5);  
       this.txtIntro.maxWidth = 250;  
     },
@@ -1888,6 +1888,7 @@ module.exports = Menu;
     maxtime: 120,
     flagpause: false,
     intro:true,
+    introStep:0,
     movimiento: 0,
     gusanoGroup: null,
     cuerpoGroup: null,
@@ -1896,11 +1897,15 @@ module.exports = Menu;
     pasoActual: 0,
     habilMov: true,
     bien: 0,
+    countErrors: 0,
+
+    msjError: ['Recuerda analizar a profundidad  el problema que se te esta presentando','No olvides usar los operadores correspondientes a la solicitud','Existen muchas formas de dar solución a un mismo problema, sin embargo aqui solo podrás seguir un camino'],
 
     init: function(){
       this.maxtime= 120;
       this.flagpause= false; 
       this.intro = true;
+      this.introStep = 0; 
       this.movimiento = 0;
       this.gusanoGroup = [];
       this.cuerpoGroup = [];
@@ -1908,6 +1913,7 @@ module.exports = Menu;
       this.pasoActual = 0;
       this.habilMov = true;
       this.bien = 0;
+      this.countErrors = 0;
 
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
@@ -1923,8 +1929,9 @@ module.exports = Menu;
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
       this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN4');//Imagen intro de juego
+      this.introImg2 = null;
       this.game.input.onDown.add(this.iniciarJuego,this);
-      this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'Hola, con el fin de aprender sobre los diferentes tipos de dato básico, en este nivel deberas relacionar los diferentes datos que van cayendo frente al tipo de dato solicitado.\n\nAdelante!', 24);
+      this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'En este nivel tendrás la oportunidad de trabajar en la construcción de expresiones, deberás analizar correctamente cada solicitud y conformar pedazo a pedazo una expresión que le de solución.\n\nSuerte!', 24);
       this.txtIntro.anchor.setTo(0.5,0.5);
       this.txtIntro.maxWidth = 250;
     },
@@ -1934,10 +1941,20 @@ module.exports = Menu;
       var x2 = 680;
       var y1 = 480;
       var y2 = 550;
-      if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
-        if(this.intro){
-          this.btnSound.play();
-          this.empezar();
+      if(this.intro){
+        switch(this.introStep){
+          case 0:
+            if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+              this.btnSound.play();
+              this.introStep++;
+              this.introImg.kill();//Se elimina imagen de intro
+              this.introImg2 = this.game.add.sprite(0,0,'ayudaGeneral',3);
+            }          
+            break;
+          case 1:
+            this.btnSound.play();
+            this.empezar();
+            break;
         }
       }
     },
@@ -1945,7 +1962,7 @@ module.exports = Menu;
     empezar: function(){
       this.physics = this.game.physics.startSystem(Phaser.Physics.ARCADE);//Habilitacion de fisicas
       this.intro = false;//Se deshabilita el intro de juego
-      this.introImg.kill();//Se elimina imagen de intro
+      this.introImg2.kill();//Se elimina imagen de intro
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
       this.tablero = new Tablero(this.game, 50, 20 ,12 , 10, 'tablero_4');//Creacion de tablero de movimiento
@@ -1954,8 +1971,9 @@ module.exports = Menu;
       this.gusanoGroup.push(this.gusano);//Se incluye la cabeza de gusano en grupo de control
       this.cursors = this.game.input.keyboard.createCursorKeys();//Se agregan cursores de control de movimiento
 
-      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 565, 'font', '', 28);//Texto de expresion
+      this.txtExp = this.game.add.bitmapText(this.game.world.centerX, 565, 'font', '', 24);//Texto de expresion
       this.txtExp.anchor.setTo(0.5,0.5);
+      this.txtExp.maxWidth = 500;
       this.txtExp.align = "center";
       this.crearExpresion();//Primera expresion a evaluar
 
@@ -1980,105 +1998,116 @@ module.exports = Menu;
         this.game.physics.arcade.overlap(this.gusano, this.itemGroup, this.comerItem, null, this);//Se define metodo llamado de colision para item - cabeza
         this.game.physics.arcade.overlap(this.gusano, this.cuerpoGroup, this.chocar, null, this);//Se define metodo llamado de colision para cuerpo - cabeza
         //Definicion movimiento de jugador por medio de cursores de movimiento(Flechas teclado)
-        if(this.habilMov){
-          if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
-            this.movimiento = 0;
-            this.habilMov =false;
-          }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
-            this.movimiento = 1;
-            this.habilMov =false;
-          }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
-            this.movimiento = 2;
-            this.habilMov =false;
-          }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
-            this.movimiento = 3;
-            this.habilMov =false;
-          }          
+        if(!this.alert.visible){
+          if(this.habilMov){
+            if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
+              this.movimiento = 0;
+              this.habilMov =false;
+            }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
+              this.movimiento = 1;
+              this.habilMov =false;
+            }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
+              this.movimiento = 2;
+              this.habilMov =false;
+            }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
+              this.movimiento = 3;
+              this.habilMov =false;
+            }          
+          }
         }
       }
     },
 
     updateMov: function(){
-      this.nuevaBola = false;
-      this.gusano.lasti = this.gusano.i;//Posicion actual X cabeza para siguiente elemento
-      this.gusano.lastj = this.gusano.j;//Posicion actual Y cabeza para siguiente elemento
-      //Movimiento cabeza de gusano
-      switch(this.movimiento){
-        case 0://Movimiento hacia la derecha
-          if(this.gusano.i == this.tablero.xCuadros - 1){//Limite de tablero
-            this.gusano.i = -1;
-          }
-          this.tablero.setObjCuadro(this.gusano.i+1,this.gusano.j,'',this.gusano,0);
-          this.gusano.angle = 180;
-          break;
-        case 1://Movimiento hacia la izquierda
-          if(this.gusano.i == 0){//Limite de tablero
-            this.gusano.i = this.tablero.xCuadros;
-          }
-          this.tablero.setObjCuadro(this.gusano.i-1,this.gusano.j,'',this.gusano,0);
-          this.gusano.angle = 0;
-          break;
-        case 2://Movimiento hacia arriba
-          if(this.gusano.j == 0){//Limite de tablero
-            this.gusano.j = this.tablero.yCuadros;
-          }
-          this.tablero.setObjCuadro(this.gusano.i,this.gusano.j-1,'',this.gusano,0);
-          this.gusano.angle = 90;
-          break;
-        case 3://Movimiento hacie abajo
-          if(this.gusano.j == this.tablero.yCuadros - 1){//Limite de tablero
-            this.gusano.j = -1;
-          }
-          this.tablero.setObjCuadro(this.gusano.i,this.gusano.j+1,'',this.gusano,0);
-          this.gusano.angle = -90;
-          break;
-      }
-      this.habilMov = true;
-      this.gusano.lastangle = this.gusano.angle;
-      //Movimiento cuerpo gusano
-      for(var i=1;i<this.gusanoGroup.length;i++){//Empieza en 1 para omitir la cabeza de gusano
-        this.gusanoGroup[i].lasti = this.gusanoGroup[i].i;
-        this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
-        if(this.gusanoGroup[i].anguloTemp){//Control de giro a la derecha para control de angulo de animacion
-          this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;  
-        }
-        this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;//Angulo de asignacion siguiente objeto
-        if(this.gusanoGroup[i].hasOwnProperty('txt')){
-          this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],3);//Nueva posicion (para texto) 
-          this.tablero.setTexto(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i].txt);//Nueva posicion 
-        }else{
-          this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);//Nueva posicion 
-        }
-        this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;//Angulo inicial
-        if(this.gusanoGroup[i+1]){//Control de giros y asignacion de codos de giro
-          if(this.gusanoGroup[i].angle != this.gusanoGroup[i].lastangle){
-            if(this.gusanoGroup[i].hasOwnProperty('txt')){
-              this.gusanoGroup[i].frame = 4;//Frame codo de giro(para texto)
-            }else{
-              this.gusanoGroup[i].frame = 2;//Frame codo de giro 
+      if(!this.alert.visible){
+        this.nuevaBola = false;
+        this.gusano.lasti = this.gusano.i;//Posicion actual X cabeza para siguiente elemento
+        this.gusano.lastj = this.gusano.j;//Posicion actual Y cabeza para siguiente elemento
+        //Movimiento cabeza de gusano
+        switch(this.movimiento){
+          case 0://Movimiento hacia la derecha
+            if(this.gusano.i == this.tablero.xCuadros - 1){//Limite de tablero
+              this.gusano.i = -1;
             }
-            if(this.gusanoGroup[i].angle == -180){
-              this.gusanoGroup[i].angleAngle = 180;
-            }else{
-              this.gusanoGroup[i].angleAngle = undefined;
+            this.tablero.setObjCuadro(this.gusano.i+1,this.gusano.j,'',this.gusano,0);
+            this.gusano.angle = 180;
+            break;
+          case 1://Movimiento hacia la izquierda
+            if(this.gusano.i == 0){//Limite de tablero
+              this.gusano.i = this.tablero.xCuadros;
             }
-            if((this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angle) || (this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angleAngle)){//Giros direccion derecha              
-              this.gusanoGroup[i].anguloTemp = true;//Control giro derecha
-              switch(this.gusanoGroup[i].angle){//Asignacion angulo de giro
-                case 0:
-                  this.gusanoGroup[i].angle = 90;
-                  break;
-                case 90:
-                  this.gusanoGroup[i].angle = 180;
-                  break;
-                case -180:
-                  this.gusanoGroup[i].angle = -90;
-                  break;
-                case -90:
-                  this.gusanoGroup[i].angle = 0;
-                  break;
+            this.tablero.setObjCuadro(this.gusano.i-1,this.gusano.j,'',this.gusano,0);
+            this.gusano.angle = 0;
+            break;
+          case 2://Movimiento hacia arriba
+            if(this.gusano.j == 0){//Limite de tablero
+              this.gusano.j = this.tablero.yCuadros;
+            }
+            this.tablero.setObjCuadro(this.gusano.i,this.gusano.j-1,'',this.gusano,0);
+            this.gusano.angle = 90;
+            break;
+          case 3://Movimiento hacie abajo
+            if(this.gusano.j == this.tablero.yCuadros - 1){//Limite de tablero
+              this.gusano.j = -1;
+            }
+            this.tablero.setObjCuadro(this.gusano.i,this.gusano.j+1,'',this.gusano,0);
+            this.gusano.angle = -90;
+            break;
+        }
+        this.habilMov = true;
+        this.gusano.lastangle = this.gusano.angle;
+        //Movimiento cuerpo gusano
+        for(var i=1;i<this.gusanoGroup.length;i++){//Empieza en 1 para omitir la cabeza de gusano
+          this.gusanoGroup[i].lasti = this.gusanoGroup[i].i;
+          this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
+          if(this.gusanoGroup[i].anguloTemp){//Control de giro a la derecha para control de angulo de animacion
+            this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;  
+          }
+          this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;//Angulo de asignacion siguiente objeto
+          if(this.gusanoGroup[i].hasOwnProperty('txt')){
+            this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],3);//Nueva posicion (para texto) 
+            this.tablero.setTexto(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i].txt);//Nueva posicion 
+          }else{
+            this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);//Nueva posicion 
+          }
+          this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;//Angulo inicial
+          if(this.gusanoGroup[i+1]){//Control de giros y asignacion de codos de giro
+            if(this.gusanoGroup[i].angle != this.gusanoGroup[i].lastangle){
+              if(this.gusanoGroup[i].hasOwnProperty('txt')){
+                this.gusanoGroup[i].frame = 4;//Frame codo de giro(para texto)
+              }else{
+                this.gusanoGroup[i].frame = 2;//Frame codo de giro 
+              }
+              if(this.gusanoGroup[i].angle == -180){
+                this.gusanoGroup[i].angleAngle = 180;
+              }else{
+                this.gusanoGroup[i].angleAngle = undefined;
+              }
+              if((this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angle) || (this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angleAngle)){//Giros direccion derecha              
+                this.gusanoGroup[i].anguloTemp = true;//Control giro derecha
+                switch(this.gusanoGroup[i].angle){//Asignacion angulo de giro
+                  case 0:
+                    this.gusanoGroup[i].angle = 90;
+                    break;
+                  case 90:
+                    this.gusanoGroup[i].angle = 180;
+                    break;
+                  case -180:
+                    this.gusanoGroup[i].angle = -90;
+                    break;
+                  case -90:
+                    this.gusanoGroup[i].angle = 0;
+                    break;
+                }
+              }else{
+                this.gusanoGroup[i].anguloTemp = false;
               }
             }else{
+              if(this.gusanoGroup[i].hasOwnProperty('txt')){
+                this.gusanoGroup[i].frame = 3;
+              }else{
+                this.gusanoGroup[i].frame = 1;
+              }
               this.gusanoGroup[i].anguloTemp = false;
             }
           }else{
@@ -2089,13 +2118,6 @@ module.exports = Menu;
             }
             this.gusanoGroup[i].anguloTemp = false;
           }
-        }else{
-          if(this.gusanoGroup[i].hasOwnProperty('txt')){
-            this.gusanoGroup[i].frame = 3;
-          }else{
-            this.gusanoGroup[i].frame = 1;
-          }
-          this.gusanoGroup[i].anguloTemp = false;
         }
       }
     },
@@ -2191,8 +2213,12 @@ module.exports = Menu;
         if(item.ok){//En caso de item correcto de aceurdo al paso
           txtItem = item.txt.text;
         }else{//En caso de error 
+          this.countErrors++;
           this.malSound.play();
           continuar = false;
+          if((this.countErrors%5) == 0){
+            this.alert.show(this.msjError[Math.floor(Math.random()*this.msjError.length)]);
+          }  
         }
       }
       if(continuar){//En caso de item correcto agrega una bola al cuerpo del gusano
