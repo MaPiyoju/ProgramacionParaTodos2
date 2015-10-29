@@ -19,6 +19,9 @@
     pasoActual: 0,
     habilMov: true,
     bien: 0,
+    countErrors: 0,
+
+    msjError: ['Ups, recuerda que la prioridad de los operadoes es importante','Recuerda la prioridad de los operadores:\n- ()\n- div , mod , * , /\n - , +, -','Cuando en la expresión se presenta dos operadores de la misma prioridad se resuelve de izquierda a derecha'],
 
     init: function(){
       this.maxtime= 120;
@@ -31,6 +34,7 @@
       this.pasoActual = 0;
       this.habilMov = true;
       this.bien = 0;
+      this.countErrors = 0;
 
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
@@ -103,105 +107,116 @@
         this.game.physics.arcade.overlap(this.gusano, this.itemGroup, this.comerItem, null, this);//Se define metodo llamado de colision para item - cabeza
         this.game.physics.arcade.overlap(this.gusano, this.cuerpoGroup, this.chocar, null, this);//Se define metodo llamado de colision para cuerpo - cabeza
         //Definicion movimiento de jugador por medio de cursores de movimiento(Flechas teclado)
-        if(this.habilMov){
-          if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
-            this.movimiento = 0;
-            this.habilMov =false;
-          }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
-            this.movimiento = 1;
-            this.habilMov =false;
-          }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
-            this.movimiento = 2;
-            this.habilMov =false;
-          }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
-            this.movimiento = 3;
-            this.habilMov =false;
-          }          
+        if(!this.alert.visible){
+          if(this.habilMov){
+            if(this.cursors.right.isDown && this.movimiento != 1){//Movimiento a la derecha
+              this.movimiento = 0;
+              this.habilMov =false;
+            }else if (this.cursors.left.isDown && this.movimiento != 0){//Movimiento a la izquierda
+              this.movimiento = 1;
+              this.habilMov =false;
+            }else if (this.cursors.up.isDown && this.movimiento != 3){//Movimiento hacia arriba
+              this.movimiento = 2;
+              this.habilMov =false;
+            }else if (this.cursors.down.isDown && this.movimiento != 2){//Movimiento hacia abajo
+              this.movimiento = 3;
+              this.habilMov =false;
+            }          
+          }
         }
       }
     },
 
     updateMov: function(){
-      this.nuevaBola = false;
-      this.gusano.lasti = this.gusano.i;//Posicion actual X cabeza para siguiente elemento
-      this.gusano.lastj = this.gusano.j;//Posicion actual Y cabeza para siguiente elemento
-      //Movimiento cabeza de gusano
-      switch(this.movimiento){
-        case 0://Movimiento hacia la derecha
-          if(this.gusano.i == this.tablero.xCuadros - 1){//Limite de tablero
-            this.gusano.i = -1;
-          }
-          this.tablero.setObjCuadro(this.gusano.i+1,this.gusano.j,'',this.gusano,0);
-          this.gusano.angle = 180;
-          break;
-        case 1://Movimiento hacia la izquierda
-          if(this.gusano.i == 0){//Limite de tablero
-            this.gusano.i = this.tablero.xCuadros;
-          }
-          this.tablero.setObjCuadro(this.gusano.i-1,this.gusano.j,'',this.gusano,0);
-          this.gusano.angle = 0;
-          break;
-        case 2://Movimiento hacia arriba
-          if(this.gusano.j == 0){//Limite de tablero
-            this.gusano.j = this.tablero.yCuadros;
-          }
-          this.tablero.setObjCuadro(this.gusano.i,this.gusano.j-1,'',this.gusano,0);
-          this.gusano.angle = 90;
-          break;
-        case 3://Movimiento hacie abajo
-          if(this.gusano.j == this.tablero.yCuadros - 1){//Limite de tablero
-            this.gusano.j = -1;
-          }
-          this.tablero.setObjCuadro(this.gusano.i,this.gusano.j+1,'',this.gusano,0);
-          this.gusano.angle = -90;
-          break;
-      }
-      this.habilMov = true;
-      this.gusano.lastangle = this.gusano.angle;
-      //Movimiento cuerpo gusano
-      for(var i=1;i<this.gusanoGroup.length;i++){//Empieza en 1 para omitir la cabeza de gusano
-        this.gusanoGroup[i].lasti = this.gusanoGroup[i].i;
-        this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
-        if(this.gusanoGroup[i].anguloTemp){//Control de giro a la derecha para control de angulo de animacion
-          this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;  
-        }
-        this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;//Angulo de asignacion siguiente objeto
-        if(this.gusanoGroup[i].hasOwnProperty('txt')){
-          this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],3);//Nueva posicion (para texto) 
-          this.tablero.setTexto(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i].txt);//Nueva posicion 
-        }else{
-          this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);//Nueva posicion 
-        }
-        this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;//Angulo inicial
-        if(this.gusanoGroup[i+1]){//Control de giros y asignacion de codos de giro
-          if(this.gusanoGroup[i].angle != this.gusanoGroup[i].lastangle){
-            if(this.gusanoGroup[i].hasOwnProperty('txt')){
-              this.gusanoGroup[i].frame = 4;//Frame codo de giro(para texto)
-            }else{
-              this.gusanoGroup[i].frame = 2;//Frame codo de giro 
+      if(!this.alert.visible){
+        this.nuevaBola = false;
+        this.gusano.lasti = this.gusano.i;//Posicion actual X cabeza para siguiente elemento
+        this.gusano.lastj = this.gusano.j;//Posicion actual Y cabeza para siguiente elemento
+        //Movimiento cabeza de gusano
+        switch(this.movimiento){
+          case 0://Movimiento hacia la derecha
+            if(this.gusano.i == this.tablero.xCuadros - 1){//Limite de tablero
+              this.gusano.i = -1;
             }
-            if(this.gusanoGroup[i].angle == -180){
-              this.gusanoGroup[i].angleAngle = 180;
-            }else{
-              this.gusanoGroup[i].angleAngle = undefined;
+            this.tablero.setObjCuadro(this.gusano.i+1,this.gusano.j,'',this.gusano,0);
+            this.gusano.angle = 180;
+            break;
+          case 1://Movimiento hacia la izquierda
+            if(this.gusano.i == 0){//Limite de tablero
+              this.gusano.i = this.tablero.xCuadros;
             }
-            if((this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angle) || (this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angleAngle)){//Giros direccion derecha              
-              this.gusanoGroup[i].anguloTemp = true;//Control giro derecha
-              switch(this.gusanoGroup[i].angle){//Asignacion angulo de giro
-                case 0:
-                  this.gusanoGroup[i].angle = 90;
-                  break;
-                case 90:
-                  this.gusanoGroup[i].angle = 180;
-                  break;
-                case -180:
-                  this.gusanoGroup[i].angle = -90;
-                  break;
-                case -90:
-                  this.gusanoGroup[i].angle = 0;
-                  break;
+            this.tablero.setObjCuadro(this.gusano.i-1,this.gusano.j,'',this.gusano,0);
+            this.gusano.angle = 0;
+            break;
+          case 2://Movimiento hacia arriba
+            if(this.gusano.j == 0){//Limite de tablero
+              this.gusano.j = this.tablero.yCuadros;
+            }
+            this.tablero.setObjCuadro(this.gusano.i,this.gusano.j-1,'',this.gusano,0);
+            this.gusano.angle = 90;
+            break;
+          case 3://Movimiento hacie abajo
+            if(this.gusano.j == this.tablero.yCuadros - 1){//Limite de tablero
+              this.gusano.j = -1;
+            }
+            this.tablero.setObjCuadro(this.gusano.i,this.gusano.j+1,'',this.gusano,0);
+            this.gusano.angle = -90;
+            break;
+        }
+        this.habilMov = true;
+        this.gusano.lastangle = this.gusano.angle;
+        //Movimiento cuerpo gusano
+        for(var i=1;i<this.gusanoGroup.length;i++){//Empieza en 1 para omitir la cabeza de gusano
+          this.gusanoGroup[i].lasti = this.gusanoGroup[i].i;
+          this.gusanoGroup[i].lastj = this.gusanoGroup[i].j;
+          if(this.gusanoGroup[i].anguloTemp){//Control de giro a la derecha para control de angulo de animacion
+            this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;  
+          }
+          this.gusanoGroup[i].lastangle = this.gusanoGroup[i].angle;//Angulo de asignacion siguiente objeto
+          if(this.gusanoGroup[i].hasOwnProperty('txt')){
+            this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],3);//Nueva posicion (para texto) 
+            this.tablero.setTexto(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i].txt);//Nueva posicion 
+          }else{
+            this.tablero.setObjCuadro(this.gusanoGroup[i-1].lasti,this.gusanoGroup[i-1].lastj,'',this.gusanoGroup[i],1);//Nueva posicion 
+          }
+          this.gusanoGroup[i].angle = this.gusanoGroup[i-1].lastangle;//Angulo inicial
+          if(this.gusanoGroup[i+1]){//Control de giros y asignacion de codos de giro
+            if(this.gusanoGroup[i].angle != this.gusanoGroup[i].lastangle){
+              if(this.gusanoGroup[i].hasOwnProperty('txt')){
+                this.gusanoGroup[i].frame = 4;//Frame codo de giro(para texto)
+              }else{
+                this.gusanoGroup[i].frame = 2;//Frame codo de giro 
+              }
+              if(this.gusanoGroup[i].angle == -180){
+                this.gusanoGroup[i].angleAngle = 180;
+              }else{
+                this.gusanoGroup[i].angleAngle = undefined;
+              }
+              if((this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angle) || (this.gusanoGroup[i].lastangle+90 == this.gusanoGroup[i].angleAngle)){//Giros direccion derecha              
+                this.gusanoGroup[i].anguloTemp = true;//Control giro derecha
+                switch(this.gusanoGroup[i].angle){//Asignacion angulo de giro
+                  case 0:
+                    this.gusanoGroup[i].angle = 90;
+                    break;
+                  case 90:
+                    this.gusanoGroup[i].angle = 180;
+                    break;
+                  case -180:
+                    this.gusanoGroup[i].angle = -90;
+                    break;
+                  case -90:
+                    this.gusanoGroup[i].angle = 0;
+                    break;
+                }
+              }else{
+                this.gusanoGroup[i].anguloTemp = false;
               }
             }else{
+              if(this.gusanoGroup[i].hasOwnProperty('txt')){
+                this.gusanoGroup[i].frame = 3;
+              }else{
+                this.gusanoGroup[i].frame = 1;
+              }
               this.gusanoGroup[i].anguloTemp = false;
             }
           }else{
@@ -212,13 +227,6 @@
             }
             this.gusanoGroup[i].anguloTemp = false;
           }
-        }else{
-          if(this.gusanoGroup[i].hasOwnProperty('txt')){
-            this.gusanoGroup[i].frame = 3;
-          }else{
-            this.gusanoGroup[i].frame = 1;
-          }
-          this.gusanoGroup[i].anguloTemp = false;
         }
       }
     },
@@ -314,8 +322,12 @@
         if(item.ok){//En caso de item correcto de aceurdo al paso
           txtItem = item.txt.text;
         }else{//En caso de error 
+          this.countErrors++;
           this.malSound.play();
           continuar = false;
+          if((this.countErrors%5) == 0){
+            this.alert.show(this.msjError[Math.floor(Math.random()*this.msjError.length)]);
+          }  
         }
       }
       if(continuar){//En caso de item correcto agrega una bola al cuerpo del gusano
