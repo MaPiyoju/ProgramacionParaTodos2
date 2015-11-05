@@ -141,7 +141,7 @@ input[type="text"],input[type="password"]{
 	border:1px #E2DCDC  solid;
 	min-width: 250px;
 	width: 15%;
-	height: 450px;
+	height: 380px;
 }
 
 #nivel1 {
@@ -163,7 +163,7 @@ input[type="text"],input[type="password"]{
 #situaciones{
 	display: inline-block;
 	vertical-align: top;
-	width: 30%;
+	width: 49%;
 	min-width:400px;
 	height: 500px;
 	text-align: right;
@@ -176,13 +176,20 @@ input[type="text"],input[type="password"]{
 	min-width: 250px;
 	width: 98%;
 	height: 45px;
-	text-align: center;
+	text-align: left;
 }
+#situaciones ul li div:nth-child(1){
+	display: inline-block;
+    vertical-align: top;
+    margin-top: 13px;
+    width: 56%;
+    padding-left: 17px;
+} 
 
 #formSituacion{
 	display: inline-block;
 	vertical-align: top;
-	width: 60%;
+	width: 49%;
 	min-width:400px;
 	height: 500px;
 }
@@ -195,11 +202,11 @@ input[type="text"],input[type="password"]{
 
 .cerrar{
     display: inline-block;
-    margin-left: 42%;
+    margin-left: 34%;
     font-weight: bold;
     color: #DE2323;
     text-transform: uppercase;
-    margin-top: 6px;
+    margin-top: 13px;
     vertical-align: top;
 }
 .cerrar:hover{

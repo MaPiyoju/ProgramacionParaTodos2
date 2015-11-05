@@ -63,7 +63,7 @@ $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 			<div class="titulo">Algoritmos</div>			
 			<div id="situaciones" >
 				<ul>
-					<li ng-repeat="Situacion in niv1.Situaciones.dataSitua" ><div style="display: inline-block;  vertical-align: top;  margin-top: 5px;  width: 46%" >{{$index+1}} - {{ Situacion.situaTxt }}</div>  <div class="cerrar" ng-click="niv1.RemoveSit($index)">x</div> </li>					
+					<li ng-repeat="Situacion in niv1.Situaciones.dataSitua" ><div>{{$index+1}} - {{ Situacion.situaTxt }}</div>  <div class="cerrar" ng-click="niv1.RemoveSit($index)">x</div> </li>					
 				</ul>				
 			</div>
 			

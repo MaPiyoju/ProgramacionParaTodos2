@@ -127,60 +127,61 @@
         },
         {
             "situaImg": "assets/images/nivel1/situacion3.png",
-            "situaTxt": "Cómo contruir un avión de papel? ",
-            "nPasos": 5,
+            "situaTxt": "Cómo lavarse las manos? ",
+            "nPasos": 6,
             "accion": [
                 {
-                    "txt": "Tomar una hoja",
+                    "txt": "Abrir el grifo del agua ",
                     "ok": true,
                     "n": 0
                 },
                 {
-                    "txt": "Doblar a la mitad",
+                    "txt": "Mojarse las manos ",
                     "ok": true,
                     "n": 1
                 },
                 {
-                    "txt": "Doblar las esquinas inferiores",
+                    "txt": "Aplicarse jabón ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Volver a doblar a la mitad",
+                    "txt": "Enjuagarse las manos ",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Sacar las puntas",
+                    "txt": "Cerrar el grifo del agua ",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Romper en la mitad",
+                    "txt": "Secarse las manos ",
+                    "ok": true,
+                    "n": 5
+                },
+                {
+                    "txt": "Abrir la ducha ",
                     "ok": false
                 },
                 {
-                    "txt": "Cortar las esquinas",
+                    "txt": "Quitarse la ropa ",
                     "ok": false
                 },
                 {
-                    "txt": "Quemar la punta",
+                    "txt": "Secarse el pelo ",
                     "ok": false
                 },
                 {
-                    "txt": "Pegar stickers",
+                    "txt": "Bajar el agua del sanitario ",
                     "ok": false
                 },
                 {
-                    "txt": "doblar el cuaderno",
+                    "txt": "Cortar un trozo de jabon ",
                     "ok": false
                 },
                 {
-                    "txt": "Alistar las tijeras",
-                    "ok": false
-                },
-                {
-                    "txt": "Dibujar el avión",
+                    "txt": "Ingresar a la ducha ",
                     "ok": false
                 }
             ]
@@ -188,61 +189,60 @@
         {
             "situaImg": "assets/images/nivel1/situacion4.png",
             "situaTxt": "Cómo cambiar una llanta? ",
-            "nPasos": 7,
+            "nPasos": 6,
             "accion": [
                 {
-                    "txt": "Revisar que llanta fue",
+                    "txt": "Levantar el auto con el gato ",
                     "ok": true,
                     "n": 0
                 },
                 {
-                    "txt": "Colocar el gato hidraulico",
+                    "txt": "Soltar y sacar los pernos de la llanta ",
                     "ok": true,
                     "n": 1
                 },                
                 {
-                    "txt": "Quitar los tornillos",
+                    "txt": "Quitar la llanta ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Sacar la llanta",
+                    "txt": "Colocar llanta de repuesto ",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Poner el Repuesto",
+                    "txt": "Colocar y apretar los pernos ",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Poner los tornillos",
+                    "txt": "Bajar el gato ",
                     "ok": true,
                     "n": 5
                 },
                 {
-                    "txt": "Quitar el gato hidraulico",
-                    "ok": true,
-                    "n": 6
-                },
-                {
-                    "txt": "Ponchar la llanta",
+                    "txt": "Sacar una puntilla ",
                     "ok": false
                 },
                 {
-                    "txt": "Encender el carro",
+                    "txt": "Ponchar la llanta ",
                     "ok": false
                 },
                 {
-                    "txt": "Acelerar el carro",
+                    "txt": "Encender el carro ",
                     "ok": false
                 },
                 {
-                    "txt": "Echar aire a la llanta",
+                    "txt": "Acelerar el carro ",
                     "ok": false
                 },
                 {
-                    "txt": "Echar gasolina",
+                    "txt": "Dar marcha atras al vehiculo ",
+                    "ok": false
+                },
+                {
+                    "txt": "Llenar de combustible el carro ",
                     "ok": false
                 }
 
@@ -432,6 +432,67 @@
                 }
 
             ]
-        }   
+        },
+        {
+            "situaTxt": "Como realizar una llamada? ",
+            "nPasos": 6,
+            "accion": [
+                {
+                    "txt": "Levante la bocina ",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Espere tono ",
+                    "ok": true,
+                    "n": 1
+                },
+                {
+                    "txt": "Marque el número ",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Espere que contesten ",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Hable con la otra persona ",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Cuelgue la bocina ",
+                    "ok": true ,
+                    "n": 5                   
+                },
+                {
+                    "txt": "Conectarse a internet ",
+                    "ok": false            
+                },
+                {
+                    "txt": "Comprar un telefono",
+                    "ok": false                
+                },
+                {
+                    "txt": "Adquirir linea telefónica",
+                    "ok": false               
+                },
+                {
+                    "txt": "Poner la bocina en el piso",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Desconectar el telefono",
+                    "ok": false                    
+                },
+                {
+                    "txt": "Botar el telefono",
+                    "ok": false                    
+                }
+
+            ]
+        }    
     ]
 }
