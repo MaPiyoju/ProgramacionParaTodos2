@@ -123,6 +123,9 @@ Preload.prototype = {
   },
   
   update: function() {
+    if(!!this.ready2) {
+      this.game.state.start('menu');
+    }
     if(!!this.ready) {
 
       /*Carga de imagenes para situaciones de acuerdo a documento JSON con datos del nivel 1*/
@@ -154,10 +157,6 @@ Preload.prototype = {
       
       this.ready2 = true;
       this.game.load.start();//Carga nuevas imagenes
-
-      if(!!this.ready2) {
-        this.game.state.start('menu');
-      }
     }
   },
   

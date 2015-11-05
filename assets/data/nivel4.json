@@ -669,6 +669,144 @@
           "n": [9]
         }
       ]
+    },
+    {
+      "exp": [
+        "X es un número impar y positivo"
+      ],
+      "nPasos": 9,
+      "pasos": [
+        {
+          "txt":"X",
+          "ok":true,
+          "n": [0,6]
+        },
+        {
+          "txt":"Y",
+          "ok":false,
+          "n": [0,6]
+        },
+        {
+          "txt":"2",
+          "ok":false,
+          "n": [0,6]
+        },
+        {
+          "txt":">",
+          "ok":false,
+          "n": [0]
+        },
+        {
+          "txt":"MOD",
+          "ok":true,
+          "n": [1]
+        },
+        {
+          "txt":"DIV",
+          "ok":false,
+          "n": [1]
+        },
+        {
+          "txt":"/",
+          "ok":false,
+          "n": [1]
+        },
+        {
+          "txt":"2",
+          "ok":true,
+          "n": [2]
+        },
+        {
+          "txt":"0",
+          "ok":false,
+          "n": [2]
+        },
+        {
+          "txt":"X",
+          "ok":false,
+          "n": [2]
+        },
+        {
+          "txt":"=",
+          "ok":false,
+          "n": [2]
+        },
+        {
+          "txt":"<>",
+          "ok":true,
+          "n": [3]
+        },
+        {
+          "txt":"=",
+          "ok":false,
+          "n": [3]
+        },
+        {
+          "txt":">",
+          "ok":false,
+          "n": [3]
+        },
+        {
+          "txt":"^",
+          "ok":false,
+          "n": [3]
+        },
+        {
+          "txt":"0",
+          "ok":true,
+          "n": [4,8]
+        },
+        {
+          "txt":"2",
+          "ok":false,
+          "n": [4,8]
+        },
+        {
+          "txt":"verdadero",
+          "ok":false,
+          "n": [4,8]
+        },
+        {
+          "txt":"<>",
+          "ok":false,
+          "n": [4,8]
+        },
+        {
+          "txt":"^",
+          "ok":true,
+          "n": [5]
+        },
+        {
+          "txt":"v",
+          "ok":false,
+          "n": [5]
+        },
+        {
+          "txt":"=",
+          "ok":false,
+          "n": [5]
+        },
+        {
+          "txt":">",
+          "ok":true,
+          "n": [7]
+        },
+        {
+          "txt":"<",
+          "ok":false,
+          "n": [7]
+        },
+        {
+          "txt":"=",
+          "ok":false,
+          "n": [7]
+        },
+        {
+          "txt":"<>",
+          "ok":false,
+          "n": [7]
+        }
+      ]
     }
   ]
 }
