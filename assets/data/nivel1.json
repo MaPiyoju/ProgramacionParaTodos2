@@ -31,32 +31,32 @@
                     "n": 4
                 },
                 {
-                    "txt": "Comer el huevo",
+                    "txt": "Comer el huevo ",
                     "ok": true,
                     "n": 5
                 },
                 {
-                    "txt": "Lavar las patatas",
+                    "txt": "Lavar las papas ",
                     "ok": false
                 },
                 {
-                    "txt": "Limpiar la cocina",
-                    "ok": false,
-                },
-                {
-                    "txt": "Lavar el plato",
+                    "txt": "Limpiar la cocina ",
                     "ok": false
                 },
                 {
-                    "txt": "Echar agua al sarten",
+                    "txt": "Lavar el plato ",
                     "ok": false
                 },
                 {
-                    "txt": "Lavar el sarten",
+                    "txt": "Vertir agua al sarten ",
                     "ok": false
                 },
                 {
-                    "txt": "Revolver el arroz con huevo",
+                    "txt": "Lavar el sarten ",
+                    "ok": false
+                },
+                {
+                    "txt": "Revolver arroz con el huevo ",
                     "ok": false
                 }
             ]
@@ -67,17 +67,17 @@
             "nPasos": 6,
             "accion": [
                 {
-                    "txt": "Dirigirse a la biblioteca",
+                    "txt": "Dirigirse a la biblioteca ",
                     "ok": true,
                     "n": 0
                 },
                 {
-                    "txt": "Saber qué libro solicitar",
+                    "txt": "Saber qué libro solicitar ",
                     "ok": true,
                     "n": 1
                 },
                 {
-                    "txt": "Buscar el libro",
+                    "txt": "Buscar el libro ",
                     "ok": true,
                     "n": 2
                 },
@@ -139,22 +139,22 @@
                     "n": 1
                 },
                 {
-                    "txt": "Aplicarse jabón ",
+                    "txt": "Aplicar jabón ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Enjuagarse las manos ",
+                    "txt": "Enjuagar las manos ",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Cerrar el grifo del agua ",
+                    "txt": "Cerrar el grifo ",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Secarse las manos ",
+                    "txt": "Secar las manos ",
                     "ok": true,
                     "n": 5
                 },
@@ -251,22 +251,22 @@
             "nPasos": 5,
             "accion": [
                 {
-                    "txt": "Revisar que bombilla no funciona",
+                    "txt": "Revisar que bombilla no funciona ",
                     "ok": true,
                     "n": 0
                 },
                 {
-                    "txt": "Apagar el interruptor",
+                    "txt": "Apagar el interruptor ",
                     "ok": true,
                     "n": 1
                 },
                 {
-                    "txt": "Quitar la bombilla",
+                    "txt": "Quitar la bombilla ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Poner la nueva bombilla",
+                    "txt": "Poner la nueva bombilla ",
                     "ok": true,
                     "n": 3
                 },
@@ -276,34 +276,33 @@
                     "n": 4
                 },
                 {
-                    "txt": "Traer una silla",
+                    "txt": "Prender el computador ",
+                    "ok": false
+                },
+                {
+                    "txt": "Romper la bombilla ",
+                    "ok": false
+                },
+                {
+                    "txt": "Sacar los alicates ",
                     "ok": false                    
                 },
                 {
-                    "txt": "Romper la bombilla",
+                    "txt": "Quitar los tornillos ",
                     "ok": false                    
                 },
                 {
-                    "txt": "Sacar los alicates",
+                    "txt": "Esperar que oscurezca ",
                     "ok": false                    
                 },
                 {
-                    "txt": "Quitar los tornillos",
-                    "ok": false                    
+                    "txt": "Llamar a un amigo ",
+                    "ok": false
                 },
                 {
-                    "txt": "Esperar que oscurezca",
-                    "ok": false                    
-                },
-                {
-                    "txt": "Llamar a un amigo",
-                    "ok": false                    
-                },
-                {
-                    "txt": "Comprar una vela",
-                    "ok": false                    
+                    "txt": "Comprar una vela ",
+                    "ok": false
                 }
-
             ]
         },
         {
@@ -436,7 +435,7 @@
             "nPasos": 6,
             "accion": [
                 {
-                    "txt": "Levante la bocina ",
+                    "txt": "Tomar el teléfono ",
                     "ok": true,
                     "n": 0
                 },
@@ -446,22 +445,22 @@
                     "n": 1
                 },
                 {
-                    "txt": "Marque el número ",
+                    "txt": "Marcar el número ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Espere que contesten ",
+                    "txt": "Esperar que contesten ",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Hable con la otra persona ",
+                    "txt": "Hablar con la otra persona ",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Cuelgue la bocina ",
+                    "txt": "Colgar la llamada ",
                     "ok": true ,
                     "n": 5                   
                 },
@@ -478,11 +477,11 @@
                     "ok": false               
                 },
                 {
-                    "txt": "Poner la bocina en el piso",
+                    "txt": "Poner el teléfono en el piso",
                     "ok": false                    
                 },
                 {
-                    "txt": "Desconectar el telefono",
+                    "txt": "Apagar el telefono",
                     "ok": false                    
                 },
                 {
