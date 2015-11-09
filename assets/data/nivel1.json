@@ -3,47 +3,45 @@
         {
             "situaImg": "assets/images/nivel1/situacion1.png",
             "situaTxt": "Cómo preparar un huevo? ",
-            "nPasos": 8,
+            "nPasos": 6,
             "accion": [
                 {
-                    "txt": "Prender la estufa",
+                    "txt": "Tomar un huevo ",
                     "ok": true,
                     "n": 0
                 },
                 {
-                    "txt": "Poner un sartén en la estufa",
+                    "txt": "Romper el huevo ",
                     "ok": true,
                     "n": 1
                 },                
                 {
-                    "txt": "Tomar un huevo",
+                    "txt": "Poner el huevo en la sartén ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Romper el huevo",
+                    "txt": "Agregar sal al huevo y revolver ",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Echar el huevo dentro del sartén",
+                    "txt": "Esperar que se cocine el huevo ",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Esperar que se cocine el huevo",
+                    "txt": "Comer el huevo",
                     "ok": true,
                     "n": 5
                 },
                 {
-                    "txt": "Tomar un plato",
-                    "ok": true,
-                    "n": 6
+                    "txt": "Lavar las patatas",
+                    "ok": false
                 },
                 {
-                    "txt": "Echar el huevo en el plato",
-                    "ok": true,
-                    "n": 7
+                    "txt": "Limpiar la cocina",
+                    "ok": false,
                 },
                 {
                     "txt": "Lavar el plato",
