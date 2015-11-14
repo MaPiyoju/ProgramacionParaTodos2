@@ -305,6 +305,7 @@
           //Se ejecuta la animacion 
           this.situacion.visible = false;
           if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
+
           var keySitua = '';
           if(this.levelData.dataSitua[this.intSituacion].ImageUrl){//En caso de contar con imagen para la situacion
             keySitua = 'niv6_situa' + (this.intSituacion+1) +'_Correct';//Generacion nombre llave de imagen de acuerdo a situacion
@@ -322,7 +323,8 @@
             game.score += 10;
             game.scoretext.setText('Puntaje: ' + game.score);
             game.SituacionCorrecta.kill();
-            //Se crea situacion aleatoria      
+            //Se crea situacion aleatoria
+            if(game.textciclo != null ){game.textciclo.kill();}      
             game.crearSitua();  
           });
           this.SituacionCorrecta.animations.play('anima');
@@ -365,6 +367,11 @@
       var yitem = 350;
       var CItems = this.items;
       var game = this;
+      if(this.textciclo != null ){this.textciclo.kill();}
+      //Se crea texto del ciclo
+      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Mientras                                           Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+      this.textciclo.anchor.setTo(0,0.5);
+      this.textciclo.fontWeight = 'bold';
 
       this.levelData.dataSitua[this.intSituacion].Ciwhile.SlotAccion.forEach(function(acciontext) {
           var item = CItems.create(535,yitem,'accion_small6');
@@ -411,6 +418,13 @@
       var yitem = 350;
       var CItems = this.items;
       var game = this;
+
+      if(this.textciclo != null ){this.textciclo.kill();}
+      //Se crea texto del ciclo
+      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Para                                             Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+      this.textciclo.anchor.setTo(0,0.5);
+      this.textciclo.fontWeight = 'bold';
+
 
       this.levelData.dataSitua[this.intSituacion].Cifor.SlotAccion.forEach(function(acciontext) {
           var item = CItems.create(535,yitem,'accion_small6');

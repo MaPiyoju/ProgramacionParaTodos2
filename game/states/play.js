@@ -8,7 +8,7 @@
       this.crearBoton(0,200,'nivel3',205,250,'Sumergete en el manejo y evaluación adecuada de expresiones por medio de este divertido juego! ',true);
       this.crearBoton(0,300,'nivel4',205,350,'Ya sabes como evaluar una expresión? Ahora aprende como construirla. Ponte a prueba con este juego! ',true);
       this.crearBoton(0,400,'nivel5',205,450,'',false);
-      this.crearBoton(0,500,'nivel6',205,550,'',false);
+      this.crearBoton(0,500,'nivel6',205,550,'',true);
 
       this.overSound = this.game.add.audio('menuoverSound');
       this.btnSound = this.game.add.audio('btnMenuSound');
