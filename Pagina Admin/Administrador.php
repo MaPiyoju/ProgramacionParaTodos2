@@ -18,7 +18,7 @@ $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 	<script type="text/javascript" src="Scripts/Nivel1.js"></script>	
 	<script type="text/javascript">
 		var DatosJson = <?php echo $str_datos; ?>;	
-		var DatosNiv2 = <?php echo $str_datos_2; ?>;	
+		var DatosNiv2 = <?php echo $str_datos_2; ?>;			
 	</script>
 </head>
 <body>	
@@ -63,38 +63,32 @@ $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 			<div class="titulo">Algoritmos</div>			
 			<div id="situaciones" >
 				<ul>
-					<li ng-repeat="Situacion in niv1.Situaciones.dataSitua" ><div>{{$index+1}} - {{ Situacion.situaTxt }}</div>  <div class="cerrar" ng-click="niv1.RemoveSit($index)">x</div> </li>					
+					<li ng-repeat="Situacion in niv1.Situaciones.dataSitua" ng-click ="niv1.SelectSitua($index)"><div>{{$index+1}} - {{ Situacion.situaTxt }}</div>  <div class="cerrar" ng-click="niv1.RemoveSit($index)">x</div> </li>					
 				</ul>				
 			</div>
 			
 				<div id="formSituacion">				
 					<div>
-						<label>Descripcion de la situacion: </label> <br> <input type="text" name="Text1" ng-model="niv1.txtDescripcion" id="txtDescripcionSit"   ></textarea>
+						<label>Descripcion de la situacion: </label> <br> <input type="text" name="Text1" ng-model="niv1.txtDescripcion" id="txtDescripcionSit" />
 					</div>
 					<div>
-						<label>Imagen de la Situacion:  </label>   <input type="file" id="txtfile" name="pic" accept="image/*">
+						<label>Imagen: </label>  <input type="file" id="txtfile" name="pic" accept="image/*">
 					</div>
 					<div>
-						<label>Acciones Correctas: </label>	
-						<div id="accionesCor">
-							<div ng-repeat="accion in niv1.acciones | filter:{ok:true}">
-							   {{$index+1}}. {{ accion.txt }} <div class="cerrar" ng-click="niv1.RemoveAccio(accion.txt)">x</div>
-							</div>						
+						<label>Numero de Pasos: </label>	<br>
+						<input type="text" name="txtNPasos" ng-model="niv1.txtNPasos" id="txtNPasos" >
+					</div>
+					<div>
+						<label>Acciones: </label>
+						<div id="Pasos">
+							<ol style="margin:0px;">
+								<li ng-repeat="Accion in niv1.acciones"><input type="text" maxlength ="40" name="txtPaso1" id="txtPaso1" ng-model="Accion.txt"><div ng-show="$index < niv1.txtNPasos"><img src="Images/Ok.png" width="16"></div></li>							
+							</ol>
 						</div>
-						<input type="text" id="txtaccioncorrect" ng-model="niv1.textAccionTrue"/>
-						<input type="button" id="btnGuardarAccion" value="+" ng-click="niv1.AddAccionTrue()" /> 
 					</div>
-					<div>
-						<label>Acciones Incorrectas: </label>
-						<div id="accionesIncor">
-							<div ng-repeat="accion in niv1.acciones | filter:{ok:false}">
-							   {{$index+1}}. {{ accion.txt }} <div class="cerrar" ng-click="niv1.RemoveAccio(accion.txt)">x</div>
-							</div>						
-						</div>
-						<input type="text" id="txtaccionIncorrect"  ng-model="niv1.textAccionFalse" />
-						<input type="button" id="btnGuardarAccionIn" value="+" ng-click="niv1.AddAccionFalse()"/> 
-					</div>
-					<input style="margin-right: 10px;" type="button" id="btnGuardarSituacion" ng-click="niv1.AddSituacion()" value="Guardar"/> 
+					<input style="margin-right: 10px;" ng-show="niv1.guardar" type="button" id="btnGuardarSituacion" ng-click="niv1.AddSituacion()" value="Guardar"/>
+					<input style="margin-right: 10px;" ng-hide="niv1.guardar" type="button" id="btnActualizarSituacion" ng-click="niv1.EditSituacion()" value="Actualizar"/> 
+					<input type="button" class="btnCancelar" value="Cancelar" ng-click="niv1.cancelar()"/> 
 				</div>
 		</section>		
 		<section id="nivel1" ng-controller="ControllerNiv2 as niv2">
@@ -106,24 +100,24 @@ $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 				</div>
 				<div class="contentExpresiones">
 						<ul >
-							 <li  ng-repeat="expresion in niv2.Reales.exp"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" >x</div></li>
+							 <li  ng-repeat="expresion in niv2.Reales.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Reales')">x</div></li>
 						</ul>
 				</div>
 
-				<input type="text" id="txtExpresionReales"   />
-				<input type="button" id="btnGuardarExpresionReales" value="+" ng-click="niv2.AddReales()" /> 
+				<input type="text" id="txtExpresionReales" ng-model="niv2.txtexpreales"  />
+				<input type="button" id="btnGuardarExpresionReales" value="+" ng-click="niv2.AddExpresion('Reales')" /> 
 			</div>
 			<div class="TipoDatos">
 				<div class="title">
-					Booleanos
+					Logicos
 				</div>
 				<div class="contentExpresiones">
 						<ul >
-							 <li  ng-repeat="expresion in niv2.Booleans.exp"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" >x</div></li>
+							 <li  ng-repeat="expresion in niv2.Logicos.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Logicos')">x</div></li>
 						</ul>
 				</div>
-				<input type="text" id="txtExpresionBoleanos"   />
-				<input type="button" id="btnGuardarExpresionBoleanos" value="+" /> 
+				<input type="text" id="txtExpresionBoleanos"  ng-model="niv2.txtexplogicos" />
+				<input type="button" id="btnGuardarExpresionBoleanos" value="+" ng-click="niv2.AddExpresion('Logicos')"/> 
 			</div>
 			<div class="TipoDatos">
 				<div class="title">
@@ -131,11 +125,23 @@ $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 				</div>
 				<div class="contentExpresiones">
 						<ul >
-							 <li  ng-repeat="expresion in niv2.Enteros.exp"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" >x</div></li>
+							 <li  ng-repeat="expresion in niv2.Enteros.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Enteros')" >x</div></li>
 						</ul>
 				</div>
-				<input type="text" id="txtExpresionEnteros"   />
-				<input type="button" id="btnGuardarExpresionEnteros" value="+" /> 
+				<input type="text" id="txtExpresionEnteros"  ng-model="niv2.txtexpenteros" />
+				<input type="button" id="btnGuardarExpresionEnteros" value="+" ng-click="niv2.AddExpresion('Enteros')"/> 
+			</div>
+			<div class="TipoDatos">
+				<div class="title">
+					Errores
+				</div>
+				<div class="contentExpresiones">
+						<ul >
+							 <li  ng-repeat="expresion in niv2.Error.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Error')">x</div></li>
+						</ul>
+				</div>
+				<input type="text" id="txtExpresionErrores" ng-model="niv2.txtexperror"  />
+				<input type="button" id="btnGuardarErrores" value="+" ng-click="niv2.AddExpresion('Error')" /> 
 			</div>
 		</section>		
 </body>

@@ -9,15 +9,15 @@
 			{
 				"Slot": [
 					{
-						"texto": "var i = 0; i <= 30; i++",
+						"texto": "i=0 hasta 30 con paso 1",
 						"ok":true
 					},
 					{
-						"texto": "var i = 0; i >= 30; i++",
+						"texto": "i=0 hasta 30 con paso -1",
 						"ok":false
 					},
 					{
-						"texto": "var i = 0; i <= 30; i--",
+						"texto": "i=0 hasta -30 con paso 2",
 						"ok":false
 					}
 				],
