@@ -37,7 +37,7 @@ Preload.prototype = {
     this.load.spritesheet('nivel3', 'assets/images/Menu/nivel3.jpg',800,100);
     this.load.spritesheet('nivel4', 'assets/images/Menu/nivel4.jpg',800,100);
     this.load.spritesheet('nivel5', 'assets/images/Menu/nivel5.jpg',800,100);
-    this.load.spritesheet('nivel6', 'assets/images/Menu/nivel6.jpg',800,100);
+    this.load.spritesheet('nivel6', 'assets/images/Menu/nivel6_nh.jpg',800,100);
     this.load.spritesheet('ayudaGeneral', 'assets/images/Menu/ayuda.jpg',800,601);
 
     /*Imagenes nivel 1*/
@@ -109,6 +109,7 @@ Preload.prototype = {
     this.load.audio('btnMenuSound', ['assets/audio/btnMenu/btnMenu.ogg','assets/audio/btnMenu/btnMenu.mp3']);
     this.load.audio('btnSound', ['assets/audio/btn/boton.ogg','assets/audio/btn/boton.mp3']);
     
+    this.load.audio('bienSound', ['assets/audio/bien/bien.ogg','assets/audio/bien/bien.mp3']);
     this.load.audio('errorSound', ['assets/audio/error/error_0.ogg','assets/audio/error/error_0.mp3']);
     this.load.audio('itemOkSound', ['assets/audio/item/item.ogg','assets/audio/item/item.mp3']);    
     this.load.audio('grabSound', ['assets/audio/grab/grab.ogg','assets/audio/grab/grab.mp3']);

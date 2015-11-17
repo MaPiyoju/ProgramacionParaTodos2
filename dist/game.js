@@ -615,7 +615,6 @@ module.exports = Menu;
       this.grabSound = this.game.add.audio('grabSound');
       this.soltarSound = this.game.add.audio('soltarSound');
       this.btnSound = this.game.add.audio('btnSound');
-      this.bienSound = this.game.add.audio('bienSound');
     },
 
     create: function(){
@@ -987,7 +986,6 @@ module.exports = Menu;
 
         //En caso de superar cada validacion, acciones de situacion correcta
         if(control){
-          this.bienSound.play();
           this.nCorrectas++;//Aumento conteo situacion superada
 
           this.limpiarSitua();
@@ -1487,7 +1485,7 @@ module.exports = Menu;
     habilMov: true,
     countErrors: 0,
 
-    msjError: ['Ups, recuerda que la prioridad de los operadoes es importante','Recuerda la prioridad de los operadores:\n1. div , mod , * , /\n 2. +, -','Cuando la expresión presenta dos operadores de la misma prioridad se resuelve de izquierda a derecha','Recuerda; en caso de parentesis, estos se deben resolver primero comenzando por el más interno'],
+    msjError: ['Ups, recuerda que la prioridad de los operadoes es importante','Recuerda la prioridad de los operadores:\n- ( ) [ ]\n- div , mod , * , /\n - , +, -','Cuando la expresión presenta dos operadores de la misma prioridad se resuelve de izquierda a derecha'],
     
     init: function(){
       this.maxtime= 120;
@@ -3040,7 +3038,6 @@ Preload.prototype = {
     this.load.audio('btnMenuSound', ['assets/audio/btnMenu/btnMenu.ogg','assets/audio/btnMenu/btnMenu.mp3']);
     this.load.audio('btnSound', ['assets/audio/btn/boton.ogg','assets/audio/btn/boton.mp3']);
     
-    this.load.audio('bienSound', ['assets/audio/bien/bien.ogg','assets/audio/bien/bien.mp3']);
     this.load.audio('errorSound', ['assets/audio/error/error_0.ogg','assets/audio/error/error_0.mp3']);
     this.load.audio('itemOkSound', ['assets/audio/item/item.ogg','assets/audio/item/item.mp3']);    
     this.load.audio('grabSound', ['assets/audio/grab/grab.ogg','assets/audio/grab/grab.mp3']);

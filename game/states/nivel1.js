@@ -35,6 +35,7 @@
       this.grabSound = this.game.add.audio('grabSound');
       this.soltarSound = this.game.add.audio('soltarSound');
       this.btnSound = this.game.add.audio('btnSound');
+      this.bienSound = this.game.add.audio('bienSound');
     },
 
     create: function(){
@@ -406,6 +407,7 @@
 
         //En caso de superar cada validacion, acciones de situacion correcta
         if(control){
+          this.bienSound.play();
           this.nCorrectas++;//Aumento conteo situacion superada
 
           this.limpiarSitua();

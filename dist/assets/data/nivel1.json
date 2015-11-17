@@ -1,9 +1,9 @@
 {
     "dataSitua": [
         {
-            "situaImg": "assets/images/nivel1/situacion1.png",
-            "situaTxt": "Cómo preparar un huevo? ",
-            "nPasos": 6,
+            "situaImg": "",
+            "situaTxt": "Cómo preparar un huevo revuelto? ",
+            "nPasos": 5,
             "accion": [
                 {
                     "txt": "Tomar un huevo ",
@@ -31,9 +31,8 @@
                     "n": 4
                 },
                 {
-                    "txt": "Comer el huevo ",
-                    "ok": true,
-                    "n": 5
+                    "txt": "Pelar las papas ",
+                    "ok": false
                 },
                 {
                     "txt": "Lavar las papas ",
@@ -56,15 +55,15 @@
                     "ok": false
                 },
                 {
-                    "txt": "Revolver arroz con el huevo ",
+                    "txt": "Preparar arroz ",
                     "ok": false
                 }
             ]
         },
         {
-            "situaImg": "assets/images/nivel1/situacion2.png",
+            "situaImg": "",
             "situaTxt": "Cómo pedir prestado un libro en biblioteca? ",
-            "nPasos": 6,
+            "nPasos": 5,
             "accion": [
                 {
                     "txt": "Dirigirse a la biblioteca ",
@@ -72,36 +71,31 @@
                     "n": 0
                 },
                 {
-                    "txt": "Saber qué libro solicitar",
+                    "txt": "Buscar el libro ",
                     "ok": true,
                     "n": 1
                 },
                 {
-                    "txt": "Buscar el libro",
+                    "txt": "Ir al servicio de préstamo ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Caminar hacia el servicio de préstamo",
+                    "txt": "Entregar la credencial ",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Entregar la credencial",
+                    "txt": "Registrar el libro que a retirar ",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Registrar el libro que llevas",
-                    "ok": true,
-                    "n": 5
-                },
-                {
-                    "txt": "Alistar la maleta",
+                    "txt": "Alistar la maleta ",
                     "ok": true                    
                 },
                 {
-                    "txt": "Esperar el bus",
+                    "txt": "Esperar el bus ",
                     "ok": false
                 },
                 {
@@ -109,22 +103,21 @@
                     "ok": false
                 },
                 {
-                    "txt": "Sentarse en la sala",
+                    "txt": "Sentarse en la sala ",
                     "ok": false
                 },
                 {
-                    "txt": "Alistar el dinero",
+                    "txt": "Alistar el dinero ",
                     "ok": false
                 },
                 {
-                    "txt": "Pagar el libro",
+                    "txt": "Pagar el libro ",
                     "ok": false
                 }
-
             ]
         },
         {
-            "situaImg": "assets/images/nivel1/situacion3.png",
+            "situaImg": "",
             "situaTxt": "Cómo lavarse las manos? ",
             "nPasos": 6,
             "accion": [
@@ -185,7 +178,7 @@
             ]
         },
         {
-            "situaImg": "assets/images/nivel1/situacion4.png",
+            "situaImg": "",
             "situaTxt": "Cómo cambiar una llanta? ",
             "nPasos": 6,
             "accion": [
@@ -310,129 +303,65 @@
             "nPasos": 7,
             "accion": [
                 {
-                    "txt": "Tomar el cepillo dental",
+                    "txt": "Tomar el cepillo dental ",
                     "ok": true,
                     "n": 0
                 },
                 {
-                    "txt": "Aplicar la pasta de dientes",
+                    "txt": "Aplicar la pasta dental ",
                     "ok": true,
                     "n": 1
                 },
                 {
-                    "txt": "Introducir el cepillo en la boca",
+                    "txt": "Introducir el cepillo en la boca ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Lavarse los dientes",
+                    "txt": "Cepillar los dientes ",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Enjuagar bien la boca",
+                    "txt": "Enjuagar bien la boca ",
                     "ok": true,
                     "n": 4
                 },
                 {
-                    "txt": "Secar la boca del agua",
+                    "txt": "Secar la boca del agua ",
                     "ok": true,
                     "n": 5
                 },
                 {
-                    "txt": "Limpiar y guardar el cepillo",
+                    "txt": "Limpiar y guardar el cepillo ",
                     "ok": true,
                     "n": 6                    
                 },
                 {
-                    "txt": "Lavarse la cara",
-                    "ok": false                    
+                    "txt": "Lavarse la cara ",
+                    "ok": false
                 },
                 {
-                    "txt": "Quitarse la ropa",
-                    "ok": false                    
+                    "txt": "Quitarse la ropa ",
+                    "ok": false
                 },
                 {
-                    "txt": "Aplicar muy bien jabon",
-                    "ok": false                    
+                    "txt": "Aplicar muy bien jabon ",
+                    "ok": false
                 },
                 {
-                    "txt": "Lavarse las manos",
-                    "ok": false                    
+                    "txt": "Aplicar shampoo ",
+                    "ok": false
                 },
                 {
-                    "txt": "Ponerse la ropa",
-                    "ok": false                    
-                }
-            ]
-        },
-        {
-            "situaTxt": "Cómo ver una pelicula en cine ? ",
-            "nPasos": 9,
-            "accion": [
-                {
-                    "txt": "Llegar al cine",
-                    "ok": true,
-                    "n": 0
-                },
-                {
-                    "txt": "Analizar cartelera",
-                    "ok": true,
-                    "n": 1
-                },
-                {
-                    "txt": "Seleccionar pelicula",
-                    "ok": true,
-                    "n": 2
-                },
-                {
-                    "txt": "Comprar entradas",
-                    "ok": true,
-                    "n": 3
-                },
-                {
-                    "txt": "Dirigirse a la sala",
-                    "ok": true,
-                    "n": 4
-                },
-                {
-                    "txt": "Entregar ticket",
-                    "ok": true ,
-                    "n": 5                   
-                },
-                {
-                    "txt": "Ubicarse en los puestos ",
-                    "ok": true,
-                    "n": 6                    
-                },
-                {
-                    "txt": "Esperar que empice la pelicula",
-                    "ok": true,
-                    "n": 7                    
-                },
-                {
-                    "txt": "Mirar la pelicula",
-                    "ok": true,
-                    "n": 8                    
-                },
-                {
-                    "txt": "Comprar la pelicula",
-                    "ok": false                    
-                },
-                {
-                    "txt": "Prender el DVD",
-                    "ok": false                    
-                },
-                {
-                    "txt": "Poner la pelicula ",
+                    "txt": "Ponerse la ropa ",
                     "ok": false                    
                 }
-
             ]
         },
         {
             "situaTxt": "Como realizar una llamada? ",
-            "nPasos": 6,
+            "nPasos": 5,
             "accion": [
                 {
                     "txt": "Tomar el teléfono ",
@@ -440,29 +369,24 @@
                     "n": 0
                 },
                 {
-                    "txt": "Espere tono ",
+                    "txt": "Marcar el número ",
                     "ok": true,
                     "n": 1
                 },
                 {
-                    "txt": "Marcar el número ",
+                    "txt": "Esperar que contesten ",
                     "ok": true,
                     "n": 2
                 },
                 {
-                    "txt": "Esperar que contesten ",
+                    "txt": "Hablar con la otra persona ",
                     "ok": true,
                     "n": 3
                 },
                 {
-                    "txt": "Hablar con la otra persona ",
-                    "ok": true,
-                    "n": 4
-                },
-                {
                     "txt": "Colgar la llamada ",
                     "ok": true ,
-                    "n": 5                   
+                    "n": 4                   
                 },
                 {
                     "txt": "Conectarse a internet ",
@@ -490,6 +414,186 @@
                 }
 
             ]
-        }    
+        },
+        {
+            "situaImg": "",
+            "situaTxt": "Cómo cambiar las pilas del control remoto? ",
+            "nPasos": 4,
+            "accion": [
+                {
+                    "txt": "Quitar la tapa del control ",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Retirar pilas viejas ",
+                    "ok": true,
+                    "n": 1
+                },                
+                {
+                    "txt": "Insertar Nuevas pilas ",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Colocar la tapa del control ",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Apagar televisor ",
+                    "ok": true
+                },
+                {
+                    "txt": "Cambiar el canal ",
+                    "ok": false
+                },
+                {
+                    "txt": "Prender la luz ",
+                    "ok": false
+                },
+                {
+                    "txt": "Desarmar el control ",
+                    "ok": false
+                },
+                {
+                    "txt": "Armar el control ",
+                    "ok": false
+                },
+                {
+                    "txt": "Voltear las pilas ",
+                    "ok": false
+                },
+                {
+                    "txt": "Golpear las pilas ",
+                    "ok": false
+                },
+                {
+                    "txt": "Cambiar el control ",
+                    "ok": false
+                }
+            ]
+        },
+        {
+            "situaImg": "",
+            "situaTxt": "Cómo manejar un carro? ",
+            "nPasos": 5,
+            "accion": [
+                {
+                    "txt": "Entrar al carro ",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Encender el carro ",
+                    "ok": true,
+                    "n": 1
+                },                
+                {
+                    "txt": "Presionar el clutch ",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Arrancar el carro ",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Acelerar y avanzar ",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Limpiar el parabrisas ",
+                    "ok": false
+                },
+                {
+                    "txt": "Abrir el baúl ",
+                    "ok": false
+                },
+                {
+                    "txt": "Tanquear el carro ",
+                    "ok": false
+                },
+                {
+                    "txt": "Abrir la ventana ",
+                    "ok": false
+                },
+                {
+                    "txt": "Prender aire acondicionado ",
+                    "ok": false
+                },
+                {
+                    "txt": "Apagar la radio ",
+                    "ok": false
+                },
+                {
+                    "txt": "Prender la radio ",
+                    "ok": false
+                }
+            ]
+        },
+         {
+            "situaImg": "",
+            "situaTxt": "Cómo tomar agua de una botella? ",
+            "nPasos": 6,
+            "accion": [
+                {
+                    "txt": "Tomar la botella de agua ",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Retirar la tapa ",
+                    "ok": true,
+                    "n": 1
+                },                
+                {
+                    "txt": "Llevar la botella a la boca ",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Tomar agua ",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Retirar botella ",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Colocar la tapa ",
+                    "ok": false,
+                    "n": 5
+                },
+                {
+                    "txt": "Regar el agua ",
+                    "ok": false
+                },
+                {
+                    "txt": "Romper la botella ",
+                    "ok": false
+                },
+                {
+                    "txt": " ",
+                    "ok": false
+                },
+                {
+                    "txt": " ",
+                    "ok": false
+                },
+                {
+                    "txt": " ",
+                    "ok": false
+                },
+                {
+                    "txt": " ",
+                    "ok": false
+                }
+            ]
+        }
     ]
 }
