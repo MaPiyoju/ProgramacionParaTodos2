@@ -20,6 +20,20 @@ function indexElement(result,name){
 	return indice;
 }		
 
+function checkExpresion(expression){
+	var top = 0;
+	for (var i = 0; i < expression.length; i++) {
+		if(expression[i] == "("){
+			top++;
+		}else if(expression[i] == ")"){
+			top--;
+		}
+	};
+	return top == 0;
+}
+
+
+
 
 var miapp = angular.module('miapp',[]);   
 miapp.controller('ControllerNiv1', function () {				
@@ -255,5 +269,37 @@ miapp.controller('ControllerNiv2',function(){
 		    }
 		});
 	};
+
+});
+
+miapp.controller('ControllerNiv3',function(){
+	this.expresiones = DatosNiv3;
+	this.txtExpresion = "";	
+	this.nPasos = 0;		
+	this.exp = [];
+	this.pasos = [];	
+		
+	this.Calcularpasos = function(){
+		var pasos = 0;
+		var regular = /(\*|\/|\+|\-)/;
+		for (var i = 0; i < this.txtExpresion.length; i++){
+			if(regular.exec(this.txtExpresion[i]) != null){
+				pasos++;
+			}
+		};
+		this.nPasos = pasos;
+		this.exp = [];
+		this.pasos = [];
+		for(var i = 0; i < this.nPasos-1; i++){
+			this.exp.push(i);
+		}
+		for (var i = 0; i < this.nPasos; i++) {
+		this.pasos.push({
+			"txt":""
+		});
+	}
+	};
+
+	
 
 });

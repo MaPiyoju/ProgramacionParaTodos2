@@ -254,6 +254,11 @@ input[type="text"],input[type="password"]{
 
 }
 
+.contentExpresiones{
+	    height: 232px;
+    overflow-y: auto;
+}
+
 .TipoDatos input[type="text"]{
 	width: 90%;
     height: 24px;

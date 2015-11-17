@@ -3,6 +3,7 @@
 // y convierte su contenido a una estructura de datos
 $str_datos = file_get_contents("../assets/data/nivel1.json");
 $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
+$str_datos_3 = file_get_contents("../assets/data/nivel3.json");
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +19,8 @@ $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 	<script type="text/javascript" src="Scripts/Nivel1.js"></script>	
 	<script type="text/javascript">
 		var DatosJson = <?php echo $str_datos; ?>;	
-		var DatosNiv2 = <?php echo $str_datos_2; ?>;			
+		var DatosNiv2 = <?php echo $str_datos_2; ?>;
+		var DatosNiv3 = <?php echo $str_datos_3; ?>;			
 	</script>
 </head>
 <body>	
@@ -143,7 +145,41 @@ $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 				<input type="text" id="txtExpresionErrores" ng-model="niv2.txtexperror"  />
 				<input type="button" id="btnGuardarErrores" value="+" ng-click="niv2.AddExpresion('Error')" /> 
 			</div>
-		</section>		
+		</section>	
+		<section id="nivel1" ng-controller="ControllerNiv3 as niv3">
+			<div class="subTitulo">Nivel 3</div>
+			<div class="titulo">Evaluación de expresiones</div>	
+			<div id="situaciones" >
+				<ul>
+					<li ng-repeat="Expresion in niv3.expresiones.dataGusano"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" >x</div> </li>					
+				</ul>				
+			</div>
+			<div id="formSituacion">	
+				<div>
+					<label>Pasos Expresión: </label>
+					<div id="Pasos">
+								<ol style="margin:0px;">
+									<li><input type="text" maxlength ="40" name="txtExpresion" ng-change="niv3.Calcularpasos()" ng-model="niv3.txtExpresion" id="txtExpresion" ></li>							
+									<li ng-repeat="PasosExp in niv3.exp track by $index "><input type="text" maxlength ="40" name="txtExpresion" id="txtExpresion" ></li>							
+								</ol>
+					</div>
+				</div>
+				<div id="Pasos">
+					<ol style="margin:0px;">
+						<li ng-repeat = "Paso in niv3.pasos">
+							<label><b>Paso</b></label>
+							</br>
+							<input type="text" maxlength ="40" name="txtExpresion"  ><img src="Images/Ok.png" width="16">
+							<input type="text" maxlength ="40" name="txtExpresion"  >
+							<input type="text" maxlength ="40" name="txtExpresion"  >
+							<input type="text" maxlength ="40" name="txtExpresion"  >
+							<input type="text" maxlength ="40" name="txtExpresion"  >	
+						</li>
+					</ol>
+									
+				</div>
+			</div>
+		</section>			
 </body>
 
 </html>
