@@ -534,7 +534,64 @@
                 }
             ]
         },
-         {
+        {
+            "situaImg": "",
+            "situaTxt": "Cómo tomar agua de una botella? ",
+            "nPasos": 6,
+            "accion": [
+                {
+                    "txt": "Tomar la botella de agua ",
+                    "ok": true,
+                    "n": 0
+                },
+                {
+                    "txt": "Retirar la tapa ",
+                    "ok": true,
+                    "n": 1
+                },                
+                {
+                    "txt": "Llevar la botella a la boca ",
+                    "ok": true,
+                    "n": 2
+                },
+                {
+                    "txt": "Tomar agua ",
+                    "ok": true,
+                    "n": 3
+                },
+                {
+                    "txt": "Retirar botella ",
+                    "ok": true,
+                    "n": 4
+                },
+                {
+                    "txt": "Colocar la tapa ",
+                    "ok": true,
+                    "n": 5
+                },
+                {
+                    "txt": "Regar el agua ",
+                    "ok": false
+                },
+                {
+                    "txt": "Romper la botella ",
+                    "ok": false
+                },
+                {
+                    "txt": "Arrancar etiqueta ",
+                    "ok": false
+                },
+                {
+                    "txt": "Lanzar agua a la cara ",
+                    "ok": false
+                },
+                {
+                    "txt": "Sacar la lengua ",
+                    "ok": false
+                }
+            ]
+        },
+        {
             "situaImg": "",
             "situaTxt": "Cómo tomar agua de una botella? ",
             "nPasos": 6,
@@ -578,7 +635,7 @@
                     "ok": false
                 },
                 {
-                    "txt": " ",
+                    "txt": "Arrancar etiqueta ",
                     "ok": false
                 },
                 {

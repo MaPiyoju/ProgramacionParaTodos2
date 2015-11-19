@@ -2628,6 +2628,7 @@ module.exports = Menu;
           //Se ejecuta la animacion 
           this.situacion.visible = false;
           if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
+
           var keySitua = '';
           if(this.levelData.dataSitua[this.intSituacion].ImageUrl){//En caso de contar con imagen para la situacion
             keySitua = 'niv6_situa' + (this.intSituacion+1) +'_Correct';//Generacion nombre llave de imagen de acuerdo a situacion
@@ -2645,7 +2646,8 @@ module.exports = Menu;
             game.score += 10;
             game.scoretext.setText('Puntaje: ' + game.score);
             game.SituacionCorrecta.kill();
-            //Se crea situacion aleatoria      
+            //Se crea situacion aleatoria
+            if(game.textciclo != null ){game.textciclo.kill();}      
             game.crearSitua();  
           });
           this.SituacionCorrecta.animations.play('anima');
@@ -2688,6 +2690,11 @@ module.exports = Menu;
       var yitem = 350;
       var CItems = this.items;
       var game = this;
+      if(this.textciclo != null ){this.textciclo.kill();}
+      //Se crea texto del ciclo
+      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Mientras                                           Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+      this.textciclo.anchor.setTo(0,0.5);
+      this.textciclo.fontWeight = 'bold';
 
       this.levelData.dataSitua[this.intSituacion].Ciwhile.SlotAccion.forEach(function(acciontext) {
           var item = CItems.create(535,yitem,'accion_small6');
@@ -2734,6 +2741,13 @@ module.exports = Menu;
       var yitem = 350;
       var CItems = this.items;
       var game = this;
+
+      if(this.textciclo != null ){this.textciclo.kill();}
+      //Se crea texto del ciclo
+      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Para                                             Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+      this.textciclo.anchor.setTo(0,0.5);
+      this.textciclo.fontWeight = 'bold';
+
 
       this.levelData.dataSitua[this.intSituacion].Cifor.SlotAccion.forEach(function(acciontext) {
           var item = CItems.create(535,yitem,'accion_small6');
@@ -2875,7 +2889,7 @@ module.exports = Menu;
       this.crearBoton(0,200,'nivel3',205,250,'Sumergete en el manejo y evaluación adecuada de expresiones por medio de este divertido juego! ',true);
       this.crearBoton(0,300,'nivel4',205,350,'Ya sabes como evaluar una expresión? Ahora aprende como construirla. Ponte a prueba con este juego! ',true);
       this.crearBoton(0,400,'nivel5',205,450,'',false);
-      this.crearBoton(0,500,'nivel6',205,550,'',false);
+      this.crearBoton(0,500,'nivel6',205,550,'',true);
 
       this.overSound = this.game.add.audio('menuoverSound');
       this.btnSound = this.game.add.audio('btnMenuSound');
@@ -2968,7 +2982,7 @@ Preload.prototype = {
     this.load.spritesheet('nivel3', 'assets/images/Menu/nivel3.jpg',800,100);
     this.load.spritesheet('nivel4', 'assets/images/Menu/nivel4.jpg',800,100);
     this.load.spritesheet('nivel5', 'assets/images/Menu/nivel5.jpg',800,100);
-    this.load.spritesheet('nivel6', 'assets/images/Menu/nivel6.jpg',800,100);
+    this.load.spritesheet('nivel6', 'assets/images/Menu/nivel6_nh.jpg',800,100);
     this.load.spritesheet('ayudaGeneral', 'assets/images/Menu/ayuda.jpg',800,601);
 
     /*Imagenes nivel 1*/
