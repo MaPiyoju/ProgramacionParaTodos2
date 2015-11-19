@@ -278,11 +278,12 @@ miapp.controller('ControllerNiv3',function(){
 	this.nPasos = 0;		
 	this.exp = [];
 	this.pasos = [];	
-		
+	this.pasosOpciones = [];
+	this.guardar = true;	
 	this.Calcularpasos = function(){
 		var pasos = 0;
-		var regular = /(\*|\/|\+|\-)/;
-		for (var i = 0; i < this.txtExpresion.length; i++){
+		var regular = /(\*|\/|\+|\-|div|mod)/;
+		for (var i = 0; i < this.txtExpresion.length; i++){			
 			if(regular.exec(this.txtExpresion[i]) != null){
 				pasos++;
 			}
@@ -290,14 +291,62 @@ miapp.controller('ControllerNiv3',function(){
 		this.nPasos = pasos;
 		this.exp = [];
 		this.pasos = [];
+		this.pasosOpciones = [];
 		for(var i = 0; i < this.nPasos-1; i++){
-			this.exp.push(i);
+			this.exp.push("");
 		}
 		for (var i = 0; i < this.nPasos; i++) {
-		this.pasos.push({
-			"txt":""
+			this.pasos.push(i);
+			for (var j = 0; j < 5; j++) {
+				this.pasosOpciones.push({
+					"txt":"",
+		           	"ok":(j==0?true:false),
+		          	"n": i
+				});		
+			};
+		}
+	};
+
+	this.AddExpresionEva = function(){
+		this.exp.splice(0,0,this.txtExpresion);
+		this.expresiones.dataGusano.push({
+			"exp": this.exp,
+			"nPasos" : this.nPasos,
+			"pasos": this.pasosOpciones
 		});
-	}
+		var game = this;
+		$.ajax({
+			    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : "../assets/data/nivel3.json","eliminar" : null},
+			    type: "POST",
+			    dataType: "json",
+			    url: "SaveDocumento.php",
+			    complete: function(resultado){
+			    	var result = JSON.parse(resultado.responseText);
+			    	if(result.Mensaje == "OK"){
+				    	alert("Se ha creado la situación");
+				    	DatosNiv3 = result.Json;		
+				    	game.txtExpresion = "";	
+						game.nPasos = 0;		
+						game.exp = [];
+						game.pasos = [];	
+						game.pasosOpciones = [];
+			    	}
+			    	else{
+		    			alert("Error al realizar la solicitud");
+		    		}    	
+			    }
+			});
+	};
+
+	this.selectExpre = function(indice){
+		this.pasos = [];
+		this.txtExpresion = this.expresiones.dataGusano[indice].exp[0];
+		this.exp = this.expresiones.dataGusano[indice].exp.slice(1,this.expresiones.dataGusano[indice].exp.length+1);
+		this.nPasos = this.expresiones.dataGusano[indice].nPasos;
+		for (var i = 0; i < this.nPasos; i++) {
+			this.pasos.push(i);
+		}
+		this.pasosOpciones = this.expresiones.dataGusano[indice].pasos;
 	};
 
 	

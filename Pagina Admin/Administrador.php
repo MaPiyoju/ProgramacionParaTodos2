@@ -151,33 +151,33 @@ $str_datos_3 = file_get_contents("../assets/data/nivel3.json");
 			<div class="titulo">Evaluación de expresiones</div>	
 			<div id="situaciones" >
 				<ul>
-					<li ng-repeat="Expresion in niv3.expresiones.dataGusano"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" >x</div> </li>					
+					<li ng-repeat="Expresion in niv3.expresiones.dataGusano" ng-click="niv3.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" >x</div> </li>					
 				</ul>				
 			</div>
 			<div id="formSituacion">	
 				<div>
 					<label>Pasos Expresión: </label>
 					<div id="Pasos">
-								<ol style="margin:0px;">
-									<li><input type="text" maxlength ="40" name="txtExpresion" ng-change="niv3.Calcularpasos()" ng-model="niv3.txtExpresion" id="txtExpresion" ></li>							
-									<li ng-repeat="PasosExp in niv3.exp track by $index "><input type="text" maxlength ="40" name="txtExpresion" id="txtExpresion" ></li>							
-								</ol>
+						<ol style="margin:0px;">
+							<li><input type="text" maxlength ="40" name="txtExpresion" ng-change="niv3.Calcularpasos()" ng-model="niv3.txtExpresion" id="txtExpresion" ></li>							
+							<li ng-repeat="PasosExp in niv3.exp track by $index "><input type="text" maxlength ="40" name="txtExpresion" id="txtExpresion" ng-model="niv3.exp[$index]" ></li>							
+						</ol>
 					</div>
 				</div>
 				<div id="Pasos">
 					<ol style="margin:0px;">
-						<li ng-repeat = "Paso in niv3.pasos">
+						<li ng-repeat = "Paso in niv3.pasos" style="margin-bottom:10px;">
 							<label><b>Paso</b></label>
 							</br>
-							<input type="text" maxlength ="40" name="txtExpresion"  ><img src="Images/Ok.png" width="16">
-							<input type="text" maxlength ="40" name="txtExpresion"  >
-							<input type="text" maxlength ="40" name="txtExpresion"  >
-							<input type="text" maxlength ="40" name="txtExpresion"  >
-							<input type="text" maxlength ="40" name="txtExpresion"  >	
+							<div ng-repeat="Opciones in niv3.pasosOpciones | filter:{n: Paso}">
+								<input type="text" maxlength ="40" name="txtExpresion" ng-model="Opciones.txt"><img ng-show="Opciones.ok" src="Images/Ok.png" width="16">
+							</div>
+
 						</li>
 					</ol>
 									
 				</div>
+				<input style="margin-right: 10px;" ng-show="niv3.guardar" type="button" id="btnGuardarSituacion" ng-click="niv3.AddExpresionEva()" value="Guardar"/>
 			</div>
 		</section>			
 </body>
