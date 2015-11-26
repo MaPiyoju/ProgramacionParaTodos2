@@ -4,6 +4,8 @@
 $str_datos = file_get_contents("../assets/data/nivel1.json");
 $str_datos_2 = file_get_contents("../assets/data/nivel2.json");
 $str_datos_3 = file_get_contents("../assets/data/nivel3.json");
+$str_datos_4 = file_get_contents("../assets/data/nivel4.json");
+$str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +22,9 @@ $str_datos_3 = file_get_contents("../assets/data/nivel3.json");
 	<script type="text/javascript">
 		var DatosJson = <?php echo $str_datos; ?>;	
 		var DatosNiv2 = <?php echo $str_datos_2; ?>;
-		var DatosNiv3 = <?php echo $str_datos_3; ?>;			
+		var DatosNiv3 = <?php echo $str_datos_3; ?>;		
+		var DatosNiv4 = <?php echo $str_datos_4; ?>;
+		var DatosNiv6 = <?php echo $str_datos_6; ?>;			
 	</script>
 </head>
 <body>	
@@ -151,7 +155,7 @@ $str_datos_3 = file_get_contents("../assets/data/nivel3.json");
 			<div class="titulo">Evaluación de expresiones</div>	
 			<div id="situaciones" >
 				<ul>
-					<li ng-repeat="Expresion in niv3.expresiones.dataGusano" ng-click="niv3.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" >x</div> </li>					
+					<li ng-repeat="Expresion in niv3.expresiones.dataGusano" ng-click="niv3.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" ng-click="niv3.RemoveExpresionEva($index)">x</div> </li>					
 				</ul>				
 			</div>
 			<div id="formSituacion">	
@@ -169,7 +173,7 @@ $str_datos_3 = file_get_contents("../assets/data/nivel3.json");
 						<li ng-repeat = "Paso in niv3.pasos" style="margin-bottom:10px;">
 							<label><b>Paso</b></label>
 							</br>
-							<div ng-repeat="Opciones in niv3.pasosOpciones | filter:{n: Paso}">
+							<div ng-repeat="Opciones in niv3.pasosOpciones | filter:{n: Paso}:true">
 								<input type="text" maxlength ="40" name="txtExpresion" ng-model="Opciones.txt"><img ng-show="Opciones.ok" src="Images/Ok.png" width="16">
 							</div>
 
@@ -178,8 +182,94 @@ $str_datos_3 = file_get_contents("../assets/data/nivel3.json");
 									
 				</div>
 				<input style="margin-right: 10px;" ng-show="niv3.guardar" type="button" id="btnGuardarSituacion" ng-click="niv3.AddExpresionEva()" value="Guardar"/>
+				<input style="margin-right: 10px;" type="button" id="btncancelar" ng-click="niv3.cancelar()" value="Cancelar"/>
 			</div>
-		</section>			
+		</section>	
+		<section id="nivel1" ng-controller="ControllerNiv4 as niv4">
+			<div class="subTitulo">Nivel 4</div>
+			<div class="titulo">Evaluación de expresiones</div>	
+			<div id="situaciones" >
+				<ul>
+					<li ng-repeat="Expresion in niv4.expresiones.dataGusano" ng-click="niv4.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" ng-click="niv4.RemoveExpresionEva($index)">x</div> </li>					
+				</ul>				
+			</div>
+			<div id="formSituacion">	
+				<div>
+					<label>Pasos Expresión: </label><BR>					
+					<input type="text" maxlength ="40" name="txtExpresion"  ng-model="niv4.txtExpresion" id="txtExpresion" >
+				</div>
+				<div>
+					<label>Numero Pasos: </label><BR>
+					<input type="text" name="nPasos" ng-change="niv4.Calcularpasos()" ng-model="niv4.nPasos">	
+				</div>
+				<div id="Pasos">
+					<ol style="margin:0px;">
+						<li ng-repeat = "Paso in niv4.pasos" style="margin-bottom:10px;">
+							<label><b>Paso</b></label>
+							</br>
+							<div ng-repeat="Opciones in niv4.pasosOpciones | filter:{n:Paso}:true">
+								<input type="text" maxlength ="40" name="txtExpresion" ng-model="Opciones.txt"><img ng-show="Opciones.ok" src="Images/Ok.png" width="16">
+							</div>
+
+						</li>
+					</ol>
+									
+				</div>
+				<input style="margin-right: 10px;" ng-show="niv4.guardar" type="button" id="btnGuardarSituacion" ng-click="niv4.AddExpresionEva()" value="Guardar"/>
+				<input style="margin-right: 10px;" type="button" id="btncancelar" ng-click="niv4.cancelar()" value="Cancelar"/>
+			</div>
+		</section>	
+		<section id="nivel1" ng-controller="ControllerNiv6 as niv6">
+			<div class="subTitulo">Nivel 6</div>
+			<div class="titulo">Algoritmos</div>			
+			<div id="situaciones" >
+				<ul>
+					<li ng-repeat="Situacion in niv6.dataSitua.dataSitua" ng-click ="niv6.SelectSitua($index)"><div style="width: 492px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$index+1}} - {{ Situacion.texto }}</div>  <div class="cerrar" style="margin-left:11%" ng-click="niv6.RemoveSit($index)">x</div> </li>					
+				</ul>				
+			</div>
+			
+				<div id="formSituacion">				
+					<div>
+						<label>Descripcion de la situación: </label> <br> <textarea name="Text1" cols="40" rows="5" name="Text1" ng-model="niv6.txttexto" id="txtDescripcionSit"></textarea>
+					</div>
+					<div>
+						<label>Imagen: </label>  <input type="file" id="txtfile6" name="pic" accept="image/*">
+					</div>					
+					<div>
+						<label><b>Ciclo Para: </b></label></br>
+						<div id="Pasos" style="display:inline-block; vertical-align:top; width:49%;">
+							Condicion: <br>
+							<ol style="margin:0px;">
+								<li ng-repeat="Slot in niv6.Cifor.Slot"><input style="width:78%" type="text" maxlength ="40"  ng-model="Slot.texto"><div ng-show="Slot.ok"><img src="Images/Ok.png" width="16"></div></li>							
+							</ol>
+						</div>
+						<div id="Pasos" style="display:inline-block; vertical-align:top; width:49%;">
+							Accion: <br>
+							<ol style="margin:0px;">
+								<li ng-repeat="Slot in niv6.Cifor.SlotAccion"><input style="width:78%" type="text" maxlength ="40"  ng-model="Slot.texto"><div ng-show="Slot.ok"><img src="Images/Ok.png" width="16"></div></li>							
+							</ol>
+						</div>
+					</div>
+					<div>
+						<label><b>Ciclo Mientras: </b></label></br>
+						<div id="Pasos" style="display:inline-block; vertical-align:top; width:49%;">
+							Condicion: <br>
+							<ol style="margin:0px;">
+								<li ng-repeat="Slot in niv6.Ciwhile.Slot"><input style="width:78%" type="text" maxlength ="40"  ng-model="Slot.texto"><div ng-show="Slot.ok"><img src="Images/Ok.png" width="16"></div></li>							
+							</ol>
+						</div>
+						<div id="Pasos" style="display:inline-block; vertical-align:top; width:49%;">
+							Accion: <br>
+							<ol style="margin:0px;">
+								<li ng-repeat="Slot in niv6.Ciwhile.SlotAccion"><input style="width:78%" type="text" maxlength ="40"  ng-model="Slot.texto"><div ng-show="Slot.ok"><img src="Images/Ok.png" width="16"></div></li>							
+							</ol>
+						</div>
+					</div>
+					<input style="margin-right: 10px;" type="button" id="btnGuardarSituacion" ng-click="niv6.AddSituacion()" value="Guardar"/>					
+					<input type="button" class="btnCancelar" value="Cancelar" ng-click="niv6.cancelar()"/> 
+				</div>
+		</section>
+
 </body>
 
 </html>

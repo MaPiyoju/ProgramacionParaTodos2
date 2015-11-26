@@ -41,6 +41,7 @@
       this.grabSound = this.game.add.audio('grabSound');
       this.soltarSound = this.game.add.audio('soltarSound');
       this.btnSound = this.game.add.audio('btnSound');
+      this.bienSound = this.game.add.audio('bienSound');
     },
 
   	create: function() {
@@ -144,8 +145,8 @@
         this.items.forEach(function(item) {
           //Se verifican los items para realizar su movimiento en caso de click
           if(item.movimiento == true){          
-            item.body.x = mouseX
-            item.body.y = mouseY;
+            item.x = mouseX;
+            item.y = mouseY;
             item.texto.x = item.x ;
             item.texto.y = item.y ;
           }       
@@ -300,20 +301,14 @@
        
         //Se valida la condicion de ciclo
         //si la condicion es correcta se pasa a la siguiente situacion
-        if(condicionCorrecta){          
+        if(condicionCorrecta){   
+          this.bienSound.play();       
           this.nCorrectas++;
           //Se ejecuta la animacion 
           this.situacion.visible = false;
-          if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
-
-          var keySitua = '';
-          if(this.levelData.dataSitua[this.intSituacion].ImageUrl){//En caso de contar con imagen para la situacion
-            keySitua = 'niv6_situa' + (this.intSituacion+1) +'_Correct';//Generacion nombre llave de imagen de acuerdo a situacion
-          }else{
-            keySitua = 'situacion0';//Situacion generica en caso de no contar con imagen
-          }      
+          if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}                 
           //Imagen inicial de la sitacion            
-          this.SituacionCorrecta = this.game.add.sprite(30,60,keySitua);
+          this.SituacionCorrecta = this.game.add.sprite(30,60,"Image_Correct");
           this.situaGroup.add(this.SituacionCorrecta);//Creacion imagen situacion
           this.marcoSitua.bringToTop();
           this.situaGroup.updateZ();
@@ -333,14 +328,8 @@
           //Se ejecuta la animacion 
           this.situacion.visible = false;   
           if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
-          var keySitua = '';
-          if(this.levelData.dataSitua[this.intSituacion].ImageUrl){//En caso de contar con imagen para la situacion
-            keySitua = 'niv6_situa' + (this.intSituacion+1) +'_Error';//Generacion nombre llave de imagen de acuerdo a situacion
-          }else{
-            keySitua = 'situacion0';//Situacion generica en caso de no contar con imagen
-          }      
           //Imagen inicial de la sitacion            
-          this.SituacionCorrecta = this.game.add.sprite(30,60,keySitua);
+          this.SituacionCorrecta = this.game.add.sprite(30,60,"Image_Error");
           this.situaGroup.add(this.SituacionCorrecta);//Creacion imagen situacion
           this.marcoSitua.bringToTop();
           this.situaGroup.updateZ();
@@ -507,7 +496,7 @@
           }
           //indicamos que el primer slot se ha ocupado
           this.slotAccion_1 = true;
-        }else if(item.tipo == 1 && item.body.y >= (this.slot.body.y + 7) && item.body.y <= (this.slot.body.y + 40) && item.body.x >= (this.slot.body.x + 68) && item.body.x <= (this.slot.body.x + 220) ){
+        }else if(item.tipo == 1 && item.body.y >= (this.slot.body.y + 7) && item.body.y <= (this.slot.body.y + 40) && item.body.x >= (this.slot.body.x + 38) && item.body.x <= (this.slot.body.x + 220) ){
           this.soltarSound.play();
           if(!this.slotCiclo){
             //Creamos el item el cual encaja en el slot de la accion          

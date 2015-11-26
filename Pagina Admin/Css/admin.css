@@ -168,6 +168,8 @@ input[type="text"],input[type="password"]{
 	min-width:400px;
 	height: 500px;
 	text-align: right;
+    max-height: 95%;
+    overflow-y: auto;
 }
 
 #situaciones ul li {
@@ -177,7 +179,7 @@ input[type="text"],input[type="password"]{
 	min-width: 250px;
 	width: 98%;
 	height: 45px;
-	text-align: left;
+	text-align: left;	
 }
 #situaciones ul li div:nth-child(1){
 	display: inline-block;
@@ -191,7 +193,7 @@ input[type="text"],input[type="password"]{
 	background: #FFF;
 }
 
-#Pasos input{
+#Pasos input{	
 	margin: 0px;
     padding: 0px;
     height: 22px;
@@ -214,9 +216,11 @@ input[type="text"],input[type="password"]{
 }
 
 #formSituacion>div{
-	margin-left: 100px;
-	margin-bottom: 20px;
-	text-align: left;
+    margin-left: 100px;
+    margin-bottom: 20px;
+    text-align: left;
+    max-height: 69%;
+    overflow-y: auto;
 }
 
 #formSituacion input[type="text"],#formSituacion input[type="password"] {
