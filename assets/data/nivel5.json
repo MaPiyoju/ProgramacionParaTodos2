@@ -1,0 +1,70 @@
+{
+  "dataSitua": [
+    {
+      "nPasos": 7,
+      "pasos":[
+      	{
+      		"txt": "condicion 1",
+      		"accion": true
+      	},
+      	{
+      		"txt": "condicion 2",
+      		"accion": true
+      	},
+      	{
+      		"txt": "condicion 3",
+      		"accion": false
+      	},
+      	{
+      		"txt": "condicion 4",
+      		"accion": false
+      	},
+      	{
+      		"txt": "condicion 5",
+      		"accion": true
+      	},
+      	{
+      		"txt": "condicion 6",
+      		"accion": true
+      	},
+      	{
+      		"txt": "condicion 7",
+      		"accion": true
+      	}
+      ]
+    },
+    {
+      "nPasos": 7,
+      "pasos":[
+      	{
+      		"txt": "condicion 1",
+      		"accion": true
+      	},
+      	{
+      		"txt": "condicion 2",
+      		"accion": true
+      	},
+      	{
+      		"txt": "condicion 3",
+      		"accion": false
+      	},
+      	{
+      		"txt": "condicion 4",
+      		"accion": false
+      	},
+      	{
+      		"txt": "condicion 5",
+      		"accion": true
+      	},
+      	{
+      		"txt": "condicion 6",
+      		"accion": true
+      	},
+      	{
+      		"txt": "condicion 7",
+      		"accion": true
+      	}
+      ]
+    }
+  ]
+}
