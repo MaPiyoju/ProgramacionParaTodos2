@@ -1,9 +1,9 @@
 <?php
 // Lee el fichero en una variable,
 // y convierte su contenido a una estructura de datos
-$str_datos = file_get_contents("../assets/data/nivel1.json");
-$str_datos_2 = file_get_contents("../assets/data/nivel2.json");
-$str_datos_3 = file_get_contents("../assets/data/nivel3.json");
+$str_datos = file_get_contents("../juego/assets/data/nivel1.json");
+$str_datos_2 = file_get_contents("../juego/assets/data/nivel2.json");
+$str_datos_3 = file_get_contents("../juego/assets/data/nivel3.json");
 ?>
 
 <!DOCTYPE html>

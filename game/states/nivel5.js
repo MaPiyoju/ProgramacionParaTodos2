@@ -14,6 +14,10 @@
     pasoActual: 0,
     bien: 0,
     countErrors: 0,
+    yIni: 150,
+    miniH: 20,
+    ultMin: 0,
+    termina: false,
 
     msjError: ['Recuerda analizar a profundidad  el problema que se te esta presentando','No olvides usar los operadores correspondientes a la solicitud','Existen muchas formas de dar solución a un mismo problema, sin embargo aqui solo podrás seguir un camino'],
 
@@ -25,6 +29,10 @@
       this.pasoActual = 0;
       this.bien = 0;
       this.countErrors = 0;
+      this.yIni = 150;
+      this.miniH = 20;
+      this.ultMin = 0;
+      this.termina = false;
 
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
@@ -77,6 +85,9 @@
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
 
+      //Graficas para control de arboles
+      this.graf = this.game.add.graphics( 0, 0 );
+
       this.txtSitua = this.game.add.bitmapText(200,200,'fontData','',24);
       this.btnSi = this.game.add.button(200,370,'OpcPausa',this.opcCondicionSi,this);
       this.btnNo = this.game.add.button(250,370,'OpcPausa',this.opcCondicionNo,this);
@@ -98,18 +109,68 @@
     },
 
     cargaSitua: function(){
-      var random = Math.floor(Math.random()*this.levelData.dataSitua.length);
-      this.txtSitua.text = this.levelData.dataSitua[random].pasos[this.pasoActual].txt;
+      this.random = Math.floor(Math.random()*this.levelData.dataSitua.length);
+      this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
+      this.miniArbol();
     },
 
     opcCondicionSi: function(){
+      this.validaCondicion(true);
     },
 
     opcCondicionNo: function(){
+      this.validaCondicion(false);
     },
 
-    validaCondicion: function(){
+    validaCondicion: function(opc){
+      if(this.levelData.dataSitua[this.random].pasos[this.pasoActual].accion == opc){
+        this.pasoActual++;
+        if(this.pasoActual < this.levelData.dataSitua[this.random].nPasos){
+          this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
+        }else{
+          this.arbolFinal();
+        }
+      }else{
+        this.arbolFinal();
+      }
+      this.miniArbol(opc);
+    },
 
+    miniArbol: function(opc){
+      var botPadd = 10;
+      var y = 0;
+      if(!this.termina){
+        y = this.yIni + ((this.miniH + botPadd) * this.pasoActual);
+      }else{
+        y = this.yIni + ((this.miniH + botPadd) * (this.pasoActual + 1));
+      }
+      if(this.pasoActual == 0){//Se pinta la condicion inicial
+        this.pintar(0x272822, 570, y, this.miniH, this.miniH);
+        this.ultMin = 570;
+      }else{//Se valida de acuerdo a la condicion
+        if(opc === true){
+          this.pintar(0x272822, this.ultMin - this.miniH, y, this.miniH, this.miniH);
+          this.pintar(0xffffff, this.ultMin + this.miniH, y, this.miniH, this.miniH);
+          this.ultMin = this.ultMin - this.miniH;
+        }else{
+          this.pintar(0xffffff, this.ultMin - this.miniH, y, this.miniH, this.miniH);
+          this.pintar(0x272822, this.ultMin + this.miniH, y, this.miniH, this.miniH);
+          this.ultMin = this.ultMin + this.miniH;
+        }
+      }
+    },
+
+    pintar: function(fill,x,y,w,h){
+      this.graf.beginFill(fill, 1);
+      this.graf.lineStyle(1, fill);
+      this.graf.bounds = new PIXI.Rectangle(x, y, w, h);
+      this.graf.drawRect(x, y, w, h);
+    },
+
+    arbolFinal: function(){
+      this.termina = true;
+      this.btnSi.destroy();
+      this.btnNo.destroy();
     },
 
     update: function() {
