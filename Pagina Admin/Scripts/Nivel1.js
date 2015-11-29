@@ -1,5 +1,13 @@
 var data ;					
 var filename ;
+
+var direccion_nivel1 = "../juego/assets/data/nivel1.json";
+var direccion_nivel2 = "../juego/assets/data/nivel2.json";
+var direccion_nivel3 = "../juego/assets/data/nivel3.json";
+var direccion_nivel4 = "../juego/assets/data/nivel4.json";
+var direccion_nivel5 = "../juego/assets/data/nivel5.json";
+var direccion_nivel6 = "../juego/assets/data/nivel6.json";
+
 $("#txtfile").change(function(){
 	var inputFileImage = document.getElementById("txtfile");
 
@@ -102,7 +110,7 @@ miapp.controller('ControllerNiv1', function () {
 		});						
 		
 		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : "../assets/data/nivel1.json","eliminar" : null},
+			    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : direccion_nivel1,"eliminar" : null},
 			    type: "POST",
 			    dataType: "json",
 			    url: "SaveDocumento.php",
@@ -172,7 +180,7 @@ miapp.controller('ControllerNiv1', function () {
 		this.Situaciones.dataSitua[this.IndiceEdit].accion = this.acciones;
 
 		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : "../assets/data/nivel1.json","eliminar" : null},
+			    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : direccion_nivel1,"eliminar" : null},
 			    type: "POST",
 			    dataType: "json",
 			    url: "SaveDocumento.php",
@@ -195,7 +203,7 @@ miapp.controller('ControllerNiv1', function () {
 		this.Situaciones.dataSitua.splice(indice,1);
 		var game = this;
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : "../assets/data/nivel1.json", "eliminar" : "../"+urlElim.situaImg },
+		    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : direccion_nivel1, "eliminar" : "../"+urlElim.situaImg },
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",
@@ -237,7 +245,7 @@ miapp.controller('ControllerNiv2',function(){
 		}
 
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.TiposDatos) , "direccion" : "../assets/data/nivel2.json","eliminar" : null},
+		    data: {"JsonString" :  angular.toJson(game.TiposDatos) , "direccion" : direccion_nivel2,"eliminar" : null},
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",
@@ -265,7 +273,7 @@ miapp.controller('ControllerNiv2',function(){
 		}
 
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.TiposDatos) , "direccion" : "../assets/data/nivel2.json","eliminar" : null},
+		    data: {"JsonString" :  angular.toJson(game.TiposDatos) , "direccion" : direccion_nivel2,"eliminar" : null},
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",
@@ -359,7 +367,7 @@ miapp.controller('ControllerNiv3',function(){
 		
 		var game = this;
 		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : "../assets/data/nivel3.json","eliminar" : null},
+			    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : direccion_nivel3,"eliminar" : null},
 			    type: "POST",
 			    dataType: "json",
 			    url: "SaveDocumento.php",
@@ -393,7 +401,7 @@ miapp.controller('ControllerNiv3',function(){
 		this.expresiones.dataGusano.splice(indice,1);
 		var game = this;
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : "../assets/data/nivel3.json", "eliminar" : null },
+		    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : direccion_nivel3, "eliminar" : null },
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",
@@ -477,7 +485,7 @@ miapp.controller('ControllerNiv4',function(){
 		
 		var game = this;
 		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : "../assets/data/nivel4.json","eliminar" : null},
+			    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : direccion_nivel4,"eliminar" : null},
 			    type: "POST",
 			    dataType: "json",
 			    url: "SaveDocumento.php",
@@ -511,7 +519,7 @@ miapp.controller('ControllerNiv4',function(){
 		this.expresiones.dataGusano.splice(indice,1);
 		var game = this;
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : "../assets/data/nivel4.json", "eliminar" : null },
+		    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : direccion_nivel4, "eliminar" : null },
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",
@@ -607,7 +615,7 @@ miapp.controller('ControllerNiv6',function(){
 		}				
 		
 		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : "../assets/data/nivel6.json","eliminar" : null},
+			    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : direccion_nivel6,"eliminar" : null},
 			    type: "POST",
 			    dataType: "json",
 			    url: "SaveDocumento.php",
@@ -651,7 +659,7 @@ miapp.controller('ControllerNiv6',function(){
 		this.dataSitua.dataSitua.splice(indice,1);
 		var game = this;
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : "../assets/data/nivel6.json", "eliminar" : "../"+urlElim.ImageUrl },
+		    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : direccion_nivel6, "eliminar" : "../"+urlElim.ImageUrl },
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",

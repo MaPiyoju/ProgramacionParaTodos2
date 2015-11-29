@@ -223,6 +223,7 @@
 
       //Se establece los pasos de la situacion
       this.pasos.texto.setText(this.levelData.dataSitua[this.intSituacion].texto);
+      this.pasos.texto.maxWidth = this.pasos.width - 5;
       this.situaGroup.add(this.pasos);
     },   
     pausaJuego: function(game){
@@ -358,7 +359,7 @@
       var game = this;
       if(this.textciclo != null ){this.textciclo.kill();}
       //Se crea texto del ciclo
-      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Mientras                                           Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+      this.textciclo = this.game.add.text((this.slot.x +8),(this.slot.y + 29),'Mientras                                           Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
       this.textciclo.anchor.setTo(0,0.5);
       this.textciclo.fontWeight = 'bold';
 
@@ -367,7 +368,7 @@
           item.tipo = 0;
           item.anchor.setTo(0.5,0.5);          
           item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',acciontext.texto,13);
-          item.texto.maxWidth = 156;
+          item.texto.maxWidth = item.width -5;
           item.respuesta = acciontext.ok;
           item.texto.anchor.setTo(0.5,0.5);
           item.inputEnabled = true;
@@ -383,7 +384,7 @@
           item.tipo = 1;
           item.anchor.setTo(0.5,0.5);
           item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',condiciontext.texto,14);
-          item.texto.maxWidth = 132;
+          item.texto.maxWidth = item.width -5;
           item.respuesta = condiciontext.ok;
           item.texto.anchor.setTo(0.5,0.5);
           item.inputEnabled = true;
@@ -420,7 +421,7 @@
           item.tipo = 0;
           item.anchor.setTo(0.5,0.5);
           item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',acciontext.texto,14);
-          item.texto.maxWidth = 156;
+          item.texto.maxWidth = item.width -5;
           item.respuesta = acciontext.ok;
           item.texto.anchor.setTo(0.5,0.5);
           item.inputEnabled = true;
@@ -436,7 +437,7 @@
           item.tipo = 1;
           item.anchor.setTo(0.5,0.5);
           item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',condiciontext.texto,14);
-          item.texto.maxWidth = 132;
+          item.texto.maxWidth = item.width -5;
           item.respuesta = condiciontext.ok;
           item.texto.anchor.setTo(0.5,0.5);
           item.inputEnabled = true;

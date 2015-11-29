@@ -1,11 +1,11 @@
 <?php
 // Lee el fichero en una variable,
 // y convierte su contenido a una estructura de datos
-$str_datos = file_get_contents("../assets/data/nivel1.json");
-$str_datos_2 = file_get_contents("../assets/data/nivel2.json");
-$str_datos_3 = file_get_contents("../assets/data/nivel3.json");
-$str_datos_4 = file_get_contents("../assets/data/nivel4.json");
-$str_datos_6 = file_get_contents("../assets/data/nivel6.json");
+$str_datos =   file_get_contents("../juego/assets/data/nivel1.json");
+$str_datos_2 = file_get_contents("../juego/assets/data/nivel2.json");
+$str_datos_3 = file_get_contents("../juego/assets/data/nivel3.json");
+$str_datos_4 = file_get_contents("../juego/assets/data/nivel4.json");
+$str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +45,14 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 				$("#"+panel).show();				
 			});
 
+			$(".Atras").click(function(){
+				$("#nivel1").hide();
+				$("#nivel2").hide();
+				$("#nivel3").hide();
+				$("#nivel4").hide();
+				$("#nivel6").hide();
+				$("#nivelGene").show();
+			});
 			$(".botonjugar").click(function(){
 				var usuario = $("#txtUsuario").val();
 				var contrasena = $("#txtContrasena").val();
@@ -110,8 +118,9 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 			</div>
 		</section>		
 		<section id="nivel1" ng-controller="ControllerNiv1 as niv1">
+			<div class="Atras">Inicio</div>	
 			<div class="subTitulo">Nivel 1</div>
-			<div class="titulo">Algoritmos</div>			
+			<div class="titulo">Algoritmos</div>		
 			<div id="situaciones" >
 				<ul>
 					<li ng-repeat="Situacion in niv1.Situaciones.dataSitua" ng-click ="niv1.SelectSitua($index)"><div>{{$index+1}} - {{ Situacion.situaTxt }}</div>  <div class="cerrar" ng-click="niv1.RemoveSit($index)">x</div> </li>					
@@ -143,8 +152,9 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 				</div>
 		</section>		
 		<section id="nivel2" ng-controller="ControllerNiv2 as niv2">
+			<div class="Atras">Inicio</div>	
 			<div class="subTitulo">Nivel 2</div>
-			<div class="titulo">Datos</div>			
+			<div class="titulo">Datos</div>						
 			<div class="TipoDatos">
 				<div class="title">
 					Reales
@@ -196,6 +206,7 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 			</div>
 		</section>	
 		<section id="nivel3" ng-controller="ControllerNiv3 as niv3">
+			<div class="Atras">Inicio</div>	
 			<div class="subTitulo">Nivel 3</div>
 			<div class="titulo">Evaluación de expresiones</div>	
 			<div id="situaciones" >
@@ -231,8 +242,9 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 			</div>
 		</section>	
 		<section id="nivel4" ng-controller="ControllerNiv4 as niv4">
+			<div class="Atras">Inicio</div>	
 			<div class="subTitulo">Nivel 4</div>
-			<div class="titulo">Evaluación de expresiones</div>	
+			<div class="titulo">Evaluación de expresiones</div>				
 			<div id="situaciones" >
 				<ul>
 					<li ng-repeat="Expresion in niv4.expresiones.dataGusano" ng-click="niv4.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" ng-click="niv4.RemoveExpresionEva($index)">x</div> </li>					
@@ -265,8 +277,9 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 			</div>
 		</section>	
 		<section id="nivel6" ng-controller="ControllerNiv6 as niv6">
+			<div class="Atras">Inicio</div>	
 			<div class="subTitulo">Nivel 6</div>
-			<div class="titulo">Algoritmos</div>			
+			<div class="titulo">Algoritmos</div>						
 			<div id="situaciones" >
 				<ul>
 					<li ng-repeat="Situacion in niv6.dataSitua.dataSitua" ng-click ="niv6.SelectSitua($index)"><div style="width: 492px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$index+1}} - {{ Situacion.texto }}</div>  <div class="cerrar" style="margin-left:11%" ng-click="niv6.RemoveSit($index)">x</div> </li>					
