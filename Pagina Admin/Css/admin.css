@@ -145,7 +145,7 @@ input[type="text"],input[type="password"]{
 	height: 380px;
 }
 
-#nivel1 {
+#nivel1,#nivel2,#nivel3,#nivel4,#nivel6 {
 	text-align: center;
 }
 

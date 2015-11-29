@@ -24,33 +24,78 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 		var DatosNiv2 = <?php echo $str_datos_2; ?>;
 		var DatosNiv3 = <?php echo $str_datos_3; ?>;		
 		var DatosNiv4 = <?php echo $str_datos_4; ?>;
-		var DatosNiv6 = <?php echo $str_datos_6; ?>;			
+		var DatosNiv6 = <?php echo $str_datos_6; ?>;
+
+		$(document).ready(function(){
+			$("#nivelGene").hide();
+			$("#nivel1").hide();
+			$("#nivel2").hide();
+			$("#nivel3").hide();
+			$("#nivel4").hide();
+			$("#nivel6").hide();
+
+			$("#niveles ul li").click(function(){
+				var panel = $(this).attr("data-panel");
+				$("#nivel1").hide();
+				$("#nivel2").hide();
+				$("#nivel3").hide();
+				$("#nivel4").hide();
+				$("#nivel6").hide();
+				$("#nivelGene").hide();
+				$("#"+panel).show();				
+			});
+
+			$(".botonjugar").click(function(){
+				var usuario = $("#txtUsuario").val();
+				var contrasena = $("#txtContrasena").val();
+				$.ajax({
+				    data: {"Usuario" : usuario  , "Contrasena": contrasena},
+				    type: "POST",
+				    dataType: "json",
+				    url: "login.php",
+				    complete: function(resultado){
+				    	var result = JSON.parse(resultado.responseText);
+				    	if(result.Status == "Login_Success"){
+				    		alert("Bienvenido");
+				    		$("#login").hide();
+					    	$("#nivelGene").show();
+				    	} else if(result.Status =="Login_Failed"){
+				    		alert("El nombre de usuario o contraseña son incorrectos");
+				    	}else if(result.Status =="Login_Error"){
+				    		alert("Error al momento de realizar el ingreso");
+				    	}			    	
+				    }
+				});
+			});
+		});			
 	</script>
 </head>
 <body>	
-		<section >
+		<section id="login">
 			<div class="background">
 				<div class="inicio">
 						<div class="subTitulo">Aprendé a programar con juegos</div>
 						<div class="titulo">PROGRAMACIÓN PARA TODOS</div>
 						<input type="text" name="Usuario" id="txtUsuario" placeholder="Usuario"><br>
-						<input type="password" name="Contraseña" id="txtUsuario" placeholder="Contraseña">
+						<input type="password" name="Contraseña" id="txtContrasena" placeholder="Contraseña">
 						<div class="botonjugar">Iniciar</div>
 				</div>
 			</div>
 		</section>
-		<section>
+		<section id="nivelGene">
 			<div class="nosotros">
 				<div class="header">					
 					<div id="niveles">
 						<ul>
-							<li>
+							<li data-panel="nivel1">
 								
-							</li><li>
+							</li><li data-panel="nivel2">
 								
-							</li><li>
+							</li><li data-panel="nivel3">
 								
-							</li><li>
+							</li><li data-panel="nivel4">
+								
+							</li><li data-panel="nivel6">
 								
 							</li>
 						</ul>
@@ -97,7 +142,7 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 					<input type="button" class="btnCancelar" value="Cancelar" ng-click="niv1.cancelar()"/> 
 				</div>
 		</section>		
-		<section id="nivel1" ng-controller="ControllerNiv2 as niv2">
+		<section id="nivel2" ng-controller="ControllerNiv2 as niv2">
 			<div class="subTitulo">Nivel 2</div>
 			<div class="titulo">Datos</div>			
 			<div class="TipoDatos">
@@ -150,7 +195,7 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 				<input type="button" id="btnGuardarErrores" value="+" ng-click="niv2.AddExpresion('Error')" /> 
 			</div>
 		</section>	
-		<section id="nivel1" ng-controller="ControllerNiv3 as niv3">
+		<section id="nivel3" ng-controller="ControllerNiv3 as niv3">
 			<div class="subTitulo">Nivel 3</div>
 			<div class="titulo">Evaluación de expresiones</div>	
 			<div id="situaciones" >
@@ -185,7 +230,7 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 				<input style="margin-right: 10px;" type="button" id="btncancelar" ng-click="niv3.cancelar()" value="Cancelar"/>
 			</div>
 		</section>	
-		<section id="nivel1" ng-controller="ControllerNiv4 as niv4">
+		<section id="nivel4" ng-controller="ControllerNiv4 as niv4">
 			<div class="subTitulo">Nivel 4</div>
 			<div class="titulo">Evaluación de expresiones</div>	
 			<div id="situaciones" >
@@ -219,7 +264,7 @@ $str_datos_6 = file_get_contents("../assets/data/nivel6.json");
 				<input style="margin-right: 10px;" type="button" id="btncancelar" ng-click="niv4.cancelar()" value="Cancelar"/>
 			</div>
 		</section>	
-		<section id="nivel1" ng-controller="ControllerNiv6 as niv6">
+		<section id="nivel6" ng-controller="ControllerNiv6 as niv6">
 			<div class="subTitulo">Nivel 6</div>
 			<div class="titulo">Algoritmos</div>			
 			<div id="situaciones" >
