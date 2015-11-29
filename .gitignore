@@ -2,3 +2,4 @@ node_modules
 *.log
 dist/assets/images/Nivel3/gusano.png
 dist/assets/data/nivel2.json
+Pagina Admin/index.php
