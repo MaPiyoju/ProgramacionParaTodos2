@@ -102,8 +102,7 @@ Preload.prototype = {
     this.load.image('btnEjecutar6','assets/images/Nivel6/btnEjecutar.png');
     this.load.image('fondoPasos6','assets/images/Nivel6/fondoPasos.png');
     this.load.image('fondosituacion','assets/images/Nivel6/fondosituacion.png');
-    this.load.spritesheet("Image_Correct", "assets/images/Nivel6/animBien.png",401,273);
-    this.load.spritesheet("Image_Error", "assets/images/Nivel6/animMal.png",401,273);
+
     this.load.text('data6','assets/data/nivel6.json');//Datos nivel 3
 
     /*Audios de juego*/
@@ -153,7 +152,8 @@ Preload.prototype = {
         if(data.ImageUrl){
           var key = 'niv6_situa'+thisTemp.cont;
           thisTemp.load.spritesheet(key, data.ImageUrl,401,273);
-         
+          thisTemp.load.spritesheet(key+"_Correct", data.ImageCorrect,401,273);
+          thisTemp.load.spritesheet(key+"_Error", data.ImageError,401,273);
           
           thisTemp.cont++;
         }

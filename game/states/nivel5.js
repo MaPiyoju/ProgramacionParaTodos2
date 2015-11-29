@@ -17,6 +17,7 @@
     yIni: 150,
     miniH: 20,
     ultMin: 0,
+    inicia: false,
     termina: false,
 
     msjError: ['Recuerda analizar a profundidad  el problema que se te esta presentando','No olvides usar los operadores correspondientes a la solicitud','Existen muchas formas de dar solución a un mismo problema, sin embargo aqui solo podrás seguir un camino'],
@@ -32,6 +33,7 @@
       this.yIni = 150;
       this.miniH = 20;
       this.ultMin = 0;
+      this.inicia = false;
       this.termina = false;
 
       //Se incluyen audios de juego
@@ -86,7 +88,7 @@
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
 
       //Graficas para control de arboles
-      this.graf = this.game.add.graphics( 0, 0 );
+      this.graf = this.game.add.graphics( 570, this.yIni );
 
       this.txtSitua = this.game.add.bitmapText(200,200,'fontData','',24);
       this.btnSi = this.game.add.button(200,370,'OpcPausa',this.opcCondicionSi,this);
@@ -112,6 +114,7 @@
       this.random = Math.floor(Math.random()*this.levelData.dataSitua.length);
       this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
       this.miniArbol();
+      this.inicia = true;
     },
 
     opcCondicionSi: function(){
@@ -140,13 +143,13 @@
       var botPadd = 10;
       var y = 0;
       if(!this.termina){
-        y = this.yIni + ((this.miniH + botPadd) * this.pasoActual);
+        y = ((this.miniH + botPadd) * this.pasoActual);
       }else{
-        y = this.yIni + ((this.miniH + botPadd) * (this.pasoActual + 1));
+        y = ((this.miniH + botPadd) * (this.pasoActual + 1));
       }
-      if(this.pasoActual == 0){//Se pinta la condicion inicial
-        this.pintar(0x272822, 570, y, this.miniH, this.miniH);
-        this.ultMin = 570;
+      if(this.pasoActual == 0 && !this.inicia){//Se pinta la condicion inicial
+        this.pintar(0x272822, 0, y, this.miniH, this.miniH);
+        this.ultMin = 0;
       }else{//Se valida de acuerdo a la condicion
         if(opc === true){
           this.pintar(0x272822, this.ultMin - this.miniH, y, this.miniH, this.miniH);
@@ -163,6 +166,7 @@
     pintar: function(fill,x,y,w,h){
       this.graf.beginFill(fill, 1);
       this.graf.lineStyle(1, fill);
+      this.graf.lineTo(x,y);
       this.graf.bounds = new PIXI.Rectangle(x, y, w, h);
       this.graf.drawRect(x, y, w, h);
     },

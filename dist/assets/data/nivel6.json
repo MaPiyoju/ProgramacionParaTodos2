@@ -3,8 +3,8 @@
 		{
 			"texto":"Hola, quiero romper el record de saltar\nla cuerda, para esto necesito saltar 30\nveces sin parar, ayudame a formar un\nciclo que me permita romper el record.",
 			"ImageUrl":"assets/images/Nivel6/animSalto.png",
-			"ImageCorrect" :"assets/images/Nivel6/animSaltoBien.png",
-			"ImageError" : "assets/images/Nivel6/animSaltoMal.png",
+			"ImageCorrect" :"assets/images/Nivel6/animBien.png",
+			"ImageError" : "assets/images/Nivel6/animMal.png",
 			"Cifor":
 			{
 				"Slot": [

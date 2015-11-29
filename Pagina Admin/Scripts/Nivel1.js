@@ -1,25 +1,7 @@
 var data ;					
 var filename ;
-
-var direccion_nivel1 = "../juego/assets/data/nivel1.json";
-var direccion_nivel2 = "../juego/assets/data/nivel2.json";
-var direccion_nivel3 = "../juego/assets/data/nivel3.json";
-var direccion_nivel4 = "../juego/assets/data/nivel4.json";
-var direccion_nivel5 = "../juego/assets/data/nivel5.json";
-var direccion_nivel6 = "../juego/assets/data/nivel6.json";
-
 $("#txtfile").change(function(){
 	var inputFileImage = document.getElementById("txtfile");
-
-	var file = inputFileImage.files[0];
-	filename = file.name;
-	data = new FormData();
-
-	data.append('archivo',file);
-});	
-
-$("#txtfile6").change(function(){
-	var inputFileImage = document.getElementById("txtfile6");
 
 	var file = inputFileImage.files[0];
 	filename = file.name;
@@ -110,7 +92,7 @@ miapp.controller('ControllerNiv1', function () {
 		});						
 		
 		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : direccion_nivel1,"eliminar" : null},
+			    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : "../assets/data/nivel1.json","eliminar" : null},
 			    type: "POST",
 			    dataType: "json",
 			    url: "SaveDocumento.php",
@@ -180,7 +162,7 @@ miapp.controller('ControllerNiv1', function () {
 		this.Situaciones.dataSitua[this.IndiceEdit].accion = this.acciones;
 
 		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : direccion_nivel1,"eliminar" : null},
+			    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : "../assets/data/nivel1.json","eliminar" : null},
 			    type: "POST",
 			    dataType: "json",
 			    url: "SaveDocumento.php",
@@ -203,7 +185,7 @@ miapp.controller('ControllerNiv1', function () {
 		this.Situaciones.dataSitua.splice(indice,1);
 		var game = this;
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : direccion_nivel1, "eliminar" : "../"+urlElim.situaImg },
+		    data: {"JsonString" :  angular.toJson(game.Situaciones) , "direccion" : "../assets/data/nivel1.json", "eliminar" : "../"+urlElim.situaImg },
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",
@@ -245,7 +227,7 @@ miapp.controller('ControllerNiv2',function(){
 		}
 
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.TiposDatos) , "direccion" : direccion_nivel2,"eliminar" : null},
+		    data: {"JsonString" :  angular.toJson(game.TiposDatos) , "direccion" : "../assets/data/nivel2.json","eliminar" : null},
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",
@@ -273,7 +255,7 @@ miapp.controller('ControllerNiv2',function(){
 		}
 
 		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.TiposDatos) , "direccion" : direccion_nivel2,"eliminar" : null},
+		    data: {"JsonString" :  angular.toJson(game.TiposDatos) , "direccion" : "../assets/data/nivel2.json","eliminar" : null},
 		    type: "POST",
 		    dataType: "json",
 		    url: "SaveDocumento.php",
@@ -291,7 +273,6 @@ miapp.controller('ControllerNiv2',function(){
 });
 
 miapp.controller('ControllerNiv3',function(){
-	this.indiceSelect = null;
 	this.expresiones = DatosNiv3;
 	this.txtExpresion = "";	
 	this.nPasos = 0;		
@@ -302,17 +283,8 @@ miapp.controller('ControllerNiv3',function(){
 	this.Calcularpasos = function(){
 		var pasos = 0;
 		var regular = /(\*|\/|\+|\-|div|mod)/;
-		for (var i = 0; i < this.txtExpresion.length; i++){
-			if(this.txtExpresion[i].toUpperCase() == "D"){
-				if((this.txtExpresion[i] + this.txtExpresion[i+1] + this.txtExpresion[i+2]).toUpperCase() == "DIV"){
-					pasos++;
-				}				
-			}else if(this.txtExpresion[i].toUpperCase() == "M")	{
-				if((this.txtExpresion[i] + this.txtExpresion[i+1] + this.txtExpresion[i+2]).toUpperCase() == "MOD"){
-					pasos++;
-				}	
-			}		
-			else if(regular.exec(this.txtExpresion[i]) != null){
+		for (var i = 0; i < this.txtExpresion.length; i++){			
+			if(regular.exec(this.txtExpresion[i]) != null){
 				pasos++;
 			}
 		};
@@ -335,39 +307,16 @@ miapp.controller('ControllerNiv3',function(){
 		}
 	};
 
-	this.cancelar = function(){
-		this.txtExpresion = "";	
-		this.nPasos = 0;		
-		this.exp = [];
-		this.pasos = [];	
-		this.pasosOpciones = [];
-		this.indiceSelect = null;
-	}
-
 	this.AddExpresionEva = function(){
 		this.exp.splice(0,0,this.txtExpresion);
-		if(this.indiceSelect != null){
-			this.expresiones.dataGusano.splice(this.indiceSelect,1);
-			this.expresiones.dataGusano.splice(this.indiceSelect,0,
-				{
-					"exp": this.exp,
-					"nPasos" : this.nPasos,
-					"pasos": this.pasosOpciones
-				}
-			);
-		}
-		else{
-			this.expresiones.dataGusano.push({
+		this.expresiones.dataGusano.push({
 			"exp": this.exp,
 			"nPasos" : this.nPasos,
 			"pasos": this.pasosOpciones
-			});
-		}
-		
-		
+		});
 		var game = this;
 		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : direccion_nivel3,"eliminar" : null},
+			    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : "../assets/data/nivel3.json","eliminar" : null},
 			    type: "POST",
 			    dataType: "json",
 			    url: "SaveDocumento.php",
@@ -375,18 +324,21 @@ miapp.controller('ControllerNiv3',function(){
 			    	var result = JSON.parse(resultado.responseText);
 			    	if(result.Mensaje == "OK"){
 				    	alert("Se ha creado la situación");
-				    	DatosNiv3 = result.Json;
+				    	DatosNiv3 = result.Json;		
+				    	game.txtExpresion = "";	
+						game.nPasos = 0;		
+						game.exp = [];
+						game.pasos = [];	
+						game.pasosOpciones = [];
 			    	}
 			    	else{
 		    			alert("Error al realizar la solicitud");
 		    		}    	
 			    }
 			});
-		this.cancelar();
 	};
 
 	this.selectExpre = function(indice){
-		this.indiceSelect = indice;
 		this.pasos = [];
 		this.txtExpresion = this.expresiones.dataGusano[indice].exp[0];
 		this.exp = this.expresiones.dataGusano[indice].exp.slice(1,this.expresiones.dataGusano[indice].exp.length+1);
@@ -397,282 +349,6 @@ miapp.controller('ControllerNiv3',function(){
 		this.pasosOpciones = this.expresiones.dataGusano[indice].pasos;
 	};
 
-	this.RemoveExpresionEva = function(indice){
-		this.expresiones.dataGusano.splice(indice,1);
-		var game = this;
-		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : direccion_nivel3, "eliminar" : null },
-		    type: "POST",
-		    dataType: "json",
-		    url: "SaveDocumento.php",
-		    complete: function(resultado){
-		    	var result = JSON.parse(resultado.responseText);
-		    	if(result.Mensaje == "OK"){
-			    	alert("Se ha eliminado la expresión");
-			    	DatosNiv3 = result.Json;		
-		    	} else{
-		    		alert("Error al realizar la solicitud");
-		    	}		    	
-		    }
-		});
-	}
 	
-
-});
-
-
-miapp.controller('ControllerNiv4',function(){
-	this.indiceSelect = null;
-	this.expresiones = DatosNiv4;
-	this.txtExpresion = "";	
-	this.nPasos = 0;
-	this.exp = [];
-	this.pasos = [];	
-	this.pasosOpciones = [];
-	this.guardar = true;	
-	this.Calcularpasos = function(){				
-		if(this.nPasos >= this.pasos.length){		
-			for (var i = this.pasos.length; i < this.nPasos; i++) {
-				this.pasos.push(i);
-				for (var j = 0; j < 5; j++) {
-					this.pasosOpciones.push({
-						"txt":"",
-			           	"ok":(j==0?true:false),
-			          	"n": [i]
-					});		
-				}
-			}
-		}else{
-			var count = this.pasos.length;
-			
-			for (var i = count; i > this.nPasos; i--) {
-				this.pasos.splice(i-1,1);
-				var countop = this.pasosOpciones.length;
-				this.pasosOpciones.splice(countop-5,5);
-			}
-		}	
-	};
-
-	this.cancelar = function(){
-		this.txtExpresion = "";	
-		this.nPasos = 0;
-		this.exp=[];
-		this.pasos = [];	
-		this.pasosOpciones = [];
-		this.indiceSelect = null;
-	}
-
-	this.AddExpresionEva = function(){
-		this.exp.splice(0,0,this.txtExpresion);
-		if(this.indiceSelect != null){
-			this.expresiones.dataGusano.splice(this.indiceSelect,1);
-			this.expresiones.dataGusano.splice(this.indiceSelect,0,
-				{
-					"exp": this.exp,
-					"nPasos" : this.nPasos,
-					"pasos": this.pasosOpciones
-				}
-			);
-		}
-		else{
-			this.expresiones.dataGusano.push({
-			"exp": this.exp,
-			"nPasos" : this.nPasos,
-			"pasos": this.pasosOpciones
-			});
-		}
-		
-		
-		var game = this;
-		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : direccion_nivel4,"eliminar" : null},
-			    type: "POST",
-			    dataType: "json",
-			    url: "SaveDocumento.php",
-			    complete: function(resultado){
-			    	var result = JSON.parse(resultado.responseText);
-			    	if(result.Mensaje == "OK"){
-				    	alert("Se ha creado la situación");
-				    	DatosNiv3 = result.Json;
-			    	}
-			    	else{
-		    			alert("Error al realizar la solicitud");
-		    		}    	
-			    }
-			});
-		this.cancelar();
-	};
-
-	this.selectExpre = function(indice){
-		this.indiceSelect = indice;
-		this.pasos = [];
-		this.txtExpresion = this.expresiones.dataGusano[indice].exp[0];
-		this.exp = this.expresiones.dataGusano[indice].exp.slice(1,this.expresiones.dataGusano[indice].exp.length+1);
-		this.nPasos = this.expresiones.dataGusano[indice].nPasos;
-		for (var i = 0; i < this.nPasos; i++) {
-			this.pasos.push(i);
-		}
-		this.pasosOpciones = this.expresiones.dataGusano[indice].pasos;
-	};
-
-	this.RemoveExpresionEva = function(indice){
-		this.expresiones.dataGusano.splice(indice,1);
-		var game = this;
-		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.expresiones) , "direccion" : direccion_nivel4, "eliminar" : null },
-		    type: "POST",
-		    dataType: "json",
-		    url: "SaveDocumento.php",
-		    complete: function(resultado){
-		    	var result = JSON.parse(resultado.responseText);
-		    	if(result.Mensaje == "OK"){
-			    	alert("Se ha eliminado la expresión");
-			    	DatosNiv3 = result.Json;		
-		    	} else{
-		    		alert("Error al realizar la solicitud");
-		    	}		    	
-		    }
-		});
-	}
-});
-
-function Ciclos(){
-	this.Slot = [];
-	this.SlotAccion =[];
-}
-
-miapp.controller('ControllerNiv6',function(){
-	this.dataSitua = DatosNiv6;
-	this.txttexto = "";
-	this.Cifor = new Ciclos;
-	this.Ciwhile = new Ciclos;	
-	this.indexselect = null;
-	for (var i = 0; i < 5; i++) {
-		this.Cifor.Slot.push({
-			"texto": "",
-			"ok": (i == 0 ? true : false)
-		});
-		this.Cifor.SlotAccion.push({
-			"texto": "",
-			"ok": (i == 0 ? true : false)
-		});		
-		this.Ciwhile.Slot.push({
-			"texto": "",
-			"ok": (i == 0 ? true : false)
-		});
-		this.Ciwhile.SlotAccion.push({
-			"texto": "",
-			"ok": (i == 0 ? true : false)
-		});		
-	};
-
-	this.cancelar = function(){
-		this.txttexto = "";
-		this.Cifor = new Ciclos;
-		this.Ciwhile = new Ciclos;	
-		this.indexselect = null;
-		for (var i = 0; i < 5; i++) {
-			this.Cifor.Slot.push({
-				"texto": "",
-				"ok": (i == 0 ? true : false)
-			});
-			this.Cifor.SlotAccion.push({
-				"texto": "",
-				"ok": (i == 0 ? true : false)
-			});		
-			this.Ciwhile.Slot.push({
-				"texto": "",
-				"ok": (i == 0 ? true : false)
-			});
-			this.Ciwhile.SlotAccion.push({
-				"texto": "",
-				"ok": (i == 0 ? true : false)
-			});		
-		};
-	};
-
-	this.AddSituacion = function(){
-		var game = this;
-		if(this.indexselect != null){
-			var imageurl = this.dataSitua.dataSitua[this.indexselect].ImageUrl;
-			this.dataSitua.dataSitua.splice(this.indexselect,1);
-			this.dataSitua.dataSitua.splice(this.indexselect,0,
-				{
-					"texto":this.txttexto,
-					"ImageUrl": (filename == null ? imageurl : "assets/images/Nivel6/" + filename),
-					"Cifor": this.Cifor,
-					"Ciwhile": this.Ciwhile
-				}
-			);
-		}
-		else{		
-			this.dataSitua.dataSitua.push({
-				"texto":this.txttexto,
-				"ImageUrl": (filename == null ? "" : "assets/images/Nivel6/" + filename),
-				"Cifor": this.Cifor,
-				"Ciwhile": this.Ciwhile
-			});		
-		}				
-		
-		$.ajax({
-			    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : direccion_nivel6,"eliminar" : null},
-			    type: "POST",
-			    dataType: "json",
-			    url: "SaveDocumento.php",
-			    complete: function(resultado){
-			    	var result = JSON.parse(resultado.responseText);
-			    	if(result.Mensaje == "OK"){
-				    	alert("Se ha creado la situación");
-				    	DatosNiv6 = result.Json;				    			
-			    	}
-			    	else{
-		    			alert("Error al realizar la solicitud");
-		    		}    	
-			    }
-			});
-
-		$.ajax({
-
-				url:"SaveImagen.php",
-
-				type:'POST',
-
-				contentType:false,
-
-				data:data,
-
-				processData:false,
-
-				cache:false});
-		this.cancelar();
-	};
-	
-	this.SelectSitua = function(indice){
-		this.indexselect = indice;
-		this.txttexto = this.dataSitua.dataSitua[indice].texto;	
-		this.Cifor = this.dataSitua.dataSitua[indice].Cifor;
-		this.Ciwhile = this.dataSitua.dataSitua[indice].Ciwhile;		
-	}
-
-	this.RemoveSit = function(indice){
-		var urlElim = this.dataSitua.dataSitua[indice];
-		this.dataSitua.dataSitua.splice(indice,1);
-		var game = this;
-		$.ajax({
-		    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : direccion_nivel6, "eliminar" : "../"+urlElim.ImageUrl },
-		    type: "POST",
-		    dataType: "json",
-		    url: "SaveDocumento.php",
-		    complete: function(resultado){
-		    	var result = JSON.parse(resultado.responseText);
-		    	if(result.Mensaje == "OK"){
-			    	alert("Se ha eliminado la situación");
-			    	DatosNiv6 = result.Json;		
-		    	} else{
-		    		alert("Error al realizar la solicitud");
-		    	}		    	
-		    }
-		});
-	};	
 
 });

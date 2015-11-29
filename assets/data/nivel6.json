@@ -1,1 +1,172 @@
-{"dataSitua":[{"texto":"Hola, quiero romper el record de saltar\nla cuerda, para esto necesito saltar 30\nveces sin parar, ayudame a formar un\nciclo que me permita romper el record.","ImageUrl":"assets/images/Nivel6/animSalto.png","Cifor":{"Slot":[{"texto":"i=0 hasta 30 con paso 1","ok":true},{"texto":"i=0 hasta 30 con paso -1","ok":false},{"texto":"i=0 hasta -30 con paso 2","ok":false}],"SlotAccion":[{"texto":"Saltar();","ok":true},{"texto":"Cantar();","ok":false},{"texto":"Caminar();","ok":false},{"texto":"Hablar();","ok":false},{"texto":"Disparar();","ok":false}]},"Ciwhile":{"Slot":[{"texto":"Saltos <= 30","ok":true},{"texto":"Saltos >= 30","ok":false},{"texto":"Saltos == 30","ok":false}],"SlotAccion":[{"texto":"Saltar(); Saltos=Saltos +1;","ok":true},{"texto":"Saltar(); Caminar=Saltos + 1;","ok":false},{"texto":"Caminar(); Saltos=Saltos +1;","ok":false},{"texto":"Saltar()","ok":false},{"texto":"Disparar(); Disparos=Disparos +1;","ok":false}]}},{"texto":"Hoy estoy en un circuito de karts y quiero saber cuantas vueltas se realizan en el circuito para esto necesito tu ayuda para construir un ciclo que me ayude contar las vueltas.","ImageUrl":"assets/images/Nivel6/animSalto.png","Cifor":"No implementable","Ciwhile":{"Slot":[{"texto":"Circuito = Corriendo","ok":true},{"texto":"Cicuitos >= 0","ok":false},{"texto":"Circuitos = Finalizado","ok":false},{"texto":"Circuitos = 100","ok":false},{"texto":"Circuitos = Pits","ok":false}],"SlotAccion":[{"texto":"Vuelta = Vuelta + 1","ok":true},{"texto":"Finalizado = Finalizado - 1","ok":false},{"texto":"Vuelta = Vuelta + Finalizado","ok":false},{"texto":"CruzoMeta = true","ok":false},{"texto":"Pits = Pits + 2","ok":false}]}},{"texto":"Hola, hoy tengo un nuevo trabajo manipulando la rueda de la fortuna, pero necesito tu ayuda para saber en que momento detener la rueda mi jefe me dio esta ecuacion para saber el numero de vueltas: vueltas = 4+3*2. ","ImageUrl":"assets/images/Nivel6/animSalto.png","Cifor":{"Slot":[{"texto":"i=0 hasta 10 con paso 1","ok":true},{"texto":"i=10 hasta 0 con paso 1","ok":false},{"texto":"i=0 hasta 14 con paso 1","ok":false},{"texto":"i=14 hasta 0 con paso -1","ok":false},{"texto":"i=10 hasta 14 con paso 1","ok":false}],"SlotAccion":[{"texto":"OtraVuelta()","ok":true},{"texto":"Parar();","ok":false},{"texto":"PulsarBoton()","ok":false},{"texto":"Correr();","ok":false},{"texto":"LlamarJefe();","ok":false}]},"Ciwhile":{"Slot":[{"texto":"vueltas <= 10","ok":true},{"texto":"vueltas >= 0","ok":false},{"texto":"vueltas = 14","ok":false},{"texto":"vueltas >= 10","ok":false},{"texto":"vueltas = terminado","ok":false}],"SlotAccion":[{"texto":"OtraVuelta(); vueltas=vueltas+1","ok":true},{"texto":"TerminarVuelta(); ","ok":false},{"texto":"Pulsarboton(); vueltas=vueltas+1","ok":false},{"texto":"OtraVuelta(); vueltas=vueltas-2","ok":false},{"texto":"vueltas = 3; Vuelta()","ok":false}]}},{"texto":"Hola, necesito pasar al otro lado del camino pero esta pasando una estampida ayudame con un ciclo para saber en que momento puedo pasar al otro lado. ","ImageUrl":"assets/images/Nivel6/animSalto.png","Cifor":"No implementable","Ciwhile":{"Slot":[{"texto":"HayEstampida = true","ok":true},{"texto":"HayEstampida = �true","ok":false},{"texto":"HayEstampida = 1","ok":false},{"texto":"HayEstampida >= 10","ok":false},{"texto":"HayEstampida = siempre","ok":false}],"SlotAccion":[{"texto":"Esperar()","ok":true},{"texto":"Saltar(); ","ok":false},{"texto":"Cruzar = Cruzar + 1","ok":false},{"texto":"Cantar()","ok":false},{"texto":"Saltos++","ok":false}]}},{"texto":"Ayudame!, Me encuentro en un problema y necesito tu ayuda para poder desactivar una bomba la cual se necesita mantener presionado un boton cuando el contador que inicia en 20 llegue a 1. ","ImageUrl":"assets/images/Nivel6/animSalto.png","Cifor":{"Slot":[{"texto":"i=20 hasta 1 con paso -1","ok":true},{"texto":"i=1 hasta 20 con paso 1","ok":false},{"texto":"i=0 hasta 20 con paso -1","ok":false},{"texto":"i=20 hasta 0 con paso -1","ok":false},{"texto":"i=20 hasta 1 con paso 2","ok":false}],"SlotAccion":[{"texto":"PulsarBoton()","ok":true},{"texto":"DejarPulsar();","ok":false},{"texto":"CortarCable()","ok":false},{"texto":"TraerExperto();","ok":false},{"texto":"SacarBoton();","ok":false}]},"Ciwhile":{"Slot":[{"texto":"Contador >= 1","ok":true},{"texto":"Contador >= 20","ok":false},{"texto":"Contador = 20","ok":false},{"texto":"Contador = 1","ok":false},{"texto":"Contador <= 1","ok":false}],"SlotAccion":[{"texto":"MantenerPulsado(); Contador=Contador-1 ","ok":true},{"texto":"DejarPulsar(); Contador++; ","ok":false},{"texto":"CortarClabe()","ok":false},{"texto":"TraerExperto(); Contador-1;","ok":false},{"texto":"SacarBoton();","ok":false}]}}]}
+{
+	"dataSitua":[
+		{
+			"texto":"Hola, quiero romper el record de saltar\nla cuerda, para esto necesito saltar 30\nveces sin parar, ayudame a formar un\nciclo que me permita romper el record.",
+			"ImageUrl":"assets/images/Nivel6/animSalto.png",
+			"ImageCorrect" :"assets/images/Nivel6/animBien.png",
+			"ImageError" : "assets/images/Nivel6/animMal.png",
+			"Cifor":
+			{
+				"Slot": [
+					{
+						"texto": "i=0 hasta 30 con paso 1",
+						"ok":true
+					},
+					{
+						"texto": "i=0 hasta 30 con paso -1",
+						"ok":false
+					},
+					{
+						"texto": "i=0 hasta -30 con paso 2",
+						"ok":false
+					}
+				],
+				"SlotAccion":[
+					{
+						"texto": "Saltar();",
+						"ok":true
+					},
+					{
+						"texto": "Cantar();",
+						"ok":false
+					},
+					{
+						"texto": "Caminar();",
+						"ok":false
+					},
+					{
+						"texto": "Hablar();",
+						"ok":false
+					},
+					{
+						"texto": "Disparar();",
+						"ok":false
+					}
+				]
+			},
+			"Ciwhile":			
+			{
+				"Slot": [
+					{
+						"texto": "Saltos <= 30",
+						"ok":true
+					},
+					{
+						"texto": "Saltos >= 30",
+						"ok":false
+					},
+					{
+						"texto": "Saltos == 30",
+						"ok":false
+					}
+				],
+				"SlotAccion":[
+					{
+						"texto": "Saltos=Saltos +1;\nSaltar()",
+						"ok":true
+					},
+					{
+						"texto": "Caminar=Saltos + 1;\nSaltar()",
+						"ok":false
+					},
+					{
+						"texto": "Saltos=Saltos +1;\nCaminar()",
+						"ok":false
+					},
+					{
+						"texto": "Saltar()",
+						"ok":false
+					},
+					{
+						"texto": "Disparos=Disparos +1;\nDisparar()",
+						"ok":false
+					}
+				]
+			}
+		},
+		{
+			"texto":"Hola, necesito pasar al otro lado del camino\n pero por este camino pasan muchas estampidas\n ayuda a cudrar la condicion para poder pasar\n cuando no este pasando una estampida.",
+			"ImageUrl":"assets/images/Nivel6/animSalto.png",
+			"ImageCorrect" :"assets/images/Nivel6/animSaltoBien.png",
+			"ImageError" : "assets/images/Nivel6/animSaltoMal.png",
+			"Cifor":
+			{
+				"Slot": [
+					{
+						"texto": "var i = 0; i <= 30; i++",
+						"ok":true
+					},
+					{
+						"texto": "var i = 0; i >= 30; i++",
+						"ok":false
+					},
+					{
+						"texto": "var i = 0; i <= 30; i--",
+						"ok":false
+					}
+				],
+				"SlotAccion":[
+					{
+						"texto": "Saltar();",
+						"ok":true
+					},
+					{
+						"texto": "Cantar();",
+						"ok":false
+					},
+					{
+						"texto": "Caminar();",
+						"ok":false
+					},
+					{
+						"texto": "Hablar();",
+						"ok":false
+					},
+					{
+						"texto": "Disparar();",
+						"ok":false
+					}
+				]
+			},
+			"Ciwhile":			
+			{
+				"Slot": [
+					{
+						"texto": "Saltos <= 30",
+						"ok":true
+					},
+					{
+						"texto": "Saltos >= 30",
+						"ok":false
+					},
+					{
+						"texto": "Saltos == 30",
+						"ok":false
+					}
+				],
+				"SlotAccion":[
+					{
+						"texto": "Saltos=Saltos +1;\nSaltar()",
+						"ok":true
+					},
+					{
+						"texto": "Caminar=Saltos + 1;\nSaltar()",
+						"ok":false
+					},
+					{
+						"texto": "Saltos=Saltos +1;\nCaminar()",
+						"ok":false
+					},
+					{
+						"texto": "Saltar()",
+						"ok":false
+					},
+					{
+						"texto": "Disparos=Disparos +1;\nDisparar()",
+						"ok":false
+					}
+				]
+			}
+		}
+	]	
+}

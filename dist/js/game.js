@@ -2338,6 +2338,11 @@ module.exports = Menu;
     pasoActual: 0,
     bien: 0,
     countErrors: 0,
+    yIni: 150,
+    miniH: 20,
+    ultMin: 0,
+    inicia: false,
+    termina: false,
 
     msjError: ['Recuerda analizar a profundidad  el problema que se te esta presentando','No olvides usar los operadores correspondientes a la solicitud','Existen muchas formas de dar solución a un mismo problema, sin embargo aqui solo podrás seguir un camino'],
 
@@ -2349,6 +2354,11 @@ module.exports = Menu;
       this.pasoActual = 0;
       this.bien = 0;
       this.countErrors = 0;
+      this.yIni = 150;
+      this.miniH = 20;
+      this.ultMin = 0;
+      this.inicia = false;
+      this.termina = false;
 
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
@@ -2401,6 +2411,9 @@ module.exports = Menu;
 
       this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
 
+      //Graficas para control de arboles
+      this.graf = this.game.add.graphics( 570, this.yIni );
+
       this.txtSitua = this.game.add.bitmapText(200,200,'fontData','',24);
       this.btnSi = this.game.add.button(200,370,'OpcPausa',this.opcCondicionSi,this);
       this.btnNo = this.game.add.button(250,370,'OpcPausa',this.opcCondicionNo,this);
@@ -2422,18 +2435,70 @@ module.exports = Menu;
     },
 
     cargaSitua: function(){
-      var random = Math.floor(Math.random()*this.levelData.dataSitua.length);
-      this.txtSitua.text = this.levelData.dataSitua[random].pasos[this.pasoActual].txt;
+      this.random = Math.floor(Math.random()*this.levelData.dataSitua.length);
+      this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
+      this.miniArbol();
+      this.inicia = true;
     },
 
     opcCondicionSi: function(){
+      this.validaCondicion(true);
     },
 
     opcCondicionNo: function(){
+      this.validaCondicion(false);
     },
 
-    validaCondicion: function(){
+    validaCondicion: function(opc){
+      if(this.levelData.dataSitua[this.random].pasos[this.pasoActual].accion == opc){
+        this.pasoActual++;
+        if(this.pasoActual < this.levelData.dataSitua[this.random].nPasos){
+          this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
+        }else{
+          this.arbolFinal();
+        }
+      }else{
+        this.arbolFinal();
+      }
+      this.miniArbol(opc);
+    },
 
+    miniArbol: function(opc){
+      var botPadd = 10;
+      var y = 0;
+      if(!this.termina){
+        y = ((this.miniH + botPadd) * this.pasoActual);
+      }else{
+        y = ((this.miniH + botPadd) * (this.pasoActual + 1));
+      }
+      if(this.pasoActual == 0 && !this.inicia){//Se pinta la condicion inicial
+        this.pintar(0x272822, 0, y, this.miniH, this.miniH);
+        this.ultMin = 0;
+      }else{//Se valida de acuerdo a la condicion
+        if(opc === true){
+          this.pintar(0x272822, this.ultMin - this.miniH, y, this.miniH, this.miniH);
+          this.pintar(0xffffff, this.ultMin + this.miniH, y, this.miniH, this.miniH);
+          this.ultMin = this.ultMin - this.miniH;
+        }else{
+          this.pintar(0xffffff, this.ultMin - this.miniH, y, this.miniH, this.miniH);
+          this.pintar(0x272822, this.ultMin + this.miniH, y, this.miniH, this.miniH);
+          this.ultMin = this.ultMin + this.miniH;
+        }
+      }
+    },
+
+    pintar: function(fill,x,y,w,h){
+      this.graf.beginFill(fill, 1);
+      this.graf.lineStyle(1, fill);
+      this.graf.lineTo(x,y);
+      this.graf.bounds = new PIXI.Rectangle(x, y, w, h);
+      this.graf.drawRect(x, y, w, h);
+    },
+
+    arbolFinal: function(){
+      this.termina = true;
+      this.btnSi.destroy();
+      this.btnNo.destroy();
     },
 
     update: function() {
@@ -3063,12 +3128,12 @@ module.exports = Menu;
   Play.prototype = {
     create: function() {
       this.btns = this.game.add.group();
-      this.crearBoton(0,0,'nivel1',205,50,'Hola, en este nivel aprenderás lo básico frente a algoritmos por medio de diversos ejecicios. Intentalo! ',true);
+      this.crearBoton(0, 0, 'nivel1',205, 50,'Hola, en este nivel aprenderás lo básico frente a algoritmos por medio de diversos ejecicios. Intentalo! ',true);
       this.crearBoton(0,100,'nivel2',205,150,'Necesitas mejorar tus conocimientos sobre tipos de datos?, aquí esta todo lo que necesitas! ',true);
       this.crearBoton(0,200,'nivel3',205,250,'Sumergete en el manejo y evaluación adecuada de expresiones por medio de este divertido juego! ',true);
       this.crearBoton(0,300,'nivel4',205,350,'Ya sabes como evaluar una expresión? Ahora aprende como construirla. Ponte a prueba con este juego! ',true);
       this.crearBoton(0,400,'nivel5',205,450,'',true);
-      this.crearBoton(0,500,'nivel6',205,550,'',true);
+      this.crearBoton(0,500,'nivel6',205,550,'En este nivel aprenderas acerca de estructuras cíclicas, como y en que situaciones podemos usarlas, Atrevete!',true);
 
       this.overSound = this.game.add.audio('menuoverSound');
       this.btnSound = this.game.add.audio('btnMenuSound');
@@ -3161,7 +3226,7 @@ Preload.prototype = {
     this.load.spritesheet('nivel3', 'assets/images/Menu/nivel3.jpg',800,100);
     this.load.spritesheet('nivel4', 'assets/images/Menu/nivel4.jpg',800,100);
     this.load.spritesheet('nivel5', 'assets/images/Menu/nivel5.jpg',800,100);
-    this.load.spritesheet('nivel6', 'assets/images/Menu/nivel6_nh.jpg',800,100);
+    this.load.spritesheet('nivel6', 'assets/images/Menu/nivel6.jpg',800,100);
     this.load.spritesheet('ayudaGeneral', 'assets/images/Menu/ayuda.jpg',800,601);
 
     /*Imagenes nivel 1*/
@@ -3226,7 +3291,8 @@ Preload.prototype = {
     this.load.image('btnEjecutar6','assets/images/Nivel6/btnEjecutar.png');
     this.load.image('fondoPasos6','assets/images/Nivel6/fondoPasos.png');
     this.load.image('fondosituacion','assets/images/Nivel6/fondosituacion.png');
-
+    this.load.spritesheet("Image_Correct", "assets/images/Nivel6/animBien.png",401,273);
+    this.load.spritesheet("Image_Error", "assets/images/Nivel6/animMal.png",401,273);
     this.load.text('data6','assets/data/nivel6.json');//Datos nivel 3
 
     /*Audios de juego*/
@@ -3276,8 +3342,7 @@ Preload.prototype = {
         if(data.ImageUrl){
           var key = 'niv6_situa'+thisTemp.cont;
           thisTemp.load.spritesheet(key, data.ImageUrl,401,273);
-          thisTemp.load.spritesheet(key+"_Correct", data.ImageCorrect,401,273);
-          thisTemp.load.spritesheet(key+"_Error", data.ImageError,401,273);
+         
           
           thisTemp.cont++;
         }

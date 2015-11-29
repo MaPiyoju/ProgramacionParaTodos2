@@ -45,7 +45,6 @@
       this.grabSound = this.game.add.audio('grabSound');
       this.soltarSound = this.game.add.audio('soltarSound');
       this.btnSound = this.game.add.audio('btnSound');
-      this.bienSound = this.game.add.audio('bienSound');
     },
 
   	create: function() {
@@ -151,8 +150,8 @@
         this.items.forEach(function(item) {
           //Se verifican los items para realizar su movimiento en caso de click
           if(item.movimiento == true){          
-            item.x = mouseX;
-            item.y = mouseY;
+            item.body.x = mouseX
+            item.body.y = mouseY;
             item.texto.x = item.x ;
             item.texto.y = item.y ;
           }       
@@ -231,7 +230,6 @@
 
       //Se establece los pasos de la situacion
       this.pasos.texto.setText(this.levelData.dataSitua[this.intSituacion].texto);
-      this.pasos.texto.maxWidth = this.pasos.width - 5;
       this.situaGroup.add(this.pasos);
     },   
     pausaJuego: function(game){
@@ -310,14 +308,20 @@
        
         //Se valida la condicion de ciclo
         //si la condicion es correcta se pasa a la siguiente situacion
-        if(condicionCorrecta){   
-          this.bienSound.play();       
+        if(condicionCorrecta){          
           this.nCorrectas++;
           //Se ejecuta la animacion 
           this.situacion.visible = false;
-          if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}                 
+          if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
+
+          var keySitua = '';
+          if(this.levelData.dataSitua[this.intSituacion].ImageUrl){//En caso de contar con imagen para la situacion
+            keySitua = 'niv6_situa' + (this.intSituacion+1) +'_Correct';//Generacion nombre llave de imagen de acuerdo a situacion
+          }else{
+            keySitua = 'situacion0';//Situacion generica en caso de no contar con imagen
+          }      
           //Imagen inicial de la sitacion            
-          this.SituacionCorrecta = this.game.add.sprite(30,60,"Image_Correct");
+          this.SituacionCorrecta = this.game.add.sprite(30,60,keySitua);
           this.situaGroup.add(this.SituacionCorrecta);//Creacion imagen situacion
           this.marcoSitua.bringToTop();
           this.situaGroup.updateZ();
@@ -337,8 +341,14 @@
           //Se ejecuta la animacion 
           this.situacion.visible = false;   
           if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
+          var keySitua = '';
+          if(this.levelData.dataSitua[this.intSituacion].ImageUrl){//En caso de contar con imagen para la situacion
+            keySitua = 'niv6_situa' + (this.intSituacion+1) +'_Error';//Generacion nombre llave de imagen de acuerdo a situacion
+          }else{
+            keySitua = 'situacion0';//Situacion generica en caso de no contar con imagen
+          }      
           //Imagen inicial de la sitacion            
-          this.SituacionCorrecta = this.game.add.sprite(30,60,"Image_Error");
+          this.SituacionCorrecta = this.game.add.sprite(30,60,keySitua);
           this.situaGroup.add(this.SituacionCorrecta);//Creacion imagen situacion
           this.marcoSitua.bringToTop();
           this.situaGroup.updateZ();
@@ -361,6 +371,7 @@
 
     listenerwhile:function(){
       this.btnSound.play();
+<<<<<<< HEAD
       if(this.levelData.dataSitua[this.intSituacion].Ciwhile == "No implementable"){
         this.alert.show("Esta situación no esta para solucionar por el ciclo while");
       }else{
@@ -428,6 +439,55 @@
             
         });
       }
+=======
+      //Se restablece el tiempo          
+      this.tiempo.start();
+      //Ocultamos los botones del ciclo for y while
+      this.btnwhile.visible = false;
+      this.btnfor.visible = false;
+      //Creamos el slot de la estructura del ciclo
+      this.slot = this.items.create(479,100,'slotciclo');
+
+      //creamos las acciones de la situación
+      var yitem = 350;
+      var CItems = this.items;
+      var game = this;
+      if(this.textciclo != null ){this.textciclo.kill();}
+      //Se crea texto del ciclo
+      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Mientras                                           Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+      this.textciclo.anchor.setTo(0,0.5);
+      this.textciclo.fontWeight = 'bold';
+
+      this.levelData.dataSitua[this.intSituacion].Ciwhile.SlotAccion.forEach(function(acciontext) {
+          var item = CItems.create(535,yitem,'accion_small6');
+          item.tipo = 0;
+          item.anchor.setTo(0.5,0.5);          
+          item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',acciontext.texto,13);
+          item.texto.maxWidth = 156;
+          item.respuesta = acciontext.ok;
+          item.texto.anchor.setTo(0.5,0.5);
+          item.inputEnabled = true;
+          item.events.onInputDown.add(game.clickItem, game);
+          item.events.onInputUp.add(game.releaseItem, game);
+          yitem+=40;
+      });
+
+      //creamos las condiciones de la situación
+      yitem = 350;
+      this.levelData.dataSitua[this.intSituacion].Ciwhile.Slot.forEach(function(condiciontext) {
+          var item = CItems.create(690,yitem,'condicion6');          
+          item.tipo = 1;
+          item.anchor.setTo(0.5,0.5);
+          item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',condiciontext.texto,14);
+          item.texto.maxWidth = 132;
+          item.respuesta = condiciontext.ok;
+          item.texto.anchor.setTo(0.5,0.5);
+          item.inputEnabled = true;
+          item.events.onInputDown.add(game.clickItem, game);
+          item.events.onInputUp.add(game.releaseItem, game);
+          yitem+=40;
+      });
+>>>>>>> origin/master
     },
 
     listenerfor:function(){
@@ -474,6 +534,7 @@
             item.events.onInputUp.add(game.releaseItem, game);          
         });
 
+<<<<<<< HEAD
         //creamos las condiciones de la situación
         util  = [];
         this.levelData.dataSitua[this.intSituacion].Cifor.Slot.forEach(function(condiciontext) {
@@ -496,6 +557,44 @@
             item.events.onInputUp.add(game.releaseItem, game);
         });
       }
+=======
+      if(this.textciclo != null ){this.textciclo.kill();}
+      //Se crea texto del ciclo
+      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Para                                             Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+      this.textciclo.anchor.setTo(0,0.5);
+      this.textciclo.fontWeight = 'bold';
+
+
+      this.levelData.dataSitua[this.intSituacion].Cifor.SlotAccion.forEach(function(acciontext) {
+          var item = CItems.create(535,yitem,'accion_small6');
+          item.tipo = 0;
+          item.anchor.setTo(0.5,0.5);
+          item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',acciontext.texto,14);
+          item.texto.maxWidth = 156;
+          item.respuesta = acciontext.ok;
+          item.texto.anchor.setTo(0.5,0.5);
+          item.inputEnabled = true;
+          item.events.onInputDown.add(game.clickItem, game);
+          item.events.onInputUp.add(game.releaseItem, game);
+          yitem+=40;
+      });
+
+      //creamos las condiciones de la situación
+      yitem = 350;
+      this.levelData.dataSitua[this.intSituacion].Cifor.Slot.forEach(function(condiciontext) {
+          var item = CItems.create(690,yitem,'condicion6');          
+          item.tipo = 1;
+          item.anchor.setTo(0.5,0.5);
+          item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',condiciontext.texto,14);
+          item.texto.maxWidth = 132;
+          item.respuesta = condiciontext.ok;
+          item.texto.anchor.setTo(0.5,0.5);
+          item.inputEnabled = true;
+          item.events.onInputDown.add(game.clickItem, game);
+          item.events.onInputUp.add(game.releaseItem, game);
+          yitem+=40;
+      });
+>>>>>>> origin/master
 
     },
     
@@ -555,7 +654,7 @@
           
           //indicamos que el primer slot se ha ocupado
           this.slotAccion_1 = true;
-        }else if(item.tipo == 1 && item.body.y >= (this.slot.body.y + 7) && item.body.y <= (this.slot.body.y + 40) && item.body.x >= (this.slot.body.x + 38) && item.body.x <= (this.slot.body.x + 220) ){
+        }else if(item.tipo == 1 && item.body.y >= (this.slot.body.y + 7) && item.body.y <= (this.slot.body.y + 40) && item.body.x >= (this.slot.body.x + 68) && item.body.x <= (this.slot.body.x + 220) ){
           this.soltarSound.play();
 
           if(this.slotCiclo){
