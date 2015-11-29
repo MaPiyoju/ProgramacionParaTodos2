@@ -2466,7 +2466,7 @@ module.exports = Menu;
     miniArbol: function(opc){
       var botPadd = 10;
       var y = 0;
-      if(!this.termina){
+      if(!this.termina || this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
         y = ((this.miniH + botPadd) * this.pasoActual);
       }else{
         y = ((this.miniH + botPadd) * (this.pasoActual + 1));
@@ -2489,16 +2489,37 @@ module.exports = Menu;
 
     pintar: function(fill,x,y,w,h){
       this.graf.beginFill(fill, 1);
+      this.graf.moveTo(this.ultMin+(this.miniH/2),y-(this.miniH/2));
+      this.graf.lineStyle(2, 0x000000);
+      this.graf.lineTo(x+(this.miniH/2),y);
       this.graf.lineStyle(1, fill);
-      this.graf.lineTo(x,y);
       this.graf.bounds = new PIXI.Rectangle(x, y, w, h);
       this.graf.drawRect(x, y, w, h);
+      this.graf.endFill();
     },
 
     arbolFinal: function(){
+      if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){//Mensaje final de acuerdo a la ultima eleccion
+        this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual-1].fin;
+      }else{
+        this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].alterno;
+      }
       this.termina = true;
       this.btnSi.destroy();
       this.btnNo.destroy();
+      console.log(this.pasoActual+1);
+      for(var i=0;i<this.pasoActual+1;i++){
+        if(i != this.levelData.dataSitua[this.random].nPasos){
+          console.log(this.levelData.dataSitua[this.random].pasos[i].txt,' - ',i);
+        }
+        if(i == this.pasoActual){
+          if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
+            console.log(this.levelData.dataSitua[this.random].pasos[i-1].fin);
+          }else{
+            console.log(this.levelData.dataSitua[this.random].pasos[i].alterno);
+          }
+        }        
+      }
     },
 
     update: function() {
@@ -3291,8 +3312,7 @@ Preload.prototype = {
     this.load.image('btnEjecutar6','assets/images/Nivel6/btnEjecutar.png');
     this.load.image('fondoPasos6','assets/images/Nivel6/fondoPasos.png');
     this.load.image('fondosituacion','assets/images/Nivel6/fondosituacion.png');
-    this.load.spritesheet("Image_Correct", "assets/images/Nivel6/animBien.png",401,273);
-    this.load.spritesheet("Image_Error", "assets/images/Nivel6/animMal.png",401,273);
+
     this.load.text('data6','assets/data/nivel6.json');//Datos nivel 3
 
     /*Audios de juego*/
@@ -3342,7 +3362,8 @@ Preload.prototype = {
         if(data.ImageUrl){
           var key = 'niv6_situa'+thisTemp.cont;
           thisTemp.load.spritesheet(key, data.ImageUrl,401,273);
-         
+          thisTemp.load.spritesheet(key+"_Correct", data.ImageCorrect,401,273);
+          thisTemp.load.spritesheet(key+"_Error", data.ImageError,401,273);
           
           thisTemp.cont++;
         }

@@ -142,7 +142,7 @@
     miniArbol: function(opc){
       var botPadd = 10;
       var y = 0;
-      if(!this.termina){
+      if(!this.termina || this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
         y = ((this.miniH + botPadd) * this.pasoActual);
       }else{
         y = ((this.miniH + botPadd) * (this.pasoActual + 1));
@@ -165,16 +165,37 @@
 
     pintar: function(fill,x,y,w,h){
       this.graf.beginFill(fill, 1);
+      this.graf.moveTo(this.ultMin+(this.miniH/2),y-(this.miniH/2));
+      this.graf.lineStyle(2, 0x000000);
+      this.graf.lineTo(x+(this.miniH/2),y);
       this.graf.lineStyle(1, fill);
-      this.graf.lineTo(x,y);
       this.graf.bounds = new PIXI.Rectangle(x, y, w, h);
       this.graf.drawRect(x, y, w, h);
+      this.graf.endFill();
     },
 
     arbolFinal: function(){
+      if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){//Mensaje final de acuerdo a la ultima eleccion
+        this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual-1].fin;
+      }else{
+        this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].alterno;
+      }
       this.termina = true;
       this.btnSi.destroy();
       this.btnNo.destroy();
+      console.log(this.pasoActual+1);
+      for(var i=0;i<this.pasoActual+1;i++){
+        if(i != this.levelData.dataSitua[this.random].nPasos){
+          console.log(this.levelData.dataSitua[this.random].pasos[i].txt,' - ',i);
+        }
+        if(i == this.pasoActual){
+          if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
+            console.log(this.levelData.dataSitua[this.random].pasos[i-1].fin);
+          }else{
+            console.log(this.levelData.dataSitua[this.random].pasos[i].alterno);
+          }
+        }        
+      }
     },
 
     update: function() {

@@ -5,31 +5,39 @@
       "pasos":[
       	{
       		"txt": "condicion 1",
-      		"accion": true
+      		"accion": true,
+                  "alterno": "otro fin 1"
       	},
       	{
       		"txt": "condicion 2",
-      		"accion": true
+      		"accion": true,
+                  "alterno": "otro fin 2"
       	},
       	{
       		"txt": "condicion 3",
-      		"accion": false
+      		"accion": false,
+                  "alterno": "otro fin 3"
       	},
       	{
       		"txt": "condicion 4",
-      		"accion": false
+      		"accion": false,
+                  "alterno": "otro fin 4"
       	},
       	{
       		"txt": "condicion 5",
-      		"accion": true
+      		"accion": true,
+                  "alterno": "otro fin 5"
       	},
       	{
       		"txt": "condicion 6",
-      		"accion": true
+      		"accion": true,
+                  "alterno": "otro fin 6"
       	},
       	{
       		"txt": "condicion 7",
-      		"accion": true
+      		"accion": true,
+                  "fin": "fin",
+                  "alterno": "otro fin 7"
       	}
       ]
     },
@@ -38,31 +46,39 @@
       "pasos":[
       	{
       		"txt": "condicion 1",
-      		"accion": true
+      		"accion": true,
+                  "alterno": "otro fin 1"
       	},
       	{
       		"txt": "condicion 2",
-      		"accion": true
+      		"accion": true,
+                  "alterno": "otro fin 2"
       	},
       	{
       		"txt": "condicion 3",
-      		"accion": false
+      		"accion": false,
+                  "alterno": "otro fin 3"
       	},
       	{
       		"txt": "condicion 4",
-      		"accion": false
+      		"accion": false,
+                  "alterno": "otro fin 4"
       	},
       	{
       		"txt": "condicion 5",
-      		"accion": true
+      		"accion": true,
+                  "alterno": "otro fin 5"
       	},
       	{
       		"txt": "condicion 6",
-      		"accion": true
+      		"accion": true,
+                  "alterno": "otro fin 6"
       	},
       	{
       		"txt": "condicion 7",
-      		"accion": true
+      		"accion": true,
+                  "fin": "fin",
+                  "alterno": "otro fin 7"
       	}
       ]
     }
