@@ -188,7 +188,7 @@
         if(i != this.levelData.dataSitua[this.random].nPasos){
           console.log(this.levelData.dataSitua[this.random].pasos[i].txt,' - ',i);
         }
-        if(i == this.pasoActual){
+        if(i == this.pasoActual){ 
           if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
             console.log(this.levelData.dataSitua[this.random].pasos[i-1].fin);
           }else{

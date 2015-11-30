@@ -21,7 +21,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":7,"./states/gameover":8,"./states/menu":9,"./states/nivel1":10,"./states/nivel2":11,"./states/nivel3":12,"./states/nivel4":13,"./states/nivel5":14,"./states/nivel6":15,"./states/play":16,"./states/preload":17}],2:[function(require,module,exports){
+},{"./states/boot":6,"./states/gameover":7,"./states/menu":8,"./states/nivel1":9,"./states/nivel2":10,"./states/nivel3":11,"./states/nivel4":12,"./states/nivel5":13,"./states/nivel6":14,"./states/play":15,"./states/preload":16}],2:[function(require,module,exports){
   'use strict';
 
   // Create our pause panel extending Phaser.Group
@@ -378,129 +378,6 @@ Tablero.prototype.destruir = function() {
 
 module.exports = Tablero;
 },{"../prefabs/entidad":3}],6:[function(require,module,exports){
-'use strict';
-
-var TextBox = function(game, x, y, width, heigth, defaultTxt) {
-  Phaser.Sprite.call(this, game, x, y, '', 0);
-
-  /*Definicion de propiedades*/
-  this.defaultTxt = defaultTxt;
-  this.seleccionado = true;
-  this.shift = false;
-  this.length = 20;
-  //Se dibuja la caja de texto
-  this.cajaTexto = game.add.graphics( 0, 0 );
-  this.cajaTexto.beginFill(0xFFFFFF, 1);
-  this.cajaTexto.bounds = new PIXI.Rectangle(x, y, width, heigth);
-  this.cajaTexto.drawRect(x, y, width, heigth);
-  //Se define el texto
-  this.texto = game.add.text(x , y, defaultTxt, { font: '24px calibri', fill: '#000', align:'center'});
-  this.textData = "";
-  
-  // initialize your prefab here
-  //this.inputEnabled = true;
-  game.input.keyboard.addCallbacks(this, this.keyPress, this.keyUp, null);
-  //this.events.onInputDown.add(this.seleccionar, this);
-};
-
-TextBox.prototype = Object.create(Phaser.Sprite.prototype);
-TextBox.prototype.constructor = TextBox;
-
-TextBox.prototype.update = function() {
-  
-  // write your prefab's specific update code here
-  
-};
-
-TextBox.prototype.seleccionar = function() {
-	this.seleccionado = true;
-};
-
-TextBox.prototype.keyPress = function(data) {
-    if(this.seleccionado) {
-      var charCode = (typeof data.which == "number") ? data.which : data.keyCode;
-      console.log(charCode);
-      switch(data.keyCode) {
-        case 8://En caso de ser la tecla borrar
-          this.textData = this.textData.substring(0, this.textData.length - 1);
-          this.texto.text = this.textData;
-          break;
-        case 13://En caso de ser la tecla enter no se realiza ninguna accion
-          break;
-        case 16://En caso de ser la tecla shift
-          this.shift = true;
-          break;
-        case 50://En caso de ser la tecla numero 2
-          if(this.shift){
-            this.textData += "\"";
-            this.texto.text = this.textData;
-          }else{
-            this.textData += "2";
-            this.texto.text = this.textData;
-          }
-          break;
-        case 188://Tecla para comas (,)
-          if(this.shift){
-            this.textData += ";";
-            this.texto.text = this.textData;
-          }else{
-            this.textData += ",";
-            this.texto.text = this.textData;
-          }
-          break;
-        case 191://Tecla para cierre de corchetes
-          if(this.shift){
-            this.textData += "]";
-            this.texto.text = this.textData;
-          }else{
-            this.textData += "}";
-            this.texto.text = this.textData;
-          }
-          break;
-        case 222://Tecla para apretura corchetes
-          if(this.shift){
-            this.textData += "[";
-            this.texto.text = this.textData;
-          }else{
-            this.textData += "{";
-            this.texto.text = this.textData;
-          }
-          break;
-        default:
-          if ((this.textData.length + 1) <= this.length) {
-            var letra = String.fromCharCode((96 <= charCode && charCode <= 105)? charCode-48 : charCode).toLowerCase();
-            if (letra.length > 0) {
-              this.textData += letra;
-              this.texto.text = this.textData;
-            }
-          }
-          break;
-      }
-    }
-};
-
-TextBox.prototype.keyUp = function(data) {
-  if(this.seleccionado){
-    var charCode = (typeof data.which == "number") ? data.which : data.keyCode;
-    console.log(charCode);
-    switch(data.keyCode) {
-      case 16://En caso de ser la tecla shift
-        this.shift = false;
-        break;
-    }
-  }
-};
-
-TextBox.prototype.destruir = function() {
-  this.cajaTexto.destroy();
-  this.texto.destroy();
-  this.seleccionado = false;
-  this.destroy();
-};
-
-module.exports = TextBox;
-
-},{}],7:[function(require,module,exports){
 
 'use strict';
 
@@ -519,7 +396,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -547,7 +424,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 
 'use strict';
 function Menu() {}
@@ -578,7 +455,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
   var Alert = require('../prefabs/alert');
@@ -1089,7 +966,7 @@ module.exports = Menu;
   };
   
   module.exports = Nivel1;
-},{"../prefabs/alert":2,"../prefabs/pause":4}],11:[function(require,module,exports){
+},{"../prefabs/alert":2,"../prefabs/pause":4}],10:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
 
@@ -1464,7 +1341,7 @@ module.exports = Menu;
   
   module.exports = Nivel2;
 
-},{"../prefabs/pause":4}],12:[function(require,module,exports){
+},{"../prefabs/pause":4}],11:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
   var Alert = require('../prefabs/alert');
@@ -1877,7 +1754,7 @@ module.exports = Menu;
   };
   
   module.exports = Nivel3;
-},{"../prefabs/alert":2,"../prefabs/pause":4,"../prefabs/tablero":5}],13:[function(require,module,exports){
+},{"../prefabs/alert":2,"../prefabs/pause":4,"../prefabs/tablero":5}],12:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
   var Alert = require('../prefabs/alert');
@@ -2321,7 +2198,7 @@ module.exports = Menu;
   };
   
   module.exports = Nivel4;
-},{"../prefabs/alert":2,"../prefabs/pause":4,"../prefabs/tablero":5}],14:[function(require,module,exports){
+},{"../prefabs/alert":2,"../prefabs/pause":4,"../prefabs/tablero":5}],13:[function(require,module,exports){
   'use strict';
   var Pausa = require('../prefabs/pause');
   var Alert = require('../prefabs/alert');
@@ -2512,7 +2389,7 @@ module.exports = Menu;
         if(i != this.levelData.dataSitua[this.random].nPasos){
           console.log(this.levelData.dataSitua[this.random].pasos[i].txt,' - ',i);
         }
-        if(i == this.pasoActual){
+        if(i == this.pasoActual){ 
           if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
             console.log(this.levelData.dataSitua[this.random].pasos[i-1].fin);
           }else{
@@ -2585,11 +2462,11 @@ module.exports = Menu;
   };
   
   module.exports = Nivel5;
-},{"../prefabs/alert":2,"../prefabs/pause":4}],15:[function(require,module,exports){
-
-  'use strict';
-  var Pausa = require('../prefabs/pause');
-  var textBox = require('../prefabs/textBox');
+},{"../prefabs/alert":2,"../prefabs/pause":4}],14:[function(require,module,exports){
+'use strict';
+var Pausa = require('../prefabs/pause');
+  
+  var Alert = require('../prefabs/alert');
 
   function Nivel6() {}
   Nivel6.prototype = {
@@ -2608,7 +2485,10 @@ module.exports = Menu;
     nCorrectas:0,
     nIntentos:0,
     nSituaciones: 0,
+    nErrores: 0,
 
+    posSit: [350,390,430,470,510],
+    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!','Tu ciclo no cumple con el objetivo solicitado, intentalo de nuevo!'],
     init:function(){
       this.maxtime= 60; 
       this.itemX= 0;
@@ -2623,15 +2503,16 @@ module.exports = Menu;
       this.nCorrectas=0;
       this.nIntentos=0;
       this.nSituaciones = 0;
-
+      this.nErrores = 0;
       //Se incluyen audios de juego
       this.errorSound = this.game.add.audio('errorSound');
       this.grabSound = this.game.add.audio('grabSound');
       this.soltarSound = this.game.add.audio('soltarSound');
       this.btnSound = this.game.add.audio('btnSound');
+      this.bienSound = this.game.add.audio('bienSound');
     },
 
-  	create: function() {
+    create: function() {
       //Parseo de datos de juego para su uso
       this.levelData = JSON.parse(this.game.cache.getText('data6'));
       this.situaLength = this.levelData.dataSitua.length;//Cantidad de situaciones de nivel
@@ -2642,7 +2523,7 @@ module.exports = Menu;
       this.game.input.onDown.add(this.iniciarJuego,this);
 
       this.game.add.bitmapText(55, 170, 'font', 'Espero que la estes\npasando bien, y estes\npreparado para este\nnivel. En esta ocasión\naprenderemos estructuras\ncíclicas, deberas formar\nciclos que permitan\ndar solución a diversas\nsituaciones. Recuerda\nanalizar cuidadosamente\ncada opción para dar\nla mejor respuesta y\nasí superar cada reto\n\nComencemos!', 24);
-  	},
+    },
 
     iniciarJuego : function(game){      
       var x1 = 115;
@@ -2684,8 +2565,8 @@ module.exports = Menu;
       this.run.anchor.setTo(0.5,0.5);
       this.run.inputEnabled = true;
       this.run.events.onInputDown.add(this.correrCondicion, this);
-
-      
+      this.run.visible =false;
+           
 
        //Imagen de fondo para el tiempo
       this.cuadroTime = this.game.add.sprite(230, 40,'time');
@@ -2718,11 +2599,13 @@ module.exports = Menu;
       this.game.add.existing(this.pnlPausa);
       this.game.input.onDown.add(this.pausaJuego,this);
 
+      
 
       //Se crea situacion aleatoria      
       this.crearSitua();
       //Se indica que sale del intro
       this.intro = false;
+      this.alert = new Alert(this.game);//Creacion onjeto de alerta
     },
 
     update:function(){
@@ -2732,8 +2615,8 @@ module.exports = Menu;
         this.items.forEach(function(item) {
           //Se verifican los items para realizar su movimiento en caso de click
           if(item.movimiento == true){          
-            item.body.x = mouseX
-            item.body.y = mouseY;
+            item.x = mouseX;
+            item.y = mouseY;
             item.texto.x = item.x ;
             item.texto.y = item.y ;
           }       
@@ -2772,6 +2655,8 @@ module.exports = Menu;
       this.timer.setText(minutos + ':' +segundos);
     },
     crearSitua:function(){
+      //se ocula boton ejecutar
+      this.run.visible =false;
       if(this.maxtime >= 3){//En caso de quedar 3 segundos de juego la situacion no es tenida en cuenta
         this.nSituaciones++;//Aumento de conteo situaciones stats
       }
@@ -2810,6 +2695,7 @@ module.exports = Menu;
 
       //Se establece los pasos de la situacion
       this.pasos.texto.setText(this.levelData.dataSitua[this.intSituacion].texto);
+      this.pasos.texto.maxWidth = this.pasos.width - 5;
       this.situaGroup.add(this.pasos);
     },   
     pausaJuego: function(game){
@@ -2888,20 +2774,14 @@ module.exports = Menu;
        
         //Se valida la condicion de ciclo
         //si la condicion es correcta se pasa a la siguiente situacion
-        if(condicionCorrecta){          
+        if(condicionCorrecta){   
+          this.bienSound.play();       
           this.nCorrectas++;
           //Se ejecuta la animacion 
           this.situacion.visible = false;
-          if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
-
-          var keySitua = '';
-          if(this.levelData.dataSitua[this.intSituacion].ImageUrl){//En caso de contar con imagen para la situacion
-            keySitua = 'niv6_situa' + (this.intSituacion+1) +'_Correct';//Generacion nombre llave de imagen de acuerdo a situacion
-          }else{
-            keySitua = 'situacion0';//Situacion generica en caso de no contar con imagen
-          }      
+          if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}                 
           //Imagen inicial de la sitacion            
-          this.SituacionCorrecta = this.game.add.sprite(30,60,keySitua);
+          this.SituacionCorrecta = this.game.add.sprite(30,60,"Image_Correct");
           this.situaGroup.add(this.SituacionCorrecta);//Creacion imagen situacion
           this.marcoSitua.bringToTop();
           this.situaGroup.updateZ();
@@ -2921,14 +2801,8 @@ module.exports = Menu;
           //Se ejecuta la animacion 
           this.situacion.visible = false;   
           if(this.SituacionCorrecta != null ){this.SituacionCorrecta.kill();}
-          var keySitua = '';
-          if(this.levelData.dataSitua[this.intSituacion].ImageUrl){//En caso de contar con imagen para la situacion
-            keySitua = 'niv6_situa' + (this.intSituacion+1) +'_Error';//Generacion nombre llave de imagen de acuerdo a situacion
-          }else{
-            keySitua = 'situacion0';//Situacion generica en caso de no contar con imagen
-          }      
           //Imagen inicial de la sitacion            
-          this.SituacionCorrecta = this.game.add.sprite(30,60,keySitua);
+          this.SituacionCorrecta = this.game.add.sprite(30,60,"Image_Error");
           this.situaGroup.add(this.SituacionCorrecta);//Creacion imagen situacion
           this.marcoSitua.bringToTop();
           this.situaGroup.updateZ();
@@ -2936,113 +2810,156 @@ module.exports = Menu;
           anim.onComplete.add(function(){
               
           });
-          this.SituacionCorrecta.animations.play('anima');                   
+          this.SituacionCorrecta.animations.play('anima'); 
+
+          this.nErrores++;
+          if((this.nErrores%3) == 0){
+            this.alert.show(this.msjError[Math.floor(Math.random()*this.msjError.length)]);
+          }                  
         }        
+      }else{
+        this.alert.show("Debes completar el ciclo para cumplir con la situación");
+        
       }
     },
 
     listenerwhile:function(){
       this.btnSound.play();
-      //Se restablece el tiempo          
-      this.tiempo.start();
-      //Ocultamos los botones del ciclo for y while
-      this.btnwhile.visible = false;
-      this.btnfor.visible = false;
-      //Creamos el slot de la estructura del ciclo
-      this.slot = this.items.create(479,100,'slotciclo');
+      if(this.levelData.dataSitua[this.intSituacion].Ciwhile == "No implementable"){
+        this.alert.show("Esta situación no esta para solucionar por el ciclo while");
+      }else{
+        //Se restablece el tiempo          
+        this.tiempo.start();
+        //Ocultamos los botones del ciclo for y while
+        this.run.visible =true;
+        this.btnwhile.visible = false;
+        this.btnfor.visible = false;
+        //Creamos el slot de la estructura del ciclo
+        this.slot = this.items.create(479,100,'slotciclo');
 
-      //creamos las acciones de la situación
-      var yitem = 350;
-      var CItems = this.items;
-      var game = this;
-      if(this.textciclo != null ){this.textciclo.kill();}
-      //Se crea texto del ciclo
-      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Mientras                                           Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
-      this.textciclo.anchor.setTo(0,0.5);
-      this.textciclo.fontWeight = 'bold';
+        //creamos las acciones de la situación
+        
+        var CItems = this.items;
+        var game = this;
+        var util  = [];
+        if(this.textciclo != null ){this.textciclo.kill();}
+        //Se crea texto del ciclo
+        this.textciclo = this.game.add.text((this.slot.x +8),(this.slot.y + 29),'Mientras                                           Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+        this.textciclo.anchor.setTo(0,0.5);
+        this.textciclo.fontWeight = 'bold';
 
-      this.levelData.dataSitua[this.intSituacion].Ciwhile.SlotAccion.forEach(function(acciontext) {
-          var item = CItems.create(535,yitem,'accion_small6');
-          item.tipo = 0;
-          item.anchor.setTo(0.5,0.5);          
-          item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',acciontext.texto,13);
-          item.texto.maxWidth = 156;
-          item.respuesta = acciontext.ok;
-          item.texto.anchor.setTo(0.5,0.5);
-          item.inputEnabled = true;
-          item.events.onInputDown.add(game.clickItem, game);
-          item.events.onInputUp.add(game.releaseItem, game);
-          yitem+=40;
-      });
+        this.levelData.dataSitua[this.intSituacion].Ciwhile.SlotAccion.forEach(function(acciontext) {
+            var randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Ciwhile.SlotAccion.length);
+            while (util.indexOf(randonpos) >= 0){
+                randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Ciwhile.SlotAccion.length);
+            }
+            util.push(randonpos);
+            var item = CItems.create(535,game.posSit[randonpos],'accion_small6');
+            item.xPos =535;
+            item.yPos = game.posSit[randonpos];
+            item.tipo = 0;
+            item.anchor.setTo(0.5,0.5);          
+            item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',acciontext.texto,13);
+            item.texto.maxWidth = item.width -5;
+            item.respuesta = acciontext.ok;
+            item.texto.anchor.setTo(0.5,0.5);
+            item.inputEnabled = true;
+            item.events.onInputDown.add(game.clickItem, game);
+            item.events.onInputUp.add(game.releaseItem, game);
+           
+        });
 
-      //creamos las condiciones de la situación
-      yitem = 350;
-      this.levelData.dataSitua[this.intSituacion].Ciwhile.Slot.forEach(function(condiciontext) {
-          var item = CItems.create(690,yitem,'condicion6');          
-          item.tipo = 1;
-          item.anchor.setTo(0.5,0.5);
-          item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',condiciontext.texto,14);
-          item.texto.maxWidth = 132;
-          item.respuesta = condiciontext.ok;
-          item.texto.anchor.setTo(0.5,0.5);
-          item.inputEnabled = true;
-          item.events.onInputDown.add(game.clickItem, game);
-          item.events.onInputUp.add(game.releaseItem, game);
-          yitem+=40;
-      });
+        //creamos las condiciones de la situación
+        util  = [];
+        this.levelData.dataSitua[this.intSituacion].Ciwhile.Slot.forEach(function(condiciontext) {
+            var randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Ciwhile.Slot.length);
+            while (util.indexOf(randonpos) >= 0){
+                randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Ciwhile.Slot.length);
+            }
+            util.push(randonpos);
+            var item = CItems.create(690,game.posSit[randonpos],'condicion6');          
+            item.xPos =690;
+            item.yPos = game.posSit[randonpos];
+            item.tipo = 1;
+            item.anchor.setTo(0.5,0.5);
+            item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',condiciontext.texto,14);
+            item.texto.maxWidth = item.width -5;
+            item.respuesta = condiciontext.ok;
+            item.texto.anchor.setTo(0.5,0.5);
+            item.inputEnabled = true;
+            item.events.onInputDown.add(game.clickItem, game);
+            item.events.onInputUp.add(game.releaseItem, game);
+            
+        });
+      }
     },
 
     listenerfor:function(){
       this.btnSound.play();
-      //Se restablece el tiempo     
-      this.tiempo.start();
-      //Ocultamos los botones del ciclo for y while
-      this.btnwhile.visible = false;
-      this.btnfor.visible = false;
-      //Creamos el slot de la estructura del ciclo
-      this.slot = this.items.create(479,100,'slotciclo');
+      if(this.levelData.dataSitua[this.intSituacion].Cifor == "No implementable"){
+        this.alert.show("Esta situación no esta para solucionar por el ciclo for");
+      }else{
+        //Se restablece el tiempo     
+        this.tiempo.start();
+        //Ocultamos los botones del ciclo for y while
+        this.run.visible =true;
+        this.btnwhile.visible = false;
+        this.btnfor.visible = false;
+        //Creamos el slot de la estructura del ciclo
+        this.slot = this.items.create(479,100,'slotciclo');
 
-      //creamos las acciones de la situación
-      var yitem = 350;
-      var CItems = this.items;
-      var game = this;
+        //creamos las acciones de la situación      
+        var CItems = this.items;
+        var game = this;
+        var util  = [];
+        if(this.textciclo != null ){this.textciclo.kill();}
+        //Se crea texto del ciclo
+        this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Para                                             Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
+        this.textciclo.anchor.setTo(0,0.5);
+        this.textciclo.fontWeight = 'bold';
 
-      if(this.textciclo != null ){this.textciclo.kill();}
-      //Se crea texto del ciclo
-      this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Para                                             Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
-      this.textciclo.anchor.setTo(0,0.5);
-      this.textciclo.fontWeight = 'bold';
+        this.levelData.dataSitua[this.intSituacion].Cifor.SlotAccion.forEach(function(acciontext) {
+            var randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Cifor.SlotAccion.length);
+            while (util.indexOf(randonpos) >= 0){
+                randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Cifor.SlotAccion.length);
+            }
+            util.push(randonpos);
+            var item = CItems.create(535,game.posSit[randonpos],'accion_small6');
+            item.xPos =535;
+            item.yPos = game.posSit[randonpos];
+            item.tipo = 0;
+            item.anchor.setTo(0.5,0.5);
+            item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',acciontext.texto,14);
+            item.texto.maxWidth = item.width -5;
+            item.respuesta = acciontext.ok;
+            item.texto.anchor.setTo(0.5,0.5);
+            item.inputEnabled = true;
+            item.events.onInputDown.add(game.clickItem, game);
+            item.events.onInputUp.add(game.releaseItem, game);          
+        });
 
-
-      this.levelData.dataSitua[this.intSituacion].Cifor.SlotAccion.forEach(function(acciontext) {
-          var item = CItems.create(535,yitem,'accion_small6');
-          item.tipo = 0;
-          item.anchor.setTo(0.5,0.5);
-          item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',acciontext.texto,14);
-          item.texto.maxWidth = 156;
-          item.respuesta = acciontext.ok;
-          item.texto.anchor.setTo(0.5,0.5);
-          item.inputEnabled = true;
-          item.events.onInputDown.add(game.clickItem, game);
-          item.events.onInputUp.add(game.releaseItem, game);
-          yitem+=40;
-      });
-
-      //creamos las condiciones de la situación
-      yitem = 350;
-      this.levelData.dataSitua[this.intSituacion].Cifor.Slot.forEach(function(condiciontext) {
-          var item = CItems.create(690,yitem,'condicion6');          
-          item.tipo = 1;
-          item.anchor.setTo(0.5,0.5);
-          item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',condiciontext.texto,14);
-          item.texto.maxWidth = 132;
-          item.respuesta = condiciontext.ok;
-          item.texto.anchor.setTo(0.5,0.5);
-          item.inputEnabled = true;
-          item.events.onInputDown.add(game.clickItem, game);
-          item.events.onInputUp.add(game.releaseItem, game);
-          yitem+=40;
-      });
+        //creamos las condiciones de la situación
+        util  = [];
+        this.levelData.dataSitua[this.intSituacion].Cifor.Slot.forEach(function(condiciontext) {
+            var randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Cifor.Slot.length);
+            while (util.indexOf(randonpos) >= 0){
+                randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Cifor.SlotAccion.length);
+            }
+            util.push(randonpos);
+            var item = CItems.create(690,game.posSit[randonpos],'condicion6');
+            item.xPos =690;
+            item.yPos = game.posSit[randonpos];          
+            item.tipo = 1;
+            item.anchor.setTo(0.5,0.5);
+            item.texto = game.game.add.bitmapText(item.x, item.y, 'fontData',condiciontext.texto,14);
+            item.texto.maxWidth = item.width -5;
+            item.respuesta = condiciontext.ok;
+            item.texto.anchor.setTo(0.5,0.5);
+            item.inputEnabled = true;
+            item.events.onInputDown.add(game.clickItem, game);
+            item.events.onInputUp.add(game.releaseItem, game);
+        });
+      }
 
     },
     
@@ -3060,82 +2977,101 @@ module.exports = Menu;
         //Se define cuadro imaginario para las acciones
         if(item.tipo == 0 && item.body.y >= (this.slot.body.y + 40) && item.body.y <= (this.slot.body.y + 104) && item.body.x >= (this.slot.body.x + 38) && item.body.x <= (this.slot.body.x + 270) ){
           this.soltarSound.play();
-          if(!this.slotAccion_1){
+            var game = this;
+            if(this.slotAccion_1){
+              this.items.forEach(function(itemAnt) {
+                  if(itemAnt.slot1){
+                    var itemNuevo = game.items.create(itemAnt.xPos,itemAnt.yPos,'accion_small6');
+                    itemNuevo.xPos =itemAnt.xPos;
+                    itemNuevo.yPos = itemAnt.yPos;
+                    itemNuevo.tipo = 0;
+                    itemNuevo.anchor.setTo(0.5,0.5);
+                    itemNuevo.texto = itemAnt.texto;
+                    itemNuevo.texto.fontSize = 14;
+                    itemNuevo.texto.x = itemNuevo.x;
+                    itemNuevo.texto.y = itemNuevo.y;
+                    itemNuevo.texto.maxWidth = itemNuevo.width -5;
+                    itemNuevo.respuesta = itemAnt.respuesta;
+                    itemNuevo.texto.anchor.setTo(0.5,0.5);
+                    itemNuevo.inputEnabled = true;
+                    itemNuevo.events.onInputDown.add(game.clickItem, game);
+                    itemNuevo.events.onInputUp.add(game.releaseItem, game);
+                    delete itemAnt.slot1;
+                    itemAnt.kill();
+                  }
+              });
+            }     
             //Creamos el item el cual encaja en el slot de la accion          
             var itemEncajado = this.items.create( (this.slot.body.x + 146),(this.slot.body.y + 93),'accion_large6');
+            itemEncajado.xPos = item.xPos;
+            itemEncajado.yPos = item.yPos;
             itemEncajado.anchor.setTo(0.5,0.5);
             itemEncajado.texto = item.texto;
             itemEncajado.respuesta = item.respuesta;
             itemEncajado.texto.fontSize = 20;
             itemEncajado.texto.x = itemEncajado.x;
             itemEncajado.texto.y = itemEncajado.y;
-            itemEncajado.slot1 = true;          
+            itemEncajado.slot1 = true; 
+            itemEncajado.inputEnabled = true;
+            itemEncajado.events.onInputDown.add(this.clickItem, this);
+            itemEncajado.events.onInputUp.add(this.releaseItem, this);         
             item.kill();            
-          }else{
-
-            this.items.forEach(function(itemslot1) {
-              if(itemslot1.slot1){
-                var textoAnt = itemslot1.texto;
-                var respuesAnt = itemslot1.respuesta;
-                itemslot1.texto = item.texto;
-                itemslot1.respuesta = item.respuesta;
-                itemslot1.texto.fontSize = 20;
-                itemslot1.texto.x = itemslot1.x;
-                itemslot1.texto.y = itemslot1.y;
-                //actualizamos el item arrastrado con el texto del item en el slot
-                item.texto = textoAnt;
-                item.respuesta = respuesAnt;
-                item.texto.fontSize = 14;
-              }
-            });
-            item.x = this.itemX;
-            item.y = this.itemY;
-            item.texto.x = item.x;
-            item.texto.y = item.y;
-          }
+          
           //indicamos que el primer slot se ha ocupado
           this.slotAccion_1 = true;
-        }else if(item.tipo == 1 && item.body.y >= (this.slot.body.y + 7) && item.body.y <= (this.slot.body.y + 40) && item.body.x >= (this.slot.body.x + 68) && item.body.x <= (this.slot.body.x + 220) ){
+        }else if(item.tipo == 1 && item.body.y >= (this.slot.body.y + 7) && item.body.y <= (this.slot.body.y + 40) && item.body.x >= (this.slot.body.x + 38) && item.body.x <= (this.slot.body.x + 220) ){
           this.soltarSound.play();
-          if(!this.slotCiclo){
-            //Creamos el item el cual encaja en el slot de la accion          
-            var itemEncajado = this.items.create( (this.slot.body.x + 126),(this.slot.body.y + 29),'condicion6');
-            itemEncajado.anchor.setTo(0.5,0.5);
-            itemEncajado.texto = item.texto;
-            itemEncajado.respuesta = item.respuesta;
-            itemEncajado.texto.x = itemEncajado.x;
-            itemEncajado.texto.y = itemEncajado.y;
-            itemEncajado.slotC = true;          
-            item.kill();
-            
-          }else{
 
-            this.items.forEach(function(itemslot1) {
-              if(itemslot1.slotC){
-                var textoAnt = itemslot1.texto;
-                var respuesAnt = itemslot1.respuesta;
-                itemslot1.texto = item.texto;
-                itemslot1.respuesta = item.respuesta;
-                itemslot1.texto.x = itemslot1.x;
-                itemslot1.texto.y = itemslot1.y;
-                //actualizamos el item arrastrado con el texto del item en el slot
-                item.texto = textoAnt;
-                item.respuesta = respuesAnt;
-                item.texto.fontSize = 14;
-              }
+          if(this.slotCiclo){
+            this.items.forEach(function(itemAnt) {
+                if(itemAnt.slotC){
+                  if(item != itemAnt){
+                    delete itemAnt.slotC;
+                    itemAnt.x = itemAnt.xPos;
+                    itemAnt.y = itemAnt.yPos;
+                    itemAnt.texto.x= itemAnt.x;
+                    itemAnt.texto.y = itemAnt.y;
+                  }                  
+                }
             });
-            item.x = this.itemX;
-            item.y = this.itemY;
-            item.texto.x = item.x;
-            item.texto.y = item.y;
           }
+          item.x = (this.slot.body.x + 126);
+          item.y = (this.slot.body.y + 29);
+          item.texto.x= item.x;
+          item.texto.y = item.y;
+          item.slotC = true;
           //indicamos que el primer slot se ha ocupado
           this.slotCiclo = true;
         }else{
-          item.x = this.itemX
-          item.y = this.itemY;
-          item.texto.x = item.x;
-          item.texto.y = item.y;
+          if(item.slotC){
+            this.slotCiclo = false;
+            delete item.slotC;
+          }
+          if(item.slot1){            
+            this.slotAccion_1 = false;
+            var itemNuevo = this.items.create(item.xPos,item.yPos,'accion_small6');
+            itemNuevo.xPos =item.xPos;
+            itemNuevo.yPos = item.yPos;
+            itemNuevo.tipo = 0;
+            itemNuevo.anchor.setTo(0.5,0.5);
+            itemNuevo.texto = item.texto;
+            itemNuevo.texto.fontSize = 14;
+            itemNuevo.texto.x = itemNuevo.x;
+            itemNuevo.texto.y = itemNuevo.y;
+            itemNuevo.texto.maxWidth = itemNuevo.width -5;
+            itemNuevo.respuesta = item.respuesta;
+            itemNuevo.texto.anchor.setTo(0.5,0.5);
+            itemNuevo.inputEnabled = true;
+            itemNuevo.events.onInputDown.add(this.clickItem, this);
+            itemNuevo.events.onInputUp.add(this.releaseItem, this);
+            delete item.slot1;  
+            item.kill();         
+          }else{
+            item.x = item.xPos
+            item.y = item.yPos;
+            item.texto.x = item.x;
+            item.texto.y = item.y;
+          }
         }
       }
     },
@@ -3143,7 +3079,7 @@ module.exports = Menu;
   };
 
   module.exports = Nivel6;
-},{"../prefabs/pause":4,"../prefabs/textBox":6}],16:[function(require,module,exports){
+},{"../prefabs/alert":2,"../prefabs/pause":4}],15:[function(require,module,exports){
   'use strict';
   function Play() {}
   Play.prototype = {
@@ -3207,7 +3143,7 @@ module.exports = Menu;
   };
   
   module.exports = Play;
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 
 'use strict';
 function Preload() {
@@ -3312,7 +3248,8 @@ Preload.prototype = {
     this.load.image('btnEjecutar6','assets/images/Nivel6/btnEjecutar.png');
     this.load.image('fondoPasos6','assets/images/Nivel6/fondoPasos.png');
     this.load.image('fondosituacion','assets/images/Nivel6/fondosituacion.png');
-
+    this.load.spritesheet("Image_Correct", "assets/images/Nivel6/animBien.png",401,273);
+    this.load.spritesheet("Image_Error", "assets/images/Nivel6/animMal.png",401,273);
     this.load.text('data6','assets/data/nivel6.json');//Datos nivel 3
 
     /*Audios de juego*/
@@ -3362,8 +3299,7 @@ Preload.prototype = {
         if(data.ImageUrl){
           var key = 'niv6_situa'+thisTemp.cont;
           thisTemp.load.spritesheet(key, data.ImageUrl,401,273);
-          thisTemp.load.spritesheet(key+"_Correct", data.ImageCorrect,401,273);
-          thisTemp.load.spritesheet(key+"_Error", data.ImageError,401,273);
+         
           
           thisTemp.cont++;
         }
@@ -3380,5 +3316,4 @@ Preload.prototype = {
 };
 
 module.exports = Preload;
-
 },{}]},{},[1])

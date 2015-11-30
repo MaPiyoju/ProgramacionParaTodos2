@@ -1,3 +1,4 @@
+
 {
   "dataSitua": [
     {
@@ -36,8 +37,8 @@
       	{
       		"txt": "condicion 7",
       		"accion": true,
-                  "fin": "fin",
-                  "alterno": "otro fin 7"
+                  "alterno": "otro fin 7",
+                  "fin": "fin"
       	}
       ]
     },
@@ -77,8 +78,8 @@
       	{
       		"txt": "condicion 7",
       		"accion": true,
-                  "fin": "fin",
-                  "alterno": "otro fin 7"
+                  "alterno": "otro fin 7",
+                  "fin": "fin"
       	}
       ]
     }
