@@ -6,9 +6,10 @@ var Pausa = require('../prefabs/pause');
   function Nivel6() {}
   Nivel6.prototype = {
     //Definición de propiedades globales de nivel
-    maxtime: 60,
+    maxtime: 180,
     flagpause:false,
     intro:true,
+    introStep:0,
     intSituacion:0,
     itemX: 0,
     itemY: 0,
@@ -23,13 +24,15 @@ var Pausa = require('../prefabs/pause');
     nErrores: 0,
 
     posSit: [350,390,430,470,510],
-    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!','Tu ciclo no cumple con el objetivo solicitado, intentalo de nuevo!'],
+    msjError: ['Ups, algo no anda bien. Intentalo de nuevo!','Tu ciclo no cumple con el objetivo solicitado, intentalo de nuevo!','En caso de ciclo para, ten en cuenta el número de iteraciones necesarias de acuerdo a la situación ','En caso de ciclo mientras, recuerda que las acciones dentro del ciclo se repetiran mientras se cumpla la condición '],
+
     init:function(){
-      this.maxtime= 60; 
+      this.maxtime= 180; 
       this.itemX= 0;
       this.itemY= 0;
       this.flagpause=false;
       this.intro=true;
+      this.introStep = 0;
       this.intSituacion=0;
       this.slotCiclo=false;
       this.slotAccion_1=false;
@@ -54,24 +57,37 @@ var Pausa = require('../prefabs/pause');
 
       this.game.world.setBounds(0, 0, 800, 600);
       //Fondo de juego
-      this.game.add.tileSprite(0, 0,800,600, 'introN6');
+      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN6');//Imagen intro de juego
+      this.introImg2 = null;
       this.game.input.onDown.add(this.iniciarJuego,this);
 
-      this.game.add.bitmapText(55, 170, 'font', 'Espero que la estes\npasando bien, y estes\npreparado para este\nnivel. En esta ocasión\naprenderemos estructuras\ncíclicas, deberas formar\nciclos que permitan\ndar solución a diversas\nsituaciones. Recuerda\nanalizar cuidadosamente\ncada opción para dar\nla mejor respuesta y\nasí superar cada reto\n\nComencemos!', 24);
+      this.txtIntro = this.game.add.bitmapText(200, 320, 'fontData', 'Estás preparado? En este nivel aprenderás acerca de estructuras cíclicas, deberás formar ciclos que permitan dar solución a diversas situaciones. Recuerda analizar cuidadosamente y elegir la mejor respuesta para superar cada reto.\n\nComencemos!', 24);
+      this.txtIntro.anchor.setTo(0.5,0.5);
+      this.txtIntro.maxWidth = 260;
     },
 
-    iniciarJuego : function(game){      
+    iniciarJuego : function(game){
       var x1 = 115;
       var x2 = 264;
       var y1 = 480;
       var y2 = 550;
-      if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
-        if(this.intro){  
-          this.btnSound.play();        
-          this.empezar();
+      if(this.intro){
+        switch(this.introStep){
+          case 0:
+            if(game.x > x1 && game.x < x2 && game.y > y1 && game.y < y2 ){
+              this.btnSound.play();
+              this.introStep++;
+              this.introImg.kill();//Se elimina imagen de intro
+              this.introImg2 = this.game.add.sprite(0,0,'ayudaGeneral',6);
+            }          
+            break;
+          case 1:
+            this.btnSound.play();
+            this.empezar();
+            break;
         }
       }
-    }, 
+    },
 
     empezar:function () {
        //Habilitacion de fisicas
@@ -85,9 +101,14 @@ var Pausa = require('../prefabs/pause');
       this.items.enableBody = true;
       this.items.inputEnabled = true;
 
+      this.elemGroup = this.game.add.group();
+      this.elemGroup.enableBody = true;
+      this.elemGroup.inputEnabled = true;
+
       //Se define el contador de controlde nivel
       this.tiempo = this.game.time.create(false);
       this.tiempo.loop(1000, this.updateTimer, this);//Contador de juego      
+      this.tiempo.start();
 
       //Grupo de Situacion e imagenes
       this.situaGroup = this.game.add.group();
@@ -102,8 +123,7 @@ var Pausa = require('../prefabs/pause');
       this.run.events.onInputDown.add(this.correrCondicion, this);
       this.run.visible =false;
            
-
-       //Imagen de fondo para el tiempo
+      //Imagen de fondo para el tiempo
       this.cuadroTime = this.game.add.sprite(230, 40,'time');
       this.cuadroTime.anchor.setTo(0.5, 0.5);
       //Se setea el texto para el cronometro
@@ -115,12 +135,12 @@ var Pausa = require('../prefabs/pause');
       this.scoretext.anchor.setTo(0,0.5);
 
       //boton ciclo while
-      this.btnwhile = this.game.add.sprite(546, 100,'btnwhile');
+      this.btnwhile = this.game.add.sprite(520, 100,'btnwhile');
       this.btnwhile.inputEnabled = true;
       this.btnwhile.events.onInputDown.add(this.listenerwhile, this);
 
       //boton ciclo for
-      this.btnfor = this.game.add.sprite(546, 222,'btnfor');
+      this.btnfor = this.game.add.sprite(520, 222,'btnfor');
       this.btnfor.inputEnabled = true;
       this.btnfor.events.onInputDown.add(this.listenerfor, this);
 
@@ -133,8 +153,6 @@ var Pausa = require('../prefabs/pause');
       this.pnlPausa = new Pausa(this.game);
       this.game.add.existing(this.pnlPausa);
       this.game.input.onDown.add(this.pausaJuego,this);
-
-      
 
       //Se crea situacion aleatoria      
       this.crearSitua();
@@ -189,6 +207,7 @@ var Pausa = require('../prefabs/pause');
    
       this.timer.setText(minutos + ':' +segundos);
     },
+
     crearSitua:function(){
       //se ocula boton ejecutar
       this.run.visible =false;
@@ -232,7 +251,9 @@ var Pausa = require('../prefabs/pause');
       this.pasos.texto.setText(this.levelData.dataSitua[this.intSituacion].texto);
       this.pasos.texto.maxWidth = this.pasos.width - 5;
       this.situaGroup.add(this.pasos);
-    },   
+      this.situaGroup.add(this.pasos.texto);
+    },
+
     pausaJuego: function(game){
       var x1 = (this.game.width - 81);
       var x2 = (this.game.width - 36);
@@ -255,6 +276,7 @@ var Pausa = require('../prefabs/pause');
         }
       }
     },
+
     showStats: function(){
       this.btnPausa.kill();//Se retira el boton de pausa      
       //Creacion cuadro retroalimentación final
@@ -290,6 +312,7 @@ var Pausa = require('../prefabs/pause');
         this.game.add.sprite(471,227,'estrella');
       }
     },
+
     correrCondicion: function(){
       this.nIntentos++;
       var condicionCorrecta = true;
@@ -320,7 +343,7 @@ var Pausa = require('../prefabs/pause');
           this.situaGroup.add(this.SituacionCorrecta);//Creacion imagen situacion
           this.marcoSitua.bringToTop();
           this.situaGroup.updateZ();
-          var anim = this.SituacionCorrecta.animations.add('anima',[0,1,2,3,4,5,6,7], 5, false); 
+          var anim = this.SituacionCorrecta.animations.add('anima',[0,1,2,3,4,5,6,7], 8, false); 
           anim.onComplete.add(function(){
             game.slotCiclo = game.slotAccion_1 = false; 
             game.score += 10;
@@ -341,7 +364,7 @@ var Pausa = require('../prefabs/pause');
           this.situaGroup.add(this.SituacionCorrecta);//Creacion imagen situacion
           this.marcoSitua.bringToTop();
           this.situaGroup.updateZ();
-          var anim = this.SituacionCorrecta.animations.add('anima',[0,1,2,3,4,5,6,7], 5, false); 
+          var anim = this.SituacionCorrecta.animations.add('anima',[0,1,2,3,4,5,6,7], 8, false); 
           anim.onComplete.add(function(){
               
           });
@@ -361,10 +384,8 @@ var Pausa = require('../prefabs/pause');
     listenerwhile:function(){
       this.btnSound.play();
       if(this.levelData.dataSitua[this.intSituacion].Ciwhile == "No implementable"){
-        this.alert.show("Esta situación no esta para solucionar por el ciclo while");
+        this.alert.show("No es posible solucionar esta situación por medio del ciclo mientras, intenta nuevamente!");
       }else{
-        //Se restablece el tiempo          
-        this.tiempo.start();
         //Ocultamos los botones del ciclo for y while
         this.run.visible =true;
         this.btnwhile.visible = false;
@@ -382,6 +403,7 @@ var Pausa = require('../prefabs/pause');
         this.textciclo = this.game.add.text((this.slot.x +8),(this.slot.y + 29),'Mientras                                           Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
         this.textciclo.anchor.setTo(0,0.5);
         this.textciclo.fontWeight = 'bold';
+        this.items.add(this.textciclo);
 
         this.levelData.dataSitua[this.intSituacion].Ciwhile.SlotAccion.forEach(function(acciontext) {
             var randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Ciwhile.SlotAccion.length);
@@ -401,6 +423,8 @@ var Pausa = require('../prefabs/pause');
             item.inputEnabled = true;
             item.events.onInputDown.add(game.clickItem, game);
             item.events.onInputUp.add(game.releaseItem, game);
+
+            game.items.add(item.texto);
            
         });
 
@@ -424,6 +448,8 @@ var Pausa = require('../prefabs/pause');
             item.inputEnabled = true;
             item.events.onInputDown.add(game.clickItem, game);
             item.events.onInputUp.add(game.releaseItem, game);
+
+            game.items.add(item.texto);
             
         });
       }
@@ -432,10 +458,8 @@ var Pausa = require('../prefabs/pause');
     listenerfor:function(){
       this.btnSound.play();
       if(this.levelData.dataSitua[this.intSituacion].Cifor == "No implementable"){
-        this.alert.show("Esta situación no esta para solucionar por el ciclo for");
+        this.alert.show("No es posible solucionar esta situación por medio del ciclo para, intenta nuevamente!");
       }else{
-        //Se restablece el tiempo     
-        this.tiempo.start();
         //Ocultamos los botones del ciclo for y while
         this.run.visible =true;
         this.btnwhile.visible = false;
@@ -452,6 +476,7 @@ var Pausa = require('../prefabs/pause');
         this.textciclo = this.game.add.text((this.slot.x +15),(this.slot.y + 29),'Para                                             Hacer',{font: '16px calibri', fill: '#fff', align:'center'});
         this.textciclo.anchor.setTo(0,0.5);
         this.textciclo.fontWeight = 'bold';
+        this.items.add(this.textciclo);
 
         this.levelData.dataSitua[this.intSituacion].Cifor.SlotAccion.forEach(function(acciontext) {
             var randonpos =  Math.floor(Math.random() * game.levelData.dataSitua[game.intSituacion].Cifor.SlotAccion.length);
@@ -470,7 +495,9 @@ var Pausa = require('../prefabs/pause');
             item.texto.anchor.setTo(0.5,0.5);
             item.inputEnabled = true;
             item.events.onInputDown.add(game.clickItem, game);
-            item.events.onInputUp.add(game.releaseItem, game);          
+            item.events.onInputUp.add(game.releaseItem, game);  
+
+            game.items.add(item.texto);        
         });
 
         //creamos las condiciones de la situación
@@ -493,22 +520,29 @@ var Pausa = require('../prefabs/pause');
             item.inputEnabled = true;
             item.events.onInputDown.add(game.clickItem, game);
             item.events.onInputUp.add(game.releaseItem, game);
+
+            game.items.add(item.texto);
         });
       }
-
     },
     
     clickItem : function(item){
-      this.grabSound.play();
-      this.itemX = item.x;
-      this.itemY = item.y;
-      item.movimiento = true; 
-      item.anchor.setTo(0.5,0.5);     
+      if(!this.alert.visible){
+        this.grabSound.play();
+        this.itemX = item.x;
+        this.itemY = item.y;
+        item.movimiento = true; 
+        item.anchor.setTo(0.5,0.5);
+        item.bringToTop(); 
+        item.texto.parent.bringToTop(item.texto);
+        this.items.updateZ();
+      }
     },
 
     releaseItem:function(item){
       if(item.movimiento){
         item.movimiento = false;
+        
         //Se define cuadro imaginario para las acciones
         if(item.tipo == 0 && item.body.y >= (this.slot.body.y + 40) && item.body.y <= (this.slot.body.y + 104) && item.body.x >= (this.slot.body.x + 38) && item.body.x <= (this.slot.body.x + 270) ){
           this.soltarSound.play();
@@ -533,6 +567,11 @@ var Pausa = require('../prefabs/pause');
                     itemNuevo.events.onInputUp.add(game.releaseItem, game);
                     delete itemAnt.slot1;
                     itemAnt.kill();
+
+                    game.items.add(itemNuevo.texto);
+                    itemNuevo.bringToTop(); 
+                    itemNuevo.texto.parent.bringToTop(itemNuevo.texto);
+                    game.items.updateZ();
                   }
               });
             }     
@@ -550,7 +589,12 @@ var Pausa = require('../prefabs/pause');
             itemEncajado.inputEnabled = true;
             itemEncajado.events.onInputDown.add(this.clickItem, this);
             itemEncajado.events.onInputUp.add(this.releaseItem, this);         
-            item.kill();            
+            item.kill();
+
+            this.items.add(itemEncajado.texto);
+            itemEncajado.bringToTop(); 
+            itemEncajado.texto.parent.bringToTop(itemEncajado.texto);
+            this.items.updateZ();
           
           //indicamos que el primer slot se ha ocupado
           this.slotAccion_1 = true;
