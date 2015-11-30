@@ -6,7 +6,7 @@ var Pausa = require('../prefabs/pause');
   function Nivel6() {}
   Nivel6.prototype = {
     //Definición de propiedades globales de nivel
-    maxtime: 60,
+    maxtime: 300,
     flagpause:false,
     intro:true,
     intSituacion:0,
@@ -25,7 +25,7 @@ var Pausa = require('../prefabs/pause');
     posSit: [350,390,430,470,510],
     msjError: ['Ups, algo no anda bien. Intentalo de nuevo!','Tu ciclo no cumple con el objetivo solicitado, intentalo de nuevo!'],
     init:function(){
-      this.maxtime= 60; 
+      this.maxtime= 300; 
       this.itemX= 0;
       this.itemY= 0;
       this.flagpause=false;

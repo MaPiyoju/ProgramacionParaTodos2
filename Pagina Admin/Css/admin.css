@@ -68,6 +68,11 @@ input[type="text"],input[type="password"]{
   padding-top: 15px;
 }
 
+.inicio .botonjugar:hover{
+	cursor: pointer;
+	background: #69BD45;
+}
+
 .registrarme{
 	text-decoration: underline;
 	color: #FFF;
@@ -151,6 +156,10 @@ input[type="text"],input[type="password"]{
 	min-width: 250px;
 	width: 15%;
 	height: 380px;
+}
+
+#niveles ul li:hover{
+	cursor: pointer;
 }
 
 #nivel1,#nivel2,#nivel3,#nivel4,#nivel6 {

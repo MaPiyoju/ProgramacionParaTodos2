@@ -245,7 +245,7 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 		<section id="nivel4" ng-controller="ControllerNiv4 as niv4">
 			<div class="Atras">Inicio</div>	
 			<div class="subTitulo">Nivel 4</div>
-			<div class="titulo">Evaluación de expresiones</div>				
+			<div class="titulo">Construcción de expresiones</div>				
 			<div id="situaciones" >
 				<ul>
 					<li ng-repeat="Expresion in niv4.expresiones.dataGusano" ng-click="niv4.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" ng-click="niv4.RemoveExpresionEva($index)">x</div> </li>					
