@@ -83,7 +83,7 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 		<section id="login">
 			<div class="background">
 				<div class="inicio">
-						<div class="subTitulo">Aprendé a programar con juegos</div>
+						<div class="subTitulo">Aprende a programar con juegos</div>
 						<div class="titulo">PROGRAMACIÓN PARA TODOS</div>
 						<input type="text" name="Usuario" id="txtUsuario" placeholder="Usuario"><br>
 						<input type="password" name="Contraseña" id="txtContrasena" placeholder="Contraseña">

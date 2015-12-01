@@ -5,63 +5,31 @@
       "nPasos": 7,
       "pasos":[
       	{
-      		"txt": "condicion 1",
+      		"txt": "Se te ha presentado la oportunidad de ser uno de los primeros tripulantes en una expedición a marte, sin embargo, es un viaje que tomara años y en estos momentos acabas de tener un hijo y tu familia no podría estar mas feliz; es por esto tu decides, \n\nIR AL VIAJE A MARTE?",
       		"accion": true,
-                  "alterno": "otro fin 1"
+                  "alterno": "Al quedarte y perder tu oportunidad de viajar a otro planeta, tu pareja queda increiblemente descepcionada por lo que decide dejarte por alguien que si se dirija a Marte y que pueda traele algún recuerdo interplanetario; pero no te preocupes, tu permaneces con la custodia de tu hijo.",
+                  "expAlt": 1,
+                  "txtAccion": "IR A MARTE?"
       	},
       	{
-      		"txt": "condicion 2",
+      		"txt": "Has confirmado tu asistencia a la expedición a Marte, poco a poco empiezan a llegarte solicitudes para ir a los entrenamientos de vuelo y gravedad cero; estas citaciones son de caracter obligatorio y toman periodos de entre 48 a 72 horas cada 2 días, pero sabiendo que te irás por tantos años, el pasar el mayor tiempo posible con tu hijo siempre será una opción.\n\nIR A LOS ENTRENAMIENTOS?",
+                  "exp": 0,
       		"accion": true,
-                  "alterno": "otro fin 2"
+                  "alterno": "Decides pasar más tiempo con tu hijo y pareja antes del viaje, por lo que llegado el dia de despegue no te encuentras preparado ni para ponerte un traje espacial, por ello los encargados de la expedición deciden dejarte y llevar un sustituto, pero no te preocupes, te regalan un modelo a escala de marte (pelota roja)",
+                  "expAlt": 2,
+                  "txtAccion": "IR A LOS ENTRENAMIENTOS?"
       	},
       	{
-      		"txt": "condicion 3",
+      		"txt": "Llega el día de despegue y te encuentas con todos tus compañeros de expedición preparados para partir. Todo el personal y equipo preparado, Despegue!!!. En un principio todo marchaba a la perfección mas sin embargo, el piloto de la nave sufre un paro cardiaco y sientes que la nave empieza a perder el control, tu no quieres que todo termine de esa forma y sientes un impulso heróico por hacer algo, pero sabes que tus conocimientos pueden no ser suficientes.\n\nTOMAS EL CONTROL DE LA NAVE?",
+                  "exp": 4,
       		"accion": false,
-                  "alterno": "otro fin 3"
+                  "alterno": "En un arrebato por ser el heroe y salvar a todos, te diriges a la cabina de pilotaje y comienzas a presionar botones y jalar palancas, ocasionando un malfuncionamiento en la nave que ya se encontraba en piloto automatico y llevando así a todos a su trágico desasatre.\n\nEsperemos en casa les cuenten que terminaste la misión como todo un heroe.",
+                  "expAlt": 3,
+                  "txtAccion": "TOMAR EL CONTROL DE LA NAVE?"
       	},
       	{
-      		"txt": "condicion 4",
-      		"accion": false,
-                  "alterno": "otro fin 4"
-      	},
-      	{
-      		"txt": "condicion 5",
-      		"accion": true,
-                  "alterno": "otro fin 5"
-      	},
-      	{
-      		"txt": "condicion 6",
-      		"accion": true,
-                  "alterno": "otro fin 6"
-      	},
-      	{
-      		"txt": "condicion 7",
-      		"accion": true,
-                  "alterno": "otro fin 7",
-                  "fin": "fin"
-      	}
-      ]
-    },
-    {
-      "nPasos": 7,
-      "pasos":[
-      	{
-      		"txt": "condicion 1",
-      		"accion": true,
-                  "alterno": "otro fin 1"
-      	},
-      	{
-      		"txt": "condicion 2",
-      		"accion": true,
-                  "alterno": "otro fin 2"
-      	},
-      	{
-      		"txt": "condicion 3",
-      		"accion": false,
-                  "alterno": "otro fin 3"
-      	},
-      	{
-      		"txt": "condicion 4",
+      		"txt": "Por suerte la nave se encontraba en piloto automatico y todo continua normalmente, luego de un tiempo atterrizan en Marte",
+                  "exp": 0,
       		"accion": false,
                   "alterno": "otro fin 4"
       	},

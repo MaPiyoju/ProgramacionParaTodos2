@@ -30,7 +30,7 @@
       this.pasoActual = 0;
       this.bien = 0;
       this.countErrors = 0;
-      this.yIni = 150;
+      this.yIni = 60;
       this.miniH = 20;
       this.ultMin = 0;
       this.inicia = false;
@@ -85,15 +85,22 @@
       this.intro = false;//Se deshabilita el intro de juego
       this.introImg2.kill();//Se elimina imagen de intro
 
-      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel4');//Fondo de juego
+      this.game.add.tileSprite(0, 0,800,1920, 'tile_nivel6');//Fondo de juego
+      this.game.add.sprite(5,5,'marco');//Fondo marcos
+      this.reaccion = this.game.add.sprite(400,5,'reacciones',5);//Reacciones del nivel
 
       //Graficas para control de arboles
-      this.graf = this.game.add.graphics( 570, this.yIni );
+      this.graf = this.game.add.graphics( 710, this.yIni );
 
-      this.txtSitua = this.game.add.bitmapText(200,200,'fontData','',24);
-      this.btnSi = this.game.add.button(200,370,'OpcPausa',this.opcCondicionSi,this);
-      this.btnNo = this.game.add.button(250,370,'OpcPausa',this.opcCondicionNo,this);
+      this.txtSitua = this.game.add.bitmapText(195,50,'fontData','',24);
+      this.txtSitua.anchor.setTo(0.5,0);
+      this.txtSitua.maxWidth = 350;
+      this.btnSi = this.game.add.button(125,543,'btnSi',this.opcCondicionSi,this);
+      this.btnNo = this.game.add.button(210,543,'btnNo',this.opcCondicionNo,this);
       this.cargaSitua();
+
+      this.btnContinuar = this.game.add.button(120,543,'btnContinuar5',this.btnContinuarFn,this);
+      this.btnContinuar.visible = false;
 
       this.tiempo = this.game.time.create(false);
       this.tiempo.start();
@@ -118,10 +125,12 @@
     },
 
     opcCondicionSi: function(){
+      this.btnSound.play();
       this.validaCondicion(true);
     },
 
     opcCondicionNo: function(){
+      this.btnSound.play();
       this.validaCondicion(false);
     },
 
@@ -130,11 +139,12 @@
         this.pasoActual++;
         if(this.pasoActual < this.levelData.dataSitua[this.random].nPasos){
           this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
+          this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual].exp;
         }else{
-          this.arbolFinal();
+          this.nodoFinal();
         }
       }else{
-        this.arbolFinal();
+        this.nodoFinal();
       }
       this.miniArbol(opc);
     },
@@ -174,19 +184,21 @@
       this.graf.endFill();
     },
 
-    arbolFinal: function(){
+    nodoFinal: function(){
       if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){//Mensaje final de acuerdo a la ultima eleccion
         this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual-1].fin;
+        this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual-1].expAlt;
       }else{
         this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].alterno;
+        this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual].expAlt;
       }
       this.termina = true;
       this.btnSi.destroy();
       this.btnNo.destroy();
-      console.log(this.pasoActual+1);
+      this.btnContinuar.visible = true;
       for(var i=0;i<this.pasoActual+1;i++){
         if(i != this.levelData.dataSitua[this.random].nPasos){
-          console.log(this.levelData.dataSitua[this.random].pasos[i].txt,' - ',i);
+          console.log(this.levelData.dataSitua[this.random].pasos[i].txtAccion,' - ',i);
         }
         if(i == this.pasoActual){ 
           if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
@@ -196,6 +208,11 @@
           }
         }        
       }
+    },
+
+    btnContinuarFn: function(){
+
+
     },
 
     update: function() {
