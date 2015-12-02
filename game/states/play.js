@@ -7,7 +7,7 @@
       this.crearBoton(0,100,'nivel2',205,150,'Necesitas mejorar tus conocimientos sobre tipos de datos?, aquí esta todo lo que necesitas! ',true);
       this.crearBoton(0,200,'nivel3',205,250,'Sumergete en el manejo y evaluación adecuada de expresiones por medio de este divertido juego! ',true);
       this.crearBoton(0,300,'nivel4',205,350,'Ya sabes como evaluar una expresión? Ahora aprende como construirla. Ponte a prueba con este juego! ',true);
-      this.crearBoton(0,400,'nivel5',205,450,'',true);
+      this.crearBoton(0,400,'nivel5',205,450,'Comprende los conceptos detras de un arbol de decisión por medio de este divertido juego. Adelante! ',true);
       this.crearBoton(0,500,'nivel6',205,550,'En este nivel aprenderás acerca de estructuras cíclicas, como y en que situaciones podemos usarlas, Atrevete!',true);
 
       this.overSound = this.game.add.audio('menuoverSound');

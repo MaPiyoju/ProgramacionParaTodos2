@@ -101,23 +101,20 @@
                 case 'nivel1':                 
                   frame = 0;
                 break;
-                case 'nivel1_1':
+                case 'nivel2':
                   frame = 1;
                 break;
-                case 'nivel2':
+                case 'nivel3':
                   frame = 2;
                 break;
-                case 'nivel3':
+                case 'nivel4':
                   frame = 3;
                 break;
-                case 'nivel4':
+                case 'nivel5':
                   frame = 4;
                 break;
-                case 'nivel5':
-                  frame = 5;
-                break;
                 case 'nivel6':
-                  frame = 6;
+                  frame = 5;
                 break;
               }              
               this.mensajeGeneral.frame = frame;

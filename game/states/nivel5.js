@@ -211,8 +211,8 @@
     },
 
     btnContinuarFn: function(){
-
-
+      this.btnSound.play();
+      this.showStats();
     },
 
     update: function() {
@@ -222,7 +222,6 @@
     },
 
     showStats: function(){
-      this.nuevoCuerpo();
       this.btnPausa.kill();//Se retira el boton de pausa
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion

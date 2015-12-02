@@ -251,23 +251,20 @@ module.exports = Entidad;
                 case 'nivel1':                 
                   frame = 0;
                 break;
-                case 'nivel1_1':
+                case 'nivel2':
                   frame = 1;
                 break;
-                case 'nivel2':
+                case 'nivel3':
                   frame = 2;
                 break;
-                case 'nivel3':
+                case 'nivel4':
                   frame = 3;
                 break;
-                case 'nivel4':
+                case 'nivel5':
                   frame = 4;
                 break;
-                case 'nivel5':
-                  frame = 5;
-                break;
                 case 'nivel6':
-                  frame = 6;
+                  frame = 5;
                 break;
               }              
               this.mensajeGeneral.frame = frame;
@@ -2412,8 +2409,8 @@ module.exports = Menu;
     },
 
     btnContinuarFn: function(){
-
-
+      this.btnSound.play();
+      this.showStats();
     },
 
     update: function() {
@@ -2423,7 +2420,6 @@ module.exports = Menu;
     },
 
     showStats: function(){
-      this.nuevoCuerpo();
       this.btnPausa.kill();//Se retira el boton de pausa
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
@@ -2562,7 +2558,7 @@ var Pausa = require('../prefabs/pause');
               this.btnSound.play();
               this.introStep++;
               this.introImg.kill();//Se elimina imagen de intro
-              this.introImg2 = this.game.add.sprite(0,0,'ayudaGeneral',6);
+              this.introImg2 = this.game.add.sprite(0,0,'ayudaGeneral',5);
             }          
             break;
           case 1:
@@ -3152,7 +3148,7 @@ var Pausa = require('../prefabs/pause');
       this.crearBoton(0,100,'nivel2',205,150,'Necesitas mejorar tus conocimientos sobre tipos de datos?, aquí esta todo lo que necesitas! ',true);
       this.crearBoton(0,200,'nivel3',205,250,'Sumergete en el manejo y evaluación adecuada de expresiones por medio de este divertido juego! ',true);
       this.crearBoton(0,300,'nivel4',205,350,'Ya sabes como evaluar una expresión? Ahora aprende como construirla. Ponte a prueba con este juego! ',true);
-      this.crearBoton(0,400,'nivel5',205,450,'',true);
+      this.crearBoton(0,400,'nivel5',205,450,'Comprende los conceptos detras de un arbol de decisión por medio de este divertido juego. Adelante! ',true);
       this.crearBoton(0,500,'nivel6',205,550,'En este nivel aprenderás acerca de estructuras cíclicas, como y en que situaciones podemos usarlas, Atrevete!',true);
 
       this.overSound = this.game.add.audio('menuoverSound');

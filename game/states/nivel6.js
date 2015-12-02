@@ -80,7 +80,7 @@ var Pausa = require('../prefabs/pause');
               this.btnSound.play();
               this.introStep++;
               this.introImg.kill();//Se elimina imagen de intro
-              this.introImg2 = this.game.add.sprite(0,0,'ayudaGeneral',6);
+              this.introImg2 = this.game.add.sprite(0,0,'ayudaGeneral',5);
             }          
             break;
           case 1:
