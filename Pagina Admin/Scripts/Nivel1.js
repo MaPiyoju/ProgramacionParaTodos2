@@ -570,6 +570,13 @@ miapp.controller('ControllerNiv5',function(){
 			});
 		}
 		
+		for (var i = 0; i < this.dataSitua.dataSitua.length; i++) {
+			for (var j = 0; j < this.dataSitua.dataSitua[i].pasos.length; j++) {
+				if(j != (this.dataSitua.dataSitua[i].pasos.length-1)){
+					delete this.dataSitua.dataSitua[i].pasos[j].fin ; 
+				}
+			};
+		};
 		
 		var game = this;
 		$.ajax({
@@ -601,7 +608,8 @@ miapp.controller('ControllerNiv5',function(){
 			      		"accion": null,
 		                "alterno": "",
 		                "expAlt": 0,
-		                "txtAccion": ""
+		                "txtAccion": "",
+		                "fin": ""
 			      	});
 				}
 			}else{

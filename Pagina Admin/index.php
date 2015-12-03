@@ -333,6 +333,10 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 							      <option value="4" ng-selected="Paso.expAlt == 4">Feliz</option>
 							    </select>
 							</div>
+							<div ng-hide="$index < (niv5.nPasos-1)">
+								<label>Situación Final: </label>	<br>
+								<textarea  ng-model="Paso.fin" cols="40" rows="3" > </textarea>
+							</div>
 							</br>							
 						</li>
 					</ol>
