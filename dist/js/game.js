@@ -2452,8 +2452,7 @@ module.exports = Menu;
       }else{
         lim = 4;
       }
-      console.log(this.pasoMostrarActual,' - ',lim);
-      for(var i=this.pasoMostrarActual;i<lim;i++){
+      for(var i=this.pasoMostrarActual;i<lim+this.pasoMostrarActual;i++){
         console.log("faltan cajas");
         if(i != this.levelData.dataSitua[this.random].nPasos){
           var x1 = xIni;
