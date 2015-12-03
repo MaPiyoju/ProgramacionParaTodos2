@@ -536,6 +536,113 @@ miapp.controller('ControllerNiv4',function(){
 	}
 });
 
+miapp.controller('ControllerNiv5',function(){	
+	this.dataSitua = DatosNiv5;	
+	this.nPasos = 0;
+	this.pasos  = [];
+	this.indiceSelect = null;	
+	this.cancelar = function(){
+		this.nPasos = 0;
+		this.pasos  = [];	
+		this.indiceSelect = null;
+	}
+
+	this.selectExpre = function(indice){
+		this.indiceSelect = indice;			
+		this.nPasos = this.dataSitua.dataSitua[indice].nPasos;		
+		this.pasos = this.dataSitua.dataSitua[indice].pasos;
+	};
+
+	this.AddSituacion = function(){		
+		if(this.indiceSelect != null){
+			this.dataSitua.dataSitua.splice(this.indiceSelect,1);
+			this.dataSitua.dataSitua.splice(this.indiceSelect,0,
+				{					
+					"nPasos" : this.nPasos,
+					"pasos": this.pasos
+				}
+			);
+		}
+		else{
+			this.dataSitua.dataSitua.push({					
+				"nPasos" : this.nPasos,
+				"pasos": this.pasos
+			});
+		}
+		
+		for (var i = 0; i < this.dataSitua.dataSitua.length; i++) {
+			for (var j = 0; j < this.dataSitua.dataSitua[i].pasos.length; j++) {
+				if(j != (this.dataSitua.dataSitua[i].pasos.length-1)){
+					delete this.dataSitua.dataSitua[i].pasos[j].fin ; 
+				}
+			};
+		};
+		
+		var game = this;
+		$.ajax({
+			    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : direccion_nivel5,"eliminar" : null},
+			    type: "POST",
+			    dataType: "json",
+			    url: "SaveDocumento.php",
+			    complete: function(resultado){
+			    	var result = JSON.parse(resultado.responseText);
+			    	if(result.Mensaje == "OK"){
+				    	alert("Se ha creado la situación");
+				    	DatosNiv5 = result.Json;
+			    	}
+			    	else{
+		    			alert("Error al realizar la solicitud");
+		    		}    	
+			    }
+			});
+		this.cancelar();
+	}
+
+	this.CrearPasos = function(){
+		for (var i = 0; i < this.nPasos; i++) {
+			if(this.nPasos >= this.pasos.length){		
+				for (var i = this.pasos.length; i < this.nPasos; i++) {
+					this.pasos.push(
+					{
+			      		"txt": "",
+			      		"accion": null,
+		                "alterno": "",
+		                "expAlt": 0,
+		                "txtAccion": "",
+		                "fin": ""
+			      	});
+				}
+			}else{
+				var count = this.pasos.length;
+				
+				for (var i = count; i > this.nPasos; i--) {
+					this.pasos.splice(i-1,1);					
+				}
+			}	
+		};
+	}
+
+	this.RemoveExpresionEva = function(indice){
+		this.dataSitua.dataSitua.splice(indice,1);
+		var game = this;
+		$.ajax({
+		    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : direccion_nivel5, "eliminar" : null },
+		    type: "POST",
+		    dataType: "json",
+		    url: "SaveDocumento.php",
+		    complete: function(resultado){
+		    	var result = JSON.parse(resultado.responseText);
+		    	if(result.Mensaje == "OK"){
+			    	alert("Se ha eliminado la expresión");
+			    	DatosNiv5 = result.Json;		
+		    	} else{
+		    		alert("Error al realizar la solicitud");
+		    	}		    	
+		    }
+		});
+	}
+});
+
 function Ciclos(){
 	this.Slot = [];
 	this.SlotAccion =[];
