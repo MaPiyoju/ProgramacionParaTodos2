@@ -85,12 +85,16 @@ Preload.prototype = {
     this.load.text('data4','assets/data/nivel4.json');//Datos nivel 4
 
     /*Imagenes nivel 5*/
+    this.load.image('introN5','assets/images/Nivel5/intro.jpg');
     this.load.image('tile_nivel5','assets/images/Nivel5/tile.jpg');
     this.load.image('marco','assets/images/Nivel5/marco.png');
     this.load.image('btnSi','assets/images/Nivel5/si.png');
     this.load.image('btnNo','assets/images/Nivel5/no.png');
     this.load.image('btnContinuar5','assets/images/Nivel5/continuar.png');
     this.load.spritesheet('reacciones','assets/images/Nivel5/reacciones.png',225,585);
+    this.load.image('final5','assets/images/Nivel5/final.png');
+    this.load.spritesheet('arbol','assets/images/Nivel5/arbol.png',170,66);
+    this.load.spritesheet('flechas','assets/images/Nivel5/flechas.png',35,31);
     this.load.text('data5','assets/data/nivel5.json');//Datos nivel 4
 
     /*Imagenes nivel 6*/

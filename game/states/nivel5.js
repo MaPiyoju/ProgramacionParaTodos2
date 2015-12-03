@@ -49,10 +49,10 @@
       this.situaLength = this.levelData.dataSitua.length;//Cantidad de situaciones de nivel
 
       this.game.world.setBounds(0, 0, 800, 600);//Limites de escenario
-      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN4');//Imagen intro de juego
+      this.introImg = this.game.add.tileSprite(0, 0,800,600, 'introN5');//Imagen intro de juego
       this.introImg2 = null;
       this.game.input.onDown.add(this.iniciarJuego,this);
-      this.txtIntro = this.game.add.bitmapText(610, 300, 'fontData', 'En este nivel tendrás la oportunidad de trabajar en la construcción de expresiones, deberás analizar correctamente cada solicitud y conformar pedazo a pedazo una expresión que le de solución.\n\nSuerte!', 24);
+      this.txtIntro = this.game.add.bitmapText(610, 320, 'fontData', 'En este nivel tendrás la oportunidad de entender que es un arbol de decisión, por medio de divertidas e icreibles situaciones tomarás elecciones que te llevarán por diferentes caminos y podrás ver el arbol generado.\n\nIntentalo!', 24);
       this.txtIntro.anchor.setTo(0.5,0.5);
       this.txtIntro.maxWidth = 250;
     },
@@ -196,23 +196,12 @@
       this.btnSi.destroy();
       this.btnNo.destroy();
       this.btnContinuar.visible = true;
-      for(var i=0;i<this.pasoActual+1;i++){
-        if(i != this.levelData.dataSitua[this.random].nPasos){
-          console.log(this.levelData.dataSitua[this.random].pasos[i].txtAccion,' - ',i);
-        }
-        if(i == this.pasoActual){ 
-          if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
-            console.log(this.levelData.dataSitua[this.random].pasos[i-1].fin);
-          }else{
-            console.log(this.levelData.dataSitua[this.random].pasos[i].alterno);
-          }
-        }        
-      }
     },
 
     btnContinuarFn: function(){
       this.btnSound.play();
       this.showStats();
+      this.btnContinuar.visible = false;
     },
 
     update: function() {
@@ -226,32 +215,124 @@
       //this.retirarItems();//Retirar elementos de juego
       this.alert.hide();//REtirar alerta de retroalimentacion
       //Creacion cuadro retroalimentación final
-      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final3');
+      this.retroFinal = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'final5');
       this.retroFinal.anchor.setTo(0.5,0.5);
-      this.btnMenu = this.game.add.button(410,370,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
+      this.btnMenu = this.game.add.button(410,458,'OpcPausa',this.pnlPausa.menuBtn,this,this.game);//Se agrega boton para retornar a menu
       this.btnMenu.frame = 2;
-      this.btnRepetir = this.game.add.button(335,370,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
+      this.btnRepetir = this.game.add.button(335,458,'OpcPausa',this.pnlPausa.repetirBtn,this,this.game);//Se agrega boton para repetir nivel
       this.btnRepetir.frame = 0;
 
-      this.txtStats = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 170, 'font_white', '', 28);
-      this.txtStats.anchor.setTo(0.5,0.5);
+      //Botones para desplazamiento
+      this.btnArriba = this.game.add.button(580,120,'flechas',this.desplazamiento,this);//Se agrega boton para desplazamiento arriba
+      this.btnArriba.frame = 0;
+      this.btnArriba.visible = false;
+      this.btnAbajo = this.game.add.button(580,450,'flechas',this.desplazamiento,this);//Se agrega boton para desplazamiento abajo
+      this.btnAbajo.frame = 1;
 
-      this.porcentaje = 0;
-      
-      this.txtPorc = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 125, 'font_white', this.porcentaje.toString() + '%', 40);
-      this.txtPorc.anchor.setTo(0.5,0.5);
+      this.pasoMostrarActual = 0;
 
-      //Asignacion de estrellas
-      if(this.porcentaje > 0){//1 estrella
-        this.game.add.sprite(221,227,'estrella');
+      if(this.pasoActual<3){
+        this.btnAbajo.visible = false;
       }
-      if(this.porcentaje > 24){//2 estrellas
-        this.game.add.sprite(348,227,'estrella');
+
+      this.cajasGroup = [];
+      this.mostrarUltArbol();
+    },
+
+    mostrarUltArbol: function(){
+      for(var i = 0;i<this.cajasGroup.length;i++){//Limpieza de elementos antes de nueva impresion
+        this.cajasGroup[i].destroy();
       }
-      if(this.porcentaje > 50){//3 estrellas
-        this.game.add.sprite(471,227,'estrella');
+      this.cajasGroup = [];
+
+      var ultY = 115;
+      var xIni = (this.retroFinal.x - (this.retroFinal.width/3)) + 150;
+
+      var lim = 0;
+      if(this.pasoActual < 4){
+        lim = this.pasoActual + 1;
+      }else{
+        lim = 4;
       }
-    },    
+      console.log(this.pasoMostrarActual,' - ',lim);
+      for(var i=this.pasoMostrarActual;i<lim;i++){
+        console.log("faltan cajas");
+        if(i != this.levelData.dataSitua[this.random].nPasos){
+          var x1 = xIni;
+          var x2 = xIni;
+          if(i>0){
+            if(this.levelData.dataSitua[this.random].pasos[i-1].accion == true){
+              x1 = xIni;
+              x2 = xIni + 185;
+            }else{
+              x1 = xIni + 185;
+              x2 = xIni;
+            }
+          }
+          var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAccion,20);
+          if(i>0){
+            var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);          
+          }
+          ultY += 90;
+
+        }
+        if(i == this.pasoActual){
+          if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){//Final de la situacion en su totalidad
+            var x1 = xIni;
+            var x2 = xIni;
+            if(this.levelData.dataSitua[this.random].pasos[i-1].accion == true){
+              x2 = xIni + 185;
+            }else{
+              x1 = xIni + 185;
+            }
+            var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i-1].fin,20);
+            if(i>0){
+              var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);
+            }
+          }else{//Final de cada paso
+            if(!(this.pasoMostrarActual == 0 && this.pasoActual == 3)){
+              var x1 = xIni;
+              var x2 = xIni;
+              if(this.levelData.dataSitua[this.random].pasos[i-1].accion == true){
+                x1 = xIni + 185;
+              }else{
+                x2 = xIni + 185;
+              }
+              var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAlterno,20);
+              var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);
+            }
+          }
+        }
+      }
+    },
+
+    crearCaja: function(x,y,frame,txt,size){
+      var box = this.game.add.sprite(x,y,'arbol',frame);
+      box.anchor.setTo(0.5,0.5);
+      this.cajasGroup.push(box);
+      box.texto = this.game.add.bitmapText(box.x,box.y,'fontData',txt,size);
+      box.texto.anchor.setTo(0.5,0.5);
+      box.texto.maxWidth = box.width - 10;
+      this.cajasGroup.push(box.texto);
+      return box;          
+    },
+
+    desplazamiento: function(btn){
+      if(btn.frame == 0){//Opcion flecha rriba, paso atras
+        this.pasoMostrarActual-=1;
+        this.btnAbajo.visible = true;
+        if(this.pasoMostrarActual == 0){
+          this.btnArriba.visible = false;
+        }
+      }else{//Opcion flecha abajo, paso adelante
+        this.pasoMostrarActual+=1;
+        this.btnArriba.visible = true;
+        if(this.pasoActual - this.pasoMostrarActual < 4){
+          this.btnAbajo.visible = false;
+        }
+      }
+      this.mostrarUltArbol();
+    },
 
     pausaJuego: function(game){
       var x1 = (this.game.width - 81);

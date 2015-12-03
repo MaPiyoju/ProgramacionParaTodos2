@@ -8,6 +8,7 @@
       		"txt": "Se te ha presentado la oportunidad de ser uno de los primeros tripulantes en una expedición a marte, sin embargo, es un viaje que tomara años y en estos momentos acabas de tener un hijo y tu familia no podría estar mas feliz; es por esto tu decides, \n\nIR AL VIAJE A MARTE?",
       		"accion": true,
                   "alterno": "Al quedarte y perder tu oportunidad de viajar a otro planeta, tu pareja queda increiblemente descepcionada por lo que decide dejarte por alguien que si se dirija a Marte y que pueda traele algún recuerdo interplanetario; pero no te preocupes, tu permaneces con la custodia de tu hijo.",
+                  "txtAlterno": "QUEDARSE EN CASA",
                   "expAlt": 1,
                   "txtAccion": "IR A MARTE?"
       	},
@@ -16,6 +17,7 @@
                   "exp": 0,
       		"accion": true,
                   "alterno": "Decides pasar más tiempo con tu hijo y pareja antes del viaje, por lo que llegado el dia de despegue no te encuentras preparado ni para ponerte un traje espacial, por ello los encargados de la expedición deciden dejarte y llevar un sustituto, pero no te preocupes, te regalan un modelo a escala de marte (pelota roja)",
+                  "txtAlterno": "QUEDARSE EN CASA",
                   "expAlt": 2,
                   "txtAccion": "IR A LOS ENTRENAMIENTOS?"
       	},
@@ -24,29 +26,43 @@
                   "exp": 4,
       		"accion": false,
                   "alterno": "En un arrebato por ser el heroe y salvar a todos, te diriges a la cabina de pilotaje y comienzas a presionar botones y jalar palancas, ocasionando un malfuncionamiento en la nave que ya se encontraba en piloto automatico y llevando así a todos a su trágico desasatre.\n\nEsperemos en casa les cuenten que terminaste la misión como todo un heroe.",
+                  "txtAlterno": "CASI SER UN HEROE",
                   "expAlt": 3,
                   "txtAccion": "TOMAR EL CONTROL DE LA NAVE?"
       	},
       	{
-      		"txt": "Por suerte la nave se encontraba en piloto automatico y todo continua normalmente, luego de un tiempo atterrizan en Marte",
+      		"txt": "Por suerte la nave se encontraba en piloto automatico y todo continua normalmente. Aterrizan en Marte, y dan inicio al primer recorrido exploratorio; a lo lejos divisas una silueta y no estas seguro de si lo que estas presenciando es realmente \"algo\", tal vez un ser que valga la pena estudiar, por ello,\n\n INFORMAS AL DIRECTOR DE MISIÓN ACERCA DE LA SILUETA Y CAMBIAN EL RUMBO DE LA EXPEDICIÓN?",
                   "exp": 0,
       		"accion": false,
-                  "alterno": "otro fin 4"
+                  "alterno": "Cuando llegan al lugar de la silueta, descubren que se trataba de una roca con forma extraña; tristemente, al dirigirse al lugar de la silueta y cambiar de rumbo, toda la exploración se dirige por caminos que no aportan realmente nada, confirmando falsas sospechas de que Marte es un planeta muerto y no vale la pena seguir allí, es por ello, todos retornan a la tierra. \n\nPracticamente guiaste a la expedición a su ruina",
+                  "txtAlterno": "DESTRUIR EXPEDICIÓN",
+                  "expAlt": 2,
+                  "txtAccion": "CAMBIAR RUMBO DE EXPEDICIÓN?"
       	},
       	{
-      		"txt": "condicion 5",
+      		"txt": "La expedición continua sin cambios, todo se mantiene de acuerdo al plan original, por suerte, el plan que fue trazado en la tierra de la manera mas aleatoria posible era el adecuado. Durante el recorrido se",
+                  "exp": 0,
       		"accion": true,
-                  "alterno": "otro fin 5"
+                  "alterno": "otro fin 5",
+                  "txtAlterno": "...",
+                  "expAlt": 0,
+                  "txtAccion": "..."
       	},
       	{
       		"txt": "condicion 6",
       		"accion": true,
-                  "alterno": "otro fin 6"
+                  "alterno": "otro fin 6",
+                  "txtAlterno": "",
+                  "expAlt": 0,
+                  "txtAccion": ""
       	},
       	{
       		"txt": "condicion 7",
       		"accion": true,
                   "alterno": "otro fin 7",
+                  "txtAlterno": "",
+                  "expAlt": 0,
+                  "txtAccion": "",
                   "fin": "fin"
       	}
       ]
