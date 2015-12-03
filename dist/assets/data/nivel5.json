@@ -40,7 +40,7 @@
                   "txtAccion": "CAMBIAR RUMBO DE EXPEDICIÓN?"
       	},
       	{
-      		"txt": "La expedición continua sin cambios, todo se mantiene de acuerdo al plan original, por suerte, el plan que fue trazado en la tierra de la manera mas aleatoria posible era el adecuado, ",
+      		"txt": "La expedición continua sin cambios, todo se mantiene de acuerdo al plan original, por suerte, el plan que fue trazado en la tierra de la manera mas aleatoria posible era el adecuado. Durante el recorrido se",
                   "exp": 0,
       		"accion": true,
                   "alterno": "otro fin 5",
