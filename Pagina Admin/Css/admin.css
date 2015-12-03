@@ -9,7 +9,7 @@ html,body{
 section{
 
 	width: 100%;
-	height:100%;
+	height:99%;
 }
 
 input[type="text"],input[type="password"]{
@@ -23,11 +23,16 @@ input[type="text"],input[type="password"]{
 }
 
 .Atras{
-	    text-align: left;
+    text-align: left;
     margin-left: 52px;
-    text-transform: uppercase;
     color: #686B6B;
     font-weight: bold;
+    background-image: url('../Images/Atras.png');
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position-y: 17px;
+    height: 53px;
+    cursor: pointer;
 }
 
 .background{
@@ -38,7 +43,7 @@ input[type="text"],input[type="password"]{
 }
 
 .inicio {
-	background:rgba(0, 0, 0, 0.40);	
+	
 	height: 100%;
 	color: #FFF;
 	text-align: center;
@@ -56,7 +61,7 @@ input[type="text"],input[type="password"]{
   	margin-bottom: 50px
 }
 
-.inicio .botonjugar{
+.botonjugar{
   margin: 0 auto;
   height: 46px;
   width: 140px;
@@ -66,8 +71,29 @@ input[type="text"],input[type="password"]{
   margin-top: 31px;
   font-size: 30px;
   padding-top: 15px;
+  color: #FFF;
+    text-align: center;
 }
 
+.botonjugar:hover{
+	cursor: pointer;
+	background: #83D263;
+}
+
+.botonformulario{
+	    height: 28px;
+    width: 131px;
+    background: #65AD47;
+    border: 1px solid #65AD47;
+    font-size: 19px;
+    color: #FFF;
+    text-align: center;
+}
+
+.botonformulario:hover{
+	cursor: pointer;
+	background: #83D263;
+}
 .registrarme{
 	text-decoration: underline;
 	color: #FFF;
@@ -117,6 +143,7 @@ input[type="text"],input[type="password"]{
 	padding: 3%;
 	color:#FFF;
 	text-align: center;
+	background: #F1B900;
 }
 
 .nosotros .footer img{
@@ -144,27 +171,31 @@ input[type="text"],input[type="password"]{
 		padding-top: 20px;
 }
 
+#niveles ul{
+    padding: 0px;
+}
+
 #niveles ul li{
-	display: inline-block;
-	vertical-align: top;
-	border:1px #E2DCDC  solid;
-	min-width: 250px;
-	width: 15%;
-	height: 380px;
+    display: inline-block;
+    vertical-align: top;
+    border: 1.5px #000000 dashed;
+    min-width: 211px;
+    width: 15%;
+    height: 380px;
 }
 
-#nivel1,#nivel2,#nivel3,#nivel4,#nivel6 {
+#nivel1,#nivel2,#nivel3,#nivel4,#nivel5,#nivel6 {
 	text-align: center;
-	padding-top: 31px;
+	padding-top: 5px;
 }
 
-#nivel1 .subTitulo{
-	font-size: 32px;
-  	padding-top: 17px;
+#nivel1 .subTitulo,#nivel2 .subTitulo,#nivel3 .subTitulo,#nivel4 .subTitulo,#nivel5 .subTitulo,#nivel6 .subTitulo{
+	font-size: 26px;
+  	padding-top: 0px;
 }
 
-#nivel1 .titulo{
-	font-size: 54px;
+#nivel1 .titulo,#nivel2 .titulo,#nivel3 .titulo,#nivel4 .titulo,#nivel5 .titulo,#nivel6 .titulo{
+	font-size: 28px;
   	padding-top: 0px;
   	color: #65AD47;
   	margin-bottom: 15px
@@ -245,13 +276,15 @@ input[type="text"],input[type="password"]{
 
 
 .cerrar{
-    display: inline-block;
+	display: inline-block;
     margin-left: 34%;
-    font-weight: bold;
-    color: #DE2323;
-    text-transform: uppercase;
     margin-top: 13px;
     vertical-align: top;
+    background-image: url('../Images/Delete.png');
+    background-repeat: no-repeat;
+    background-size: 16px;
+    width: 16px;
+    height: 16px;
 }
 .cerrar:hover{
 	cursor: pointer;

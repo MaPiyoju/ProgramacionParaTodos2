@@ -536,6 +536,38 @@ miapp.controller('ControllerNiv4',function(){
 	}
 });
 
+miapp.controller('ControllerNiv5',function(){	
+	this.dataSitua = DatosNiv5;	
+	this.nPasos = 0;
+	this.pasos  = [];
+	this.cancelar = function(){
+		this.nPasos = 0;
+		this.pasos  = [];	
+	}
+	this.CrearPasos = function(){
+		for (var i = 0; i < this.nPasos; i++) {
+			if(this.nPasos >= this.pasos.length){		
+				for (var i = this.pasos.length; i < this.nPasos; i++) {
+					this.pasos.push(
+					{
+			      		"txt": "",
+			      		"accion": null,
+		                "alterno": "",
+		                "expAlt": 0,
+		                "txtAccion": ""
+			      	});
+				}
+			}else{
+				var count = this.pasos.length;
+				
+				for (var i = count; i > this.nPasos; i--) {
+					this.pasos.splice(i-1,1);					
+				}
+			}	
+		};
+	}
+});
+
 function Ciclos(){
 	this.Slot = [];
 	this.SlotAccion =[];

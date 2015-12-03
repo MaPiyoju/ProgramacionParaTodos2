@@ -5,6 +5,7 @@ $str_datos =   file_get_contents("../juego/assets/data/nivel1.json");
 $str_datos_2 = file_get_contents("../juego/assets/data/nivel2.json");
 $str_datos_3 = file_get_contents("../juego/assets/data/nivel3.json");
 $str_datos_4 = file_get_contents("../juego/assets/data/nivel4.json");
+$str_datos_5 = file_get_contents("../juego/assets/data/nivel5.json");
 $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 
 ?>
@@ -25,34 +26,38 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 		var DatosNiv2 = <?php echo $str_datos_2; ?>;
 		var DatosNiv3 = <?php echo $str_datos_3; ?>;		
 		var DatosNiv4 = <?php echo $str_datos_4; ?>;
+		var DatosNiv5 = <?php echo $str_datos_5; ?>;
 		var DatosNiv6 = <?php echo $str_datos_6; ?>;
 
 		$(document).ready(function(){
-			$("#nivelGene").hide();
-			$("#nivel1").hide();
-			$("#nivel2").hide();
-			$("#nivel3").hide();
-			$("#nivel4").hide();
-			$("#nivel6").hide();
+			$("#nivelGene").slideUp();
+			$("#nivel1").slideUp();
+			$("#nivel2").slideUp();
+			$("#nivel3").slideUp();
+			$("#nivel4").slideUp();
+			$("#nivel5").slideUp();
+			$("#nivel6").slideUp();
 
 			$("#niveles ul li").click(function(){
 				var panel = $(this).attr("data-panel");
-				$("#nivel1").hide();
-				$("#nivel2").hide();
-				$("#nivel3").hide();
-				$("#nivel4").hide();
-				$("#nivel6").hide();
-				$("#nivelGene").hide();
-				$("#"+panel).show();				
+				$("#nivel1").slideUp();
+				$("#nivel2").slideUp();
+				$("#nivel3").slideUp();
+				$("#nivel4").slideUp();
+				$("#nivel5").slideUp();
+				$("#nivel6").slideUp();
+				$("#nivelGene").slideUp();
+				$("#"+panel).slideDown();				
 			});
 
 			$(".Atras").click(function(){
-				$("#nivel1").hide();
-				$("#nivel2").hide();
-				$("#nivel3").hide();
-				$("#nivel4").hide();
-				$("#nivel6").hide();
-				$("#nivelGene").show();
+				$("#nivel1").slideUp();
+				$("#nivel2").slideUp();
+				$("#nivel3").slideUp();
+				$("#nivel4").slideUp();
+				$("#nivel5").slideUp();
+				$("#nivel6").slideUp();
+				$("#nivelGene").slideDown();
 			});
 			$(".botonjugar").click(function(){
 				var usuario = $("#txtUsuario").val();
@@ -66,8 +71,8 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 				    	var result = JSON.parse(resultado.responseText);
 				    	if(result.Status == "Login_Success"){
 				    		alert("Bienvenido");
-				    		$("#login").hide();
-					    	$("#nivelGene").show();
+				    		$("#login").slideUp();
+					    	$("#nivelGene").slideDown();
 				    	} else if(result.Status =="Login_Failed"){
 				    		alert("El nombre de usuario o contraseña son incorrectos");
 				    	}else if(result.Status =="Login_Error"){
@@ -97,15 +102,17 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 					<div id="niveles">
 						<ul>
 							<li data-panel="nivel1">
-								
+								<img src="Images/introduccion-1.jpg" >
 							</li><li data-panel="nivel2">
-								
+								<img src="Images/introduccion-2.jpg" >
 							</li><li data-panel="nivel3">
-								
+								<img src="Images/introduccion-3.jpg" >
 							</li><li data-panel="nivel4">
-								
+								<img src="Images/introduccion-4.jpg" >
+							</li><li data-panel="nivel5">
+								<img src="Images/introduccion-5.jpg" >
 							</li><li data-panel="nivel6">
-								
+								<img src="Images/introduccion-6.jpg" >
 							</li>
 						</ul>
 					</div>
@@ -124,7 +131,7 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 			<div class="titulo">Algoritmos</div>		
 			<div id="situaciones" >
 				<ul>
-					<li ng-repeat="Situacion in niv1.Situaciones.dataSitua" ng-click ="niv1.SelectSitua($index)"><div>{{$index+1}} - {{ Situacion.situaTxt }}</div>  <div class="cerrar" ng-click="niv1.RemoveSit($index)">x</div> </li>					
+					<li ng-repeat="Situacion in niv1.Situaciones.dataSitua" ng-click ="niv1.SelectSitua($index)"><div>{{$index+1}} - {{ Situacion.situaTxt }}</div>  <div class="cerrar" ng-click="niv1.RemoveSit($index)"></div> </li>					
 				</ul>				
 			</div>
 			
@@ -147,9 +154,9 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 							</ol>
 						</div>
 					</div>
-					<input style="margin-right: 10px;" ng-show="niv1.guardar" type="button" id="btnGuardarSituacion" ng-click="niv1.AddSituacion()" value="Guardar"/>
-					<input style="margin-right: 10px;" ng-hide="niv1.guardar" type="button" id="btnActualizarSituacion" ng-click="niv1.EditSituacion()" value="Actualizar"/> 
-					<input type="button" class="btnCancelar" value="Cancelar" ng-click="niv1.cancelar()"/> 
+					<input style="margin-right: 10px;" class="botonformulario" ng-show="niv1.guardar" type="button" id="btnGuardarSituacion" ng-click="niv1.AddSituacion()" value="Guardar"/>
+					<input style="margin-right: 10px;"  class="botonformulario" ng-hide="niv1.guardar" type="button" id="btnActualizarSituacion" ng-click="niv1.EditSituacion()" value="Actualizar"/> 
+					<input type="button"  class="btnCancelar botonformulario" value="Cancelar" ng-click="niv1.cancelar()"/> 
 				</div>
 		</section>		
 		<section id="nivel2" ng-controller="ControllerNiv2 as niv2">
@@ -162,12 +169,12 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 				</div>
 				<div class="contentExpresiones">
 						<ul >
-							 <li  ng-repeat="expresion in niv2.Reales.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Reales')">x</div></li>
+							 <li  ng-repeat="expresion in niv2.Reales.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Reales')"></div></li>
 						</ul>
 				</div>
 
 				<input type="text" id="txtExpresionReales" ng-model="niv2.txtexpreales"  />
-				<input type="button" id="btnGuardarExpresionReales" value="+" ng-click="niv2.AddExpresion('Reales')" /> 
+				<input type="button" id="btnGuardarExpresionReales" class="botonformulario" value="+" ng-click="niv2.AddExpresion('Reales')" /> 
 			</div>
 			<div class="TipoDatos">
 				<div class="title">
@@ -175,11 +182,11 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 				</div>
 				<div class="contentExpresiones">
 						<ul >
-							 <li  ng-repeat="expresion in niv2.Logicos.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Logicos')">x</div></li>
+							 <li  ng-repeat="expresion in niv2.Logicos.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Logicos')"></div></li>
 						</ul>
 				</div>
 				<input type="text" id="txtExpresionBoleanos"  ng-model="niv2.txtexplogicos" />
-				<input type="button" id="btnGuardarExpresionBoleanos" value="+" ng-click="niv2.AddExpresion('Logicos')"/> 
+				<input type="button" id="btnGuardarExpresionBoleanos" class="botonformulario" value="+" ng-click="niv2.AddExpresion('Logicos')"/> 
 			</div>
 			<div class="TipoDatos">
 				<div class="title">
@@ -187,11 +194,11 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 				</div>
 				<div class="contentExpresiones">
 						<ul >
-							 <li  ng-repeat="expresion in niv2.Enteros.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Enteros')" >x</div></li>
+							 <li  ng-repeat="expresion in niv2.Enteros.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Enteros')" ></div></li>
 						</ul>
 				</div>
 				<input type="text" id="txtExpresionEnteros"  ng-model="niv2.txtexpenteros" />
-				<input type="button" id="btnGuardarExpresionEnteros" value="+" ng-click="niv2.AddExpresion('Enteros')"/> 
+				<input type="button" id="btnGuardarExpresionEnteros" class="botonformulario" value="+" ng-click="niv2.AddExpresion('Enteros')"/> 
 			</div>
 			<div class="TipoDatos">
 				<div class="title">
@@ -199,11 +206,11 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 				</div>
 				<div class="contentExpresiones">
 						<ul >
-							 <li  ng-repeat="expresion in niv2.Error.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Error')">x</div></li>
+							 <li  ng-repeat="expresion in niv2.Error.exp track by $index"> <div style="display: inline-block;  vertical-align: top;  width: 46%"> {{ expresion }}</div> <div class="cerrar" ng-click="niv2.RemoveExpresion($index,'Error')"></div></li>
 						</ul>
 				</div>
-				<input type="text" id="txtExpresionErrores" ng-model="niv2.txtexperror"  />
-				<input type="button" id="btnGuardarErrores" value="+" ng-click="niv2.AddExpresion('Error')" /> 
+				<input type="text" id="txtExpresionErrores"  ng-model="niv2.txtexperror"  />
+				<input type="button" id="btnGuardarErrores" class="botonformulario" value="+" ng-click="niv2.AddExpresion('Error')" /> 
 			</div>
 		</section>	
 		<section id="nivel3" ng-controller="ControllerNiv3 as niv3">
@@ -212,7 +219,7 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 			<div class="titulo">Evaluación de expresiones</div>	
 			<div id="situaciones" >
 				<ul>
-					<li ng-repeat="Expresion in niv3.expresiones.dataGusano" ng-click="niv3.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" ng-click="niv3.RemoveExpresionEva($index)">x</div> </li>					
+					<li ng-repeat="Expresion in niv3.expresiones.dataGusano" ng-click="niv3.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" ng-click="niv3.RemoveExpresionEva($index)"></div> </li>					
 				</ul>				
 			</div>
 			<div id="formSituacion">	
@@ -238,8 +245,8 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 					</ol>
 									
 				</div>
-				<input style="margin-right: 10px;" ng-show="niv3.guardar" type="button" id="btnGuardarSituacion" ng-click="niv3.AddExpresionEva()" value="Guardar"/>
-				<input style="margin-right: 10px;" type="button" id="btncancelar" ng-click="niv3.cancelar()" value="Cancelar"/>
+				<input style="margin-right: 10px;" class="botonformulario" ng-show="niv3.guardar" type="button" id="btnGuardarSituacion" ng-click="niv3.AddExpresionEva()" value="Guardar"/>
+				<input style="margin-right: 10px;" class="botonformulario" type="button" id="btncancelar" ng-click="niv3.cancelar()" value="Cancelar"/>
 			</div>
 		</section>	
 		<section id="nivel4" ng-controller="ControllerNiv4 as niv4">
@@ -248,7 +255,7 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 			<div class="titulo">Evaluación de expresiones</div>				
 			<div id="situaciones" >
 				<ul>
-					<li ng-repeat="Expresion in niv4.expresiones.dataGusano" ng-click="niv4.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" ng-click="niv4.RemoveExpresionEva($index)">x</div> </li>					
+					<li ng-repeat="Expresion in niv4.expresiones.dataGusano" ng-click="niv4.selectExpre($index)"><div>{{Expresion.exp[0]}}</div>  <div class="cerrar" ng-click="niv4.RemoveExpresionEva($index)"></div> </li>					
 				</ul>				
 			</div>
 			<div id="formSituacion">	
@@ -273,17 +280,68 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 					</ol>
 									
 				</div>
-				<input style="margin-right: 10px;" ng-show="niv4.guardar" type="button" id="btnGuardarSituacion" ng-click="niv4.AddExpresionEva()" value="Guardar"/>
-				<input style="margin-right: 10px;" type="button" id="btncancelar" ng-click="niv4.cancelar()" value="Cancelar"/>
+				<input style="margin-right: 10px;" class="botonformulario" ng-show="niv4.guardar" type="button" id="btnGuardarSituacion" ng-click="niv4.AddExpresionEva()" value="Guardar"/>
+				<input style="margin-right: 10px;" class="botonformulario" type="button" id="btncancelar" ng-click="niv4.cancelar()" value="Cancelar"/>
 			</div>
 		</section>	
+		<section id="nivel5" ng-controller="ControllerNiv5 as niv5">
+			<div class="Atras">Inicio</div>	
+			<div class="subTitulo">Nivel 5</div>
+			<div class="titulo">Arboles</div>
+			<div id="situaciones" >
+				<ul>
+					<li ng-repeat="Situacion in niv5.dataSitua.dataSitua" ng-click="niv5.selectExpre($index)"><div>{{Situacion.pasos[0].txtAccion}}</div>  <div class="cerrar" ng-click="niv5.RemoveExpresionEva($index)"></div> </li>					
+				</ul>				
+			</div>
+			<div id="formSituacion">
+				<div>
+					<label>Numero de Pasos: </label>	<br>
+					<input type="text" name="txtNPasos" ng-change="niv5.CrearPasos()" ng-model="niv5.nPasos" id="txtNPasos" >
+				</div>
+				<div>
+					<ol style="padding:0px;">
+						<li ng-repeat="Paso in niv5.pasos">
+							<div style="padding-left:25%"><b>Acción {{$index+1}}</b></div>
+							<div>
+								<label>Acción: </label>	<br>
+								<input type="text" name="txtNPasos" ng-model="Paso.txtAccion" id="txtNPasos" >
+							</div>
+							<div>
+								<label>Situación: </label>	<br>
+								<textarea  ng-model="Paso.txt" cols="40" rows="5" > </textarea>
+							</div>
+							<div>
+								<label>Situación Alterna: </label>	<br>
+								<textarea  ng-model="Paso.alterno" cols="40" rows="3" > </textarea>
+							</div>
+							<div>
+								<label>Desicion: </label>	<br>
+								<input type="radio"  ng-model="Paso.accion" value="true" > Si
+								<input type="radio" ng-model = "Paso.accion" value="false"> No
+							</div>
+							<div>
+								<label>Expresión: </label>	<br>
+								<select name="select" ng-model="Paso.expAlt">
+							      <option value="1">Animado</option>
+							      <option value="1">Triste</option>
+							    </select>
+							</div>
+							</br>							
+						</li>
+					</ol>
+				</div>
+				<input style="margin-right: 10px;" class="botonformulario" type="button" id="btnGuardarSituacion" ng-click="niv6.AddSituacion()" value="Guardar"/>					
+				<input type="button" class="btnCancelar botonformulario" value="Cancelar" ng-click="niv5.cancelar()"/> 
+			</div>
+
+		</section>
 		<section id="nivel6" ng-controller="ControllerNiv6 as niv6">
 			<div class="Atras">Inicio</div>	
 			<div class="subTitulo">Nivel 6</div>
 			<div class="titulo">Algoritmos</div>						
 			<div id="situaciones" >
 				<ul>
-					<li ng-repeat="Situacion in niv6.dataSitua.dataSitua" ng-click ="niv6.SelectSitua($index)"><div style="width: 492px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$index+1}} - {{ Situacion.texto }}</div>  <div class="cerrar" style="margin-left:11%" ng-click="niv6.RemoveSit($index)">x</div> </li>					
+					<li ng-repeat="Situacion in niv6.dataSitua.dataSitua" ng-click ="niv6.SelectSitua($index)"><div style="width: 492px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$index+1}} - {{ Situacion.texto }}</div>  <div class="cerrar" style="margin-left:11%" ng-click="niv6.RemoveSit($index)"></div> </li>					
 				</ul>				
 			</div>
 			
@@ -324,8 +382,8 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 							</ol>
 						</div>
 					</div>
-					<input style="margin-right: 10px;" type="button" id="btnGuardarSituacion" ng-click="niv6.AddSituacion()" value="Guardar"/>					
-					<input type="button" class="btnCancelar" value="Cancelar" ng-click="niv6.cancelar()"/> 
+					<input style="margin-right: 10px;" class="botonformulario" type="button" id="btnGuardarSituacion" ng-click="niv6.AddSituacion()" value="Guardar"/>					
+					<input type="button" class="btnCancelar botonformulario" value="Cancelar" ng-click="niv6.cancelar()"/> 
 				</div>
 		</section>
 
