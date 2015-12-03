@@ -540,10 +540,57 @@ miapp.controller('ControllerNiv5',function(){
 	this.dataSitua = DatosNiv5;	
 	this.nPasos = 0;
 	this.pasos  = [];
+	this.indiceSelect = null;	
 	this.cancelar = function(){
 		this.nPasos = 0;
 		this.pasos  = [];	
+		this.indiceSelect = null;
 	}
+
+	this.selectExpre = function(indice){
+		this.indiceSelect = indice;			
+		this.nPasos = this.dataSitua.dataSitua[indice].nPasos;		
+		this.pasos = this.dataSitua.dataSitua[indice].pasos;
+	};
+
+	this.AddSituacion = function(){		
+		if(this.indiceSelect != null){
+			this.dataSitua.dataSitua.splice(this.indiceSelect,1);
+			this.dataSitua.dataSitua.splice(this.indiceSelect,0,
+				{					
+					"nPasos" : this.nPasos,
+					"pasos": this.pasos
+				}
+			);
+		}
+		else{
+			this.dataSitua.dataSitua.push({					
+				"nPasos" : this.nPasos,
+				"pasos": this.pasos
+			});
+		}
+		
+		
+		var game = this;
+		$.ajax({
+			    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : direccion_nivel5,"eliminar" : null},
+			    type: "POST",
+			    dataType: "json",
+			    url: "SaveDocumento.php",
+			    complete: function(resultado){
+			    	var result = JSON.parse(resultado.responseText);
+			    	if(result.Mensaje == "OK"){
+				    	alert("Se ha creado la situación");
+				    	DatosNiv5 = result.Json;
+			    	}
+			    	else{
+		    			alert("Error al realizar la solicitud");
+		    		}    	
+			    }
+			});
+		this.cancelar();
+	}
+
 	this.CrearPasos = function(){
 		for (var i = 0; i < this.nPasos; i++) {
 			if(this.nPasos >= this.pasos.length){		
@@ -565,6 +612,26 @@ miapp.controller('ControllerNiv5',function(){
 				}
 			}	
 		};
+	}
+
+	this.RemoveExpresionEva = function(indice){
+		this.dataSitua.dataSitua.splice(indice,1);
+		var game = this;
+		$.ajax({
+		    data: {"JsonString" :  angular.toJson(game.dataSitua) , "direccion" : direccion_nivel5, "eliminar" : null },
+		    type: "POST",
+		    dataType: "json",
+		    url: "SaveDocumento.php",
+		    complete: function(resultado){
+		    	var result = JSON.parse(resultado.responseText);
+		    	if(result.Mensaje == "OK"){
+			    	alert("Se ha eliminado la expresión");
+			    	DatosNiv5 = result.Json;		
+		    	} else{
+		    		alert("Error al realizar la solicitud");
+		    	}		    	
+		    }
+		});
 	}
 });
 

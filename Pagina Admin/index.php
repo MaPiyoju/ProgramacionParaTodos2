@@ -301,36 +301,43 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 				<div>
 					<ol style="padding:0px;">
 						<li ng-repeat="Paso in niv5.pasos">
-							<div style="padding-left:25%"><b>Acción {{$index+1}}</b></div>
+							<div style="padding-left:25%"><b>Situación {{$index+1}}</b></div>
 							<div>
 								<label>Acción: </label>	<br>
-								<input type="text" name="txtNPasos" ng-model="Paso.txtAccion" id="txtNPasos" >
+								<input type="text" maxlength="25" name="txtNPasos" ng-model="Paso.txtAccion" id="txtNPasos" >
 							</div>
 							<div>
 								<label>Situación: </label>	<br>
-								<textarea  ng-model="Paso.txt" cols="40" rows="5" > </textarea>
+								<textarea  ng-model="Paso.txt" cols="40" rows="3" > </textarea>
+							</div>
+							<div>
+								<label>Acción Alterna: </label>	<br>
+								<input type="text" maxlength="25" name="txtNPasos" ng-model="Paso.txtAlterno" id="txtNPasos" >
 							</div>
 							<div>
 								<label>Situación Alterna: </label>	<br>
 								<textarea  ng-model="Paso.alterno" cols="40" rows="3" > </textarea>
 							</div>
 							<div>
-								<label>Desicion: </label>	<br>
-								<input type="radio"  ng-model="Paso.accion" value="true" > Si
-								<input type="radio" ng-model = "Paso.accion" value="false"> No
+								<label>Decisión: </label>	<br>
+								<input type="radio"  ng-model="Paso.accion" ng-value="true" > Si
+								<input type="radio" ng-model = "Paso.accion" ng-value="false"> No
 							</div>
 							<div>
 								<label>Expresión: </label>	<br>
 								<select name="select" ng-model="Paso.expAlt">
-							      <option value="1">Animado</option>
-							      <option value="1">Triste</option>
+							      <option value="0" ng-selected="Paso.expAlt == 0">Entusiasta</option>
+							      <option value="1" ng-selected="Paso.expAlt == 1">Triste</option>
+							      <option value="2" ng-selected="Paso.expAlt == 2">Furioso</option>
+							      <option value="3" ng-selected="Paso.expAlt == 3">Sorprendido</option>
+							      <option value="4" ng-selected="Paso.expAlt == 4">Feliz</option>
 							    </select>
 							</div>
 							</br>							
 						</li>
 					</ol>
 				</div>
-				<input style="margin-right: 10px;" class="botonformulario" type="button" id="btnGuardarSituacion" ng-click="niv6.AddSituacion()" value="Guardar"/>					
+				<input style="margin-right: 10px;" class="botonformulario" type="button" id="btnGuardarSituacion" ng-click="niv5.AddSituacion()" value="Guardar"/>					
 				<input type="button" class="btnCancelar botonformulario" value="Cancelar" ng-click="niv5.cancelar()"/> 
 			</div>
 
