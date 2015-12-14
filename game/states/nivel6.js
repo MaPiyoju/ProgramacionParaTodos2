@@ -1,3 +1,8 @@
+/*
+  Autores : 
+  Manuel Alejandro Peña Vargas 
+  Cristian David Ojeda Maldonado  
+*/
 'use strict';
 
   //Se invoca prefebricado del funcionamiento del pausa

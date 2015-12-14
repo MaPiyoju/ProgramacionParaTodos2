@@ -1,3 +1,9 @@
+/*
+  Autores : 
+  Manuel Alejandro Peña Vargas 
+  Cristian David Ojeda Maldonado  
+*/
+
 /*Se declara variables globales los cuales contienen las direcciones 
 de los json*/
 var data ;					

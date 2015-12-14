@@ -1,4 +1,9 @@
 <?php
+/*
+  Autores : 
+  Manuel Alejandro Peña Vargas 
+  Cristian David Ojeda Maldonado  
+*/
 // Lee el fichero en una variable,
 // y convierte su contenido a una estructura de datos
 $str_datos =   file_get_contents("../juego/assets/data/nivel1.json");
