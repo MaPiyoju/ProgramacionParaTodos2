@@ -1,6 +1,5 @@
 'use strict';
-var Pausa = require('../prefabs/pause');
-  
+  var Pausa = require('../prefabs/pause');  
   var Alert = require('../prefabs/alert');
 
   function Nivel6() {}

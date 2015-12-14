@@ -18,11 +18,11 @@
 
     },
 
-    crearBoton: function(x,y,llave,txt_x,txt_y,txt, animOk){
+    crearBoton: function(x,y,llave,txt_x,txt_y,txt, animOk){//Creacion de opciones para menu inicial
       var boton = this.game.add.sprite(x, y,llave,0);
       boton.nivel = llave;
       var anim = boton.animations.add('over', [0,1,2,3,4,5,6], 10, false);
-      if(animOk){
+      if(animOk){//En caso de animacion se realiza asignacion de eventos 
         anim.onComplete.add(function() {
           if(boton.texto){
             boton.texto.revive();

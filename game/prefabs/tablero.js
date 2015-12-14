@@ -1,16 +1,17 @@
 'use strict';
 
+// Creacion de panel de alerta extendiendo Phaser.Group
 var Entidad = require('../prefabs/entidad');
 
 var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, tableroMarco, parent){
-  Phaser.Group.call(this, game, parent);  
+  Phaser.Group.call(this, game, parent);  //Creacion de objeto de grupo
 
   /*Definicion de propiedades*/
   this.x = x;
   this.y = y;
-  this.xCuadros = xCuadros;
-  this.yCuadros = yCuadros;
-  this.dimension = 50;
+  this.xCuadros = xCuadros;//Cuadros de ancho de tablero
+  this.yCuadros = yCuadros;//Cuadros de alto del tablero
+  this.dimension = 50;//Dimension de cuadros de tablero
 
   //Fondo de tablero
   this.fondoTableroF = this.game.add.sprite(x,y,tablero);
@@ -61,11 +62,11 @@ Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
   return obj;
 }
 
-Tablero.prototype.setTexto = function(i, j, txt, obj_) {
-  if(obj_){
+Tablero.prototype.setTexto = function(i, j, txt, obj_) {//Creacion objetos detexto en tablero
+  if(obj_){//Actualizacion posicion objeto de texto existente
     obj_.x = this.x+(i*this.dimension)+(this.dimension/2);
     obj_.y = this.y+(j*this.dimension);
-  }else{
+  }else{//Nuevo objeto de texto
     var obj = this.game.add.bitmapText(this.x+(i*this.dimension)+(this.dimension/2), this.y+(j*this.dimension), 'fontData', txt, 22);
     obj.align = "center";
     obj.anchor.setTo(0.5,-0.5);
