@@ -1,4 +1,5 @@
 'use strict';
+
   //Se invoca prefebricado del funcionamiento del pausa
   var Pausa = require('../prefabs/pause');
   //Se invoca prefabricado del funcionamiento de mensaje de alerta
