@@ -1,8 +1,8 @@
   'use strict';
 
-  // Create our pause panel extending Phaser.Group
+  // Creacion de panel de alerta extendiendo Phaser.Group
   var Alert = function(game, parent){
-    Phaser.Group.call(this, game, parent);
+    Phaser.Group.call(this, game, parent);//Creacion objeto de grupo
 
     //Fondo de alerta
     this.fondo = this.game.add.sprite(0,0,'alert')
@@ -20,7 +20,7 @@
     this.btnContinuar.anchor.setTo(0.5,0);
     this.add(this.btnContinuar);
 
-    this.visible = false;
+    this.visible = false;//Visibilidad falsa por defecto
   };
 
   Alert.prototype = Object.create(Phaser.Group.prototype);

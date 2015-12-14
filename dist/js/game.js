@@ -24,9 +24,9 @@ window.onload = function () {
 },{"./states/boot":6,"./states/gameover":7,"./states/menu":8,"./states/nivel1":9,"./states/nivel2":10,"./states/nivel3":11,"./states/nivel4":12,"./states/nivel5":13,"./states/nivel6":14,"./states/play":15,"./states/preload":16}],2:[function(require,module,exports){
   'use strict';
 
-  // Create our pause panel extending Phaser.Group
+  // Creacion de panel de alerta extendiendo Phaser.Group
   var Alert = function(game, parent){
-    Phaser.Group.call(this, game, parent);
+    Phaser.Group.call(this, game, parent);//Creacion objeto de grupo
 
     //Fondo de alerta
     this.fondo = this.game.add.sprite(0,0,'alert')
@@ -44,7 +44,7 @@ window.onload = function () {
     this.btnContinuar.anchor.setTo(0.5,0);
     this.add(this.btnContinuar);
 
-    this.visible = false;
+    this.visible = false;//Visibilidad falsa por defecto
   };
 
   Alert.prototype = Object.create(Phaser.Group.prototype);
@@ -68,15 +68,15 @@ window.onload = function () {
 },{}],3:[function(require,module,exports){
 'use strict';
 
+// Creacion de elemento Entidad extendiendo Phaser.Sprite
 var Entidad = function(game, x, y, key,frame) {
-  Phaser.Sprite.call(this, game, x, y, key, frame);
+  Phaser.Sprite.call(this, game, x, y, key, frame);//Creacion de objeto sprite
 
   /*Definicion de propiedades*/
   this.posx = 0;//Posicion relativa de x en el tablero
   this.posy = 0;//Posicion relativa de y en el tablero
   this.propiedades = [{nombre:"Posicion X",prop:"posx",val:this.posx},
                 {nombre:"Posicion Y",prop:"posy",val:this.posy}];
-  this.consejos = ["Siempre que abras un parentésis ( recuerda darle cierre )","Fijate siempre en lo que escribes, el mas mínimo error genera fallas en el código","Un error de sintaxis puede deberse a la falta de un paréntesis","Un error de sintaxis puede deberse a puntos(.) repetidos","Si te sientes bloqueado, detente y relajate","Siempre que llames una función o método asegurate de establecer sus propiedades dentro del paréntesis"];
 };
 
 Entidad.prototype = Object.create(Phaser.Sprite.prototype);
@@ -85,85 +85,25 @@ Entidad.prototype.constructor = Entidad;
 Entidad.prototype.update = function() {
 };
 
-Entidad.prototype.mostrar = function(msj) {
-  if(!this.txtMostrar){//Se realiza la cracion del mensaje
-    this.txtFondo = this.game.add.sprite(this.x + (this.width * 3)+10,this.y + 20,'globo1');
-    this.txtFondo.anchor.setTo(0.5,0);
-    this.txtMostrar = this.game.add.text(this.txtFondo.x,this.txtFondo.y + 8,msj,{ font: '12px consolas', fill: '#000', align:'left'});
-    this.txtMostrar.anchor.setTo(0.5,0);
-    this.txtMostrar.wordWrap = true;
-    this.txtMostrar.wordWrapWidth = 110;
-    this.txtMostrar.alpha = 0;
-    this.txtFondo.alpha = 0;
-  }else{
-    this.txtFondo.x = this.x + (this.width * 3)+10;
-    this.txtFondo.y = this.y + 40;
-    this.txtMostrar.x = this.txtFondo.x;
-    this.txtMostrar.y = this.txtFondo.y + 15;
-    this.txtMostrar.setText(msj);//Se establece el texto del mensaje
-  }
-  if(!msj){//Texto por defecto
-    this.txtMostrar.setText("Hola");
-  }
-  console.log('Heigth: '+this.txtMostrar.height);
-  if(this.txtMostrar.height < 40){//En caso de contar con una linea
-    this.txtFondo.loadTexture('globo1');
-    this.txtFondo.y = this.y + 20;
-    this.txtMostrar.y = this.txtFondo.y + 8;
-  }else if(this.txtMostrar.height < 87){//En caso de contar con dos hasta 4 lineas
-    this.txtFondo.loadTexture('globo2');
-  }else{//En caso de contrar con mas de 4 lineas
-    this.txtFondo.loadTexture('globo3');
-  }
-  this.msjBandera = true;
-  this.game.add.tween(this.txtMostrar).to({alpha:1}, 350, Phaser.Easing.Linear.None, true);//Animacion para mostrar mensaje
-  this.game.add.tween(this.txtFondo).to({alpha:1}, 350, Phaser.Easing.Linear.None, true);//Animacion para mostrar mensaje
-  setTimeout(this.ocultar,5000,this);//Se realiza el llamado de metodo para ocultar mensaje en 5 segundos
-};
-
-Entidad.prototype.ocultar = function(e) {
-  //Animacion para ocutar mensaje
-  e.game.add.tween(e.txtMostrar).to({alpha:0}, 350, Phaser.Easing.Linear.None, true);
-  e.game.add.tween(e.txtFondo).to({alpha:0}, 350, Phaser.Easing.Linear.None, true);
-  e.msjBandera = false;
-  e.propBandera = false;
-  e.consBandera = false;
-};
-
-Entidad.prototype.prop = function() {
-  var retorno = "";
-  for(var i=0;i<this.propiedades.length;i++){
-    retorno += this.propiedades[i].nombre + ": " + this.propiedades[i].prop + "\n";
-  }
-  this.propBandera = true;
-  return retorno;
-};
-
-Entidad.prototype.consejo = function() {
-  var random = Math.floor(Math.random() * this.consejos.length);
-  this.consBandera = true;
-  return this.consejos[random];
-};
-
 module.exports = Entidad;
 
 },{}],4:[function(require,module,exports){
-
   'use strict';
 
-  // Create our pause panel extending Phaser.Group
+  // Creacion de panel de Pausa extendiendo Phaser.Group
   var Pause = function(game, parent){
-    Phaser.Group.call(this, game, parent);
+    Phaser.Group.call(this, game, parent);//Creacion objeto de grupo
 
     //Se agrega el panel
     this.panel = this.create(this.game.width/2, 10, 'fondoPausa');
     this.panel.fixedToCamera = true;
     this.panel.anchor.setTo(0.5, 0);
 
-    //this.game.onPause.add(enPausa, this);
+    //Creacion fondo para mostrar en pausa
     this.mensajeGeneral  = this.game.add.sprite(0, 0,'ayudaGeneral',0);
     this.mensajeGeneral.visible = false;
     this.mensajeGeneral.fixedToCamera = true;
+    //Creacion boton para cierre de pausa
     this.cerrarMensaje = this.game.add.sprite((this.game.width - 81),20,'btnCerrar');
     this.cerrarMensaje.fixedToCamera = true;
     this.cerrarMensaje.visible = false;
@@ -185,7 +125,6 @@ module.exports = Entidad;
     this.btnInicio.fixedToCamera = true;
     this.btnInicio.frame = 2;
     this.add(this.btnInicio);
-
     
     //Boton de ayuda
     this.btnAyuda = this.game.add.button((this.game.width/2) + 60, 50, 'OpcPausa');
@@ -205,17 +144,18 @@ module.exports = Entidad;
   Pause.prototype = Object.create(Phaser.Group.prototype);
   Pause.constructor = Pause;
 
-  Pause.prototype.show = function(){
+  Pause.prototype.show = function(){//Mostrar pausa
     var game_ = this.game;
     var tween = this.game.add.tween(this).to({y:150}, 500, Phaser.Easing.Bounce.Out, true);
     tween.onComplete.add(function(){this.game.paused = true;}, this);
   };
-  Pause.prototype.hide = function(){
+
+  Pause.prototype.hide = function(){//Ocultar pausa
     this.game.add.tween(this).to({y:-160}, 200, Phaser.Easing.Linear.NONE, true);
   }; 
 
-  Pause.prototype.reset = function(game){
-     
+  Pause.prototype.reset = function(game){//Validacion de acciones dentro de pausa de acuerdo a posicion del clic
+      //Variables para control de posicion
       var x1 = (this.game.width/2) - 120;
       var x2 = (this.game.width/2) - 75;
       var y1 = 210; 
@@ -279,13 +219,13 @@ module.exports = Entidad;
 
 
   /*Metodos generales para retorno a menu y repetir nivel para llamado externo*/
-  Pause.prototype.menuBtn = function(this_, game) {
+  Pause.prototype.menuBtn = function(this_, game) {//Volver a menu
     this.btnSound.play();
     this_.game.state.clearCurrentState();
     game.game.state.start("play");
   };
   
-  Pause.prototype.repetirBtn = function(this_,game) {
+  Pause.prototype.repetirBtn = function(this_,game) {//Repetir nivel
     this.btnSound.play();
     this.game.state.clearCurrentState();    
     game.game.state.start(game.game.state.current);
@@ -295,17 +235,18 @@ module.exports = Entidad;
 },{}],5:[function(require,module,exports){
 'use strict';
 
+// Creacion de panel de alerta extendiendo Phaser.Group
 var Entidad = require('../prefabs/entidad');
 
 var Tablero = function(game, x, y ,xCuadros , yCuadros, tablero, tableroMarco, parent){
-  Phaser.Group.call(this, game, parent);  
+  Phaser.Group.call(this, game, parent);  //Creacion de objeto de grupo
 
   /*Definicion de propiedades*/
   this.x = x;
   this.y = y;
-  this.xCuadros = xCuadros;
-  this.yCuadros = yCuadros;
-  this.dimension = 50;
+  this.xCuadros = xCuadros;//Cuadros de ancho de tablero
+  this.yCuadros = yCuadros;//Cuadros de alto del tablero
+  this.dimension = 50;//Dimension de cuadros de tablero
 
   //Fondo de tablero
   this.fondoTableroF = this.game.add.sprite(x,y,tablero);
@@ -356,11 +297,11 @@ Tablero.prototype.setObjCuadro = function(i, j, obj, sprite, frame){
   return obj;
 }
 
-Tablero.prototype.setTexto = function(i, j, txt, obj_) {
-  if(obj_){
+Tablero.prototype.setTexto = function(i, j, txt, obj_) {//Creacion objetos detexto en tablero
+  if(obj_){//Actualizacion posicion objeto de texto existente
     obj_.x = this.x+(i*this.dimension)+(this.dimension/2);
     obj_.y = this.y+(j*this.dimension);
-  }else{
+  }else{//Nuevo objeto de texto
     var obj = this.game.add.bitmapText(this.x+(i*this.dimension)+(this.dimension/2), this.y+(j*this.dimension), 'fontData', txt, 22);
     obj.align = "center";
     obj.anchor.setTo(0.5,-0.5);
@@ -431,9 +372,10 @@ Menu.prototype = {
 
   },
   create: function() {    
+    //Imagen intro de juego
     this.sprite = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'intro');
     this.sprite.anchor.setTo(0.5, 0.5);
-
+    //Audio de fondo de juego en loop
     this.bgMusic = this.game.add.audio('menuBgMusic',0.1,true);
     this.bgMusic.play();
     this.btnSound = this.game.add.audio('btnMenuSound');
@@ -445,7 +387,7 @@ Menu.prototype = {
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
       this.btnSound.play();
-      this.game.state.start('play');
+      this.game.state.start('play');//Inicio de juego al recibir clic
     }
   }
 };
@@ -2236,7 +2178,7 @@ module.exports = Menu;
 
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
-      this.feedSound = this.game.add.audio('feedSound');
+      this.audioFinal = this.game.add.audio('bienSound');
       this.malSound = this.game.add.audio('malSound');
       this.cambioSound = this.game.add.audio('cambioSound');
     },
@@ -2315,10 +2257,10 @@ module.exports = Menu;
       this.game.input.onDown.add(this.pausaJuego,this);
     },
 
-    cargaSitua: function(){
-      this.random = Math.floor(Math.random()*this.levelData.dataSitua.length);
-      this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
-      this.miniArbol();
+    cargaSitua: function(){//Metodo para cargar situacion
+      this.random = Math.floor(Math.random()*this.levelData.dataSitua.length);//Se realiza carga de situacion aleatoria frente a data
+      this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;//Texto inicial
+      this.miniArbol();//Llamado a miniarbol
       this.inicia = true;
     },
 
@@ -2332,24 +2274,26 @@ module.exports = Menu;
       this.validaCondicion(false);
     },
 
-    validaCondicion: function(opc){
-      if(this.levelData.dataSitua[this.random].pasos[this.pasoActual].accion == opc){
-        this.pasoActual++;
-        if(this.pasoActual < this.levelData.dataSitua[this.random].nPasos){
+    validaCondicion: function(opc){//Control de juego de acuerdo a la eleccion del jugador
+      if(this.levelData.dataSitua[this.random].pasos[this.pasoActual].accion == opc){//En caso de elegir la opcion para avance de situacion de acuerdo a data
+        this.pasoActual++;//Aumento de paso actual
+        if(this.pasoActual < this.levelData.dataSitua[this.random].nPasos){//En caso de no ser el nodo final
+          //Actualizacion de textos de juego
           this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
           this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual].exp;
+          this.cambioSound.play();
         }else{
-          this.nodoFinal();
+          this.nodoFinal();//Termina juego
         }
       }else{
-        this.nodoFinal();
+        this.nodoFinal();//Termina juego
       }
-      this.miniArbol(opc);
+      this.miniArbol(opc);//Actualiza mini arbol
     },
 
-    miniArbol: function(opc){
-      var botPadd = 10;
-      var y = 0;
+    miniArbol: function(opc){//Metodo para control y creacion de miniarbol
+      var botPadd = 10;//Padding inferior (bot padding)
+      var y = 0;//Y inicial
       if(!this.termina || this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
         y = ((this.miniH + botPadd) * this.pasoActual);
       }else{
@@ -2371,25 +2315,27 @@ module.exports = Menu;
       }
     },
 
-    pintar: function(fill,x,y,w,h){
+    pintar: function(fill,x,y,w,h){//Metodo para pintar elementos de miniarbol
       this.graf.beginFill(fill, 1);
-      this.graf.moveTo(this.ultMin+(this.miniH/2),y-(this.miniH/2));
+      this.graf.moveTo(this.ultMin+(this.miniH/2),y-(this.miniH/2));//Atualizacion de canvas de pintura
       this.graf.lineStyle(2, 0x000000);
-      this.graf.lineTo(x+(this.miniH/2),y);
+      this.graf.lineTo(x+(this.miniH/2),y);//Linea conectora de nodos
       this.graf.lineStyle(1, fill);
-      this.graf.bounds = new PIXI.Rectangle(x, y, w, h);
+      this.graf.bounds = new PIXI.Rectangle(x, y, w, h);//Cuadro representando nodo de arbol
       this.graf.drawRect(x, y, w, h);
       this.graf.endFill();
     },
 
-    nodoFinal: function(){
+    nodoFinal: function(){//Paso final de situacino
+      this.audioFinal.play();
       if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){//Mensaje final de acuerdo a la ultima eleccion
         this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual-1].fin;
         this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual-1].expAlt;
-      }else{
+      }else{//mensaje final alterno de acuerdo a la situacion
         this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].alterno;
         this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual].expAlt;
       }
+
       this.termina = true;
       this.btnSi.destroy();
       this.btnNo.destroy();
@@ -2427,14 +2373,14 @@ module.exports = Menu;
       this.btnAbajo = this.game.add.button(580,450,'flechas',this.desplazamiento,this);//Se agrega boton para desplazamiento abajo
       this.btnAbajo.frame = 1;
 
-      this.pasoMostrarActual = 0;
+      this.pasoMostrarActual = 0;//Pagina inicial de pasos a mostrar
 
-      if(this.pasoActual<3){
+      if(this.pasoActual<3){//Control de visibilidad desplazamiento abajo
         this.btnAbajo.visible = false;
       }
 
       this.cajasGroup = [];
-      this.mostrarUltArbol();
+      this.mostrarUltArbol();//Mostrar retroalimentacion final
     },
 
     mostrarUltArbol: function(){
@@ -2443,21 +2389,20 @@ module.exports = Menu;
       }
       this.cajasGroup = [];
 
-      var ultY = 115;
-      var xIni = (this.retroFinal.x - (this.retroFinal.width/3)) + 150;
+      var ultY = 115;//Y inicial
+      var xIni = (this.retroFinal.x - (this.retroFinal.width/3)) + 150;//X inicial
 
-      var lim = 0;
+      var lim = 0;//Limite de elementos mostrados por pagina de acuerdo al paso actual mostrado
       if(this.pasoActual < 4){
         lim = this.pasoActual + 1;
       }else{
         lim = 4;
       }
-      for(var i=this.pasoMostrarActual;i<lim+this.pasoMostrarActual;i++){
-        console.log("faltan cajas");
+      for(var i=this.pasoMostrarActual;i<lim+this.pasoMostrarActual;i++){//Creacion de elementos de acuerdo a la pagina y limite de elementos presentados
         if(i != this.levelData.dataSitua[this.random].nPasos){
           var x1 = xIni;
           var x2 = xIni;
-          if(i>0){
+          if(i>0){//En caso de ser elementos a partir del paso 1
             if(this.levelData.dataSitua[this.random].pasos[i-1].accion == true){
               x1 = xIni;
               x2 = xIni + 185;
@@ -2466,14 +2411,15 @@ module.exports = Menu;
               x2 = xIni;
             }
           }
-          var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAccion,20);
-          if(i>0){
-            var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);          
+          if(i <= this.pasoActual){//Control de ceracion de elementos de acuerdo a los limites definidos por el paso actual
+            var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAccion,20);
+            if(i>0){
+              var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);          
+            }
           }
           ultY += 90;
-
         }
-        if(i == this.pasoActual){
+        if(i == this.pasoActual){//En caso de ser ultimo paso
           if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){//Final de la situacion en su totalidad
             var x1 = xIni;
             var x2 = xIni;
@@ -2482,28 +2428,36 @@ module.exports = Menu;
             }else{
               x1 = xIni + 185;
             }
-            var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i-1].fin,20);
+            var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i-1].txtFin,20);
             if(i>0){
               var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);
             }
-          }else{//Final de cada paso
+          }else{//Final de cada paso            
             if(!(this.pasoMostrarActual == 0 && this.pasoActual == 3)){
-              var x1 = xIni;
-              var x2 = xIni;
-              if(this.levelData.dataSitua[this.random].pasos[i-1].accion == true){
-                x1 = xIni + 185;
+              console.log(i,' - ',lim+this.pasoMostrarActual);
+              if(i+1 != lim+this.pasoMostrarActual || this.pasoMostrarActual==0){
+                var x1 = xIni;
+                var x2 = xIni;
+                var iVal = i;
+                
+                if(i>0){iVal = i-1;}
+                if(this.levelData.dataSitua[this.random].pasos[iVal].accion == true){
+                  x1 = xIni + 185;
+                }else{
+                  x2 = xIni + 185;
+                }
+                var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAlterno,20);
+                var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);
               }else{
-                x2 = xIni + 185;
+                this.btnAbajo.visible = true;
               }
-              var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAlterno,20);
-              var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);
             }
           }
         }
       }
     },
 
-    crearCaja: function(x,y,frame,txt,size){
+    crearCaja: function(x,y,frame,txt,size){//Creacion de elementos para retroalimentacion final
       var box = this.game.add.sprite(x,y,'arbol',frame);
       box.anchor.setTo(0.5,0.5);
       this.cajasGroup.push(box);
@@ -2514,8 +2468,9 @@ module.exports = Menu;
       return box;          
     },
 
-    desplazamiento: function(btn){
-      if(btn.frame == 0){//Opcion flecha rriba, paso atras
+    desplazamiento: function(btn){//Control de botones de desplazamiento
+      this.btnSound.play();
+      if(btn.frame == 0){//Opcion flecha arriba, paso atras
         this.pasoMostrarActual-=1;
         this.btnAbajo.visible = true;
         if(this.pasoMostrarActual == 0){
@@ -2528,7 +2483,7 @@ module.exports = Menu;
           this.btnAbajo.visible = false;
         }
       }
-      this.mostrarUltArbol();
+      this.mostrarUltArbol();//Se actualiza retroalimentacion final de acuerdo a la pagina presentada
     },
 
     pausaJuego: function(game){
@@ -2557,8 +2512,7 @@ module.exports = Menu;
   module.exports = Nivel5;
 },{"../prefabs/alert":2,"../prefabs/pause":4}],14:[function(require,module,exports){
 'use strict';
-var Pausa = require('../prefabs/pause');
-  
+  var Pausa = require('../prefabs/pause');  
   var Alert = require('../prefabs/alert');
 
   function Nivel6() {}
@@ -3239,11 +3193,11 @@ var Pausa = require('../prefabs/pause');
 
     },
 
-    crearBoton: function(x,y,llave,txt_x,txt_y,txt, animOk){
+    crearBoton: function(x,y,llave,txt_x,txt_y,txt, animOk){//Creacion de opciones para menu inicial
       var boton = this.game.add.sprite(x, y,llave,0);
       boton.nivel = llave;
       var anim = boton.animations.add('over', [0,1,2,3,4,5,6], 10, false);
-      if(animOk){
+      if(animOk){//En caso de animacion se realiza asignacion de eventos 
         anim.onComplete.add(function() {
           if(boton.texto){
             boton.texto.revive();

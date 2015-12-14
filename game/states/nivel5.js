@@ -38,7 +38,7 @@
 
       //Se incluyen audios de juego
       this.btnSound = this.game.add.audio('btnSound');
-      this.feedSound = this.game.add.audio('feedSound');
+      this.audioFinal = this.game.add.audio('bienSound');
       this.malSound = this.game.add.audio('malSound');
       this.cambioSound = this.game.add.audio('cambioSound');
     },
@@ -117,10 +117,10 @@
       this.game.input.onDown.add(this.pausaJuego,this);
     },
 
-    cargaSitua: function(){
-      this.random = Math.floor(Math.random()*this.levelData.dataSitua.length);
-      this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
-      this.miniArbol();
+    cargaSitua: function(){//Metodo para cargar situacion
+      this.random = Math.floor(Math.random()*this.levelData.dataSitua.length);//Se realiza carga de situacion aleatoria frente a data
+      this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;//Texto inicial
+      this.miniArbol();//Llamado a miniarbol
       this.inicia = true;
     },
 
@@ -134,24 +134,26 @@
       this.validaCondicion(false);
     },
 
-    validaCondicion: function(opc){
-      if(this.levelData.dataSitua[this.random].pasos[this.pasoActual].accion == opc){
-        this.pasoActual++;
-        if(this.pasoActual < this.levelData.dataSitua[this.random].nPasos){
+    validaCondicion: function(opc){//Control de juego de acuerdo a la eleccion del jugador
+      if(this.levelData.dataSitua[this.random].pasos[this.pasoActual].accion == opc){//En caso de elegir la opcion para avance de situacion de acuerdo a data
+        this.pasoActual++;//Aumento de paso actual
+        if(this.pasoActual < this.levelData.dataSitua[this.random].nPasos){//En caso de no ser el nodo final
+          //Actualizacion de textos de juego
           this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].txt;
           this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual].exp;
+          this.cambioSound.play();
         }else{
-          this.nodoFinal();
+          this.nodoFinal();//Termina juego
         }
       }else{
-        this.nodoFinal();
+        this.nodoFinal();//Termina juego
       }
-      this.miniArbol(opc);
+      this.miniArbol(opc);//Actualiza mini arbol
     },
 
-    miniArbol: function(opc){
-      var botPadd = 10;
-      var y = 0;
+    miniArbol: function(opc){//Metodo para control y creacion de miniarbol
+      var botPadd = 10;//Padding inferior (bot padding)
+      var y = 0;//Y inicial
       if(!this.termina || this.pasoActual == this.levelData.dataSitua[this.random].nPasos){
         y = ((this.miniH + botPadd) * this.pasoActual);
       }else{
@@ -173,25 +175,27 @@
       }
     },
 
-    pintar: function(fill,x,y,w,h){
+    pintar: function(fill,x,y,w,h){//Metodo para pintar elementos de miniarbol
       this.graf.beginFill(fill, 1);
-      this.graf.moveTo(this.ultMin+(this.miniH/2),y-(this.miniH/2));
+      this.graf.moveTo(this.ultMin+(this.miniH/2),y-(this.miniH/2));//Atualizacion de canvas de pintura
       this.graf.lineStyle(2, 0x000000);
-      this.graf.lineTo(x+(this.miniH/2),y);
+      this.graf.lineTo(x+(this.miniH/2),y);//Linea conectora de nodos
       this.graf.lineStyle(1, fill);
-      this.graf.bounds = new PIXI.Rectangle(x, y, w, h);
+      this.graf.bounds = new PIXI.Rectangle(x, y, w, h);//Cuadro representando nodo de arbol
       this.graf.drawRect(x, y, w, h);
       this.graf.endFill();
     },
 
-    nodoFinal: function(){
+    nodoFinal: function(){//Paso final de situacino
+      this.audioFinal.play();
       if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){//Mensaje final de acuerdo a la ultima eleccion
         this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual-1].fin;
         this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual-1].expAlt;
-      }else{
+      }else{//mensaje final alterno de acuerdo a la situacion
         this.txtSitua.text = this.levelData.dataSitua[this.random].pasos[this.pasoActual].alterno;
         this.reaccion.frame = this.levelData.dataSitua[this.random].pasos[this.pasoActual].expAlt;
       }
+
       this.termina = true;
       this.btnSi.destroy();
       this.btnNo.destroy();
@@ -229,14 +233,14 @@
       this.btnAbajo = this.game.add.button(580,450,'flechas',this.desplazamiento,this);//Se agrega boton para desplazamiento abajo
       this.btnAbajo.frame = 1;
 
-      this.pasoMostrarActual = 0;
+      this.pasoMostrarActual = 0;//Pagina inicial de pasos a mostrar
 
-      if(this.pasoActual<3){
+      if(this.pasoActual<3){//Control de visibilidad desplazamiento abajo
         this.btnAbajo.visible = false;
       }
 
       this.cajasGroup = [];
-      this.mostrarUltArbol();
+      this.mostrarUltArbol();//Mostrar retroalimentacion final
     },
 
     mostrarUltArbol: function(){
@@ -245,21 +249,20 @@
       }
       this.cajasGroup = [];
 
-      var ultY = 115;
-      var xIni = (this.retroFinal.x - (this.retroFinal.width/3)) + 150;
+      var ultY = 115;//Y inicial
+      var xIni = (this.retroFinal.x - (this.retroFinal.width/3)) + 150;//X inicial
 
-      var lim = 0;
+      var lim = 0;//Limite de elementos mostrados por pagina de acuerdo al paso actual mostrado
       if(this.pasoActual < 4){
         lim = this.pasoActual + 1;
       }else{
         lim = 4;
       }
-      for(var i=this.pasoMostrarActual;i<lim+this.pasoMostrarActual;i++){
-        console.log("faltan cajas");
+      for(var i=this.pasoMostrarActual;i<lim+this.pasoMostrarActual;i++){//Creacion de elementos de acuerdo a la pagina y limite de elementos presentados
         if(i != this.levelData.dataSitua[this.random].nPasos){
           var x1 = xIni;
           var x2 = xIni;
-          if(i>0){
+          if(i>0){//En caso de ser elementos a partir del paso 1
             if(this.levelData.dataSitua[this.random].pasos[i-1].accion == true){
               x1 = xIni;
               x2 = xIni + 185;
@@ -268,14 +271,15 @@
               x2 = xIni;
             }
           }
-          var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAccion,20);
-          if(i>0){
-            var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);          
+          if(i <= this.pasoActual){//Control de ceracion de elementos de acuerdo a los limites definidos por el paso actual
+            var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAccion,20);
+            if(i>0){
+              var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);          
+            }
           }
           ultY += 90;
-
         }
-        if(i == this.pasoActual){
+        if(i == this.pasoActual){//En caso de ser ultimo paso
           if(this.pasoActual == this.levelData.dataSitua[this.random].nPasos){//Final de la situacion en su totalidad
             var x1 = xIni;
             var x2 = xIni;
@@ -284,28 +288,36 @@
             }else{
               x1 = xIni + 185;
             }
-            var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i-1].fin,20);
+            var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i-1].txtFin,20);
             if(i>0){
               var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);
             }
-          }else{//Final de cada paso
+          }else{//Final de cada paso            
             if(!(this.pasoMostrarActual == 0 && this.pasoActual == 3)){
-              var x1 = xIni;
-              var x2 = xIni;
-              if(this.levelData.dataSitua[this.random].pasos[i-1].accion == true){
-                x1 = xIni + 185;
+              console.log(i,' - ',lim+this.pasoMostrarActual);
+              if(i+1 != lim+this.pasoMostrarActual || this.pasoMostrarActual==0){
+                var x1 = xIni;
+                var x2 = xIni;
+                var iVal = i;
+                
+                if(i>0){iVal = i-1;}
+                if(this.levelData.dataSitua[this.random].pasos[iVal].accion == true){
+                  x1 = xIni + 185;
+                }else{
+                  x2 = xIni + 185;
+                }
+                var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAlterno,20);
+                var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);
               }else{
-                x2 = xIni + 185;
+                this.btnAbajo.visible = true;
               }
-              var box = this.crearCaja(x1,ultY + 5,0,this.levelData.dataSitua[this.random].pasos[i].txtAlterno,20);
-              var box2 = this.crearCaja(x2,ultY + 5,1,'?',30);
             }
           }
         }
       }
     },
 
-    crearCaja: function(x,y,frame,txt,size){
+    crearCaja: function(x,y,frame,txt,size){//Creacion de elementos para retroalimentacion final
       var box = this.game.add.sprite(x,y,'arbol',frame);
       box.anchor.setTo(0.5,0.5);
       this.cajasGroup.push(box);
@@ -316,8 +328,9 @@
       return box;          
     },
 
-    desplazamiento: function(btn){
-      if(btn.frame == 0){//Opcion flecha rriba, paso atras
+    desplazamiento: function(btn){//Control de botones de desplazamiento
+      this.btnSound.play();
+      if(btn.frame == 0){//Opcion flecha arriba, paso atras
         this.pasoMostrarActual-=1;
         this.btnAbajo.visible = true;
         if(this.pasoMostrarActual == 0){
@@ -330,7 +343,7 @@
           this.btnAbajo.visible = false;
         }
       }
-      this.mostrarUltArbol();
+      this.mostrarUltArbol();//Se actualiza retroalimentacion final de acuerdo a la pagina presentada
     },
 
     pausaJuego: function(game){
