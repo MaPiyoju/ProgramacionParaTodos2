@@ -22,6 +22,7 @@ $str_datos_6 = file_get_contents("../juego/assets/data/nivel6.json");
 	<script type="text/javascript" src="Scripts/angular.min.js"></script>	
 	<script type="text/javascript" src="Scripts/Nivel1.js"></script>	
 	<script type="text/javascript">
+		//Guarda los JSon php en variables javascript
 		var DatosJson = <?php echo $str_datos; ?>;	
 		var DatosNiv2 = <?php echo $str_datos_2; ?>;
 		var DatosNiv3 = <?php echo $str_datos_3; ?>;		
